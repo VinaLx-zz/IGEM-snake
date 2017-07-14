@@ -1,0 +1,19 @@
+{
+  "name": "igem-snake",
+  "version": "1.0.0",
+  "description": "SYSU-Software IGEM human practice subproject, a snake game.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VinaLx/IGEM-snake.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VinaLx/IGEM-snake/issues"
+  },
+  "homepage": "https://github.com/VinaLx/IGEM-snake#readme"
+}
