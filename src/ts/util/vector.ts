@@ -13,6 +13,13 @@ namespace V {
     export function Minus(lhs: Vector, rhs: Vector): Vector {
         return AlterTwo(lhs, rhs, (a, b) => a - b);
     }
+    export function Distance(v1: Vector, v2: Vector): number {
+        return Minus(v1, v2).Norm();
+    }
+    export function Clone(v: Vector): Vector {
+        const p = v.Pair();
+        return new Vector(p[0], p[1]);
+    }
 }
 /**
  * immutable 2D number Vector
