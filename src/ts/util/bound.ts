@@ -2,15 +2,18 @@
 /// <reference path="./shape.ts" />
 
 interface Bound {
-    InBound(pos: Vector): Boolean;
+    Contains(pos: Vector): Boolean;
+}
+
+interface AdjustableBound extends Bound {
     Adjust(pos: Vector): Vector;
 }
 
-class RectBound implements Bound {
+class RectBound implements AdjustableBound {
     constructor(topLeft: Vector, botRight: Vector) {
         this.r = new Rectangle(topLeft, botRight);
     }
-    InBound(pos: Vector): Boolean {
+    Contains(pos: Vector): Boolean {
         return pos.X >= this.r.minX &&
             pos.Y >= this.r.minY &&
             pos.X <= this.r.maxX &&
@@ -30,16 +33,16 @@ class RectBound implements Bound {
     r: Rectangle;
 }
 
-class CircleBound implements Bound {
+class CircleBound implements AdjustableBound {
     constructor(origin: Vector, radius: number) {
         this.origin = origin;
         this.radius = radius;
     }
-    InBound(pos: Vector): Boolean {
+    Contains(pos: Vector): Boolean {
         return V.Distance(pos, this.origin) <= this.radius;
     }
     Adjust(pos: Vector): Vector {
-        if (this.InBound(pos)) {
+        if (this.Contains(pos)) {
             return pos;
         }
         const d: Vector = V.Minus(pos, this.origin);
@@ -72,5 +75,22 @@ class CircularRectBound extends RectBound {
             }
             return y;
         })
+    }
+}
+
+namespace Bound {
+    // bound arithmetic
+    export function Intersect(b1: CircleBound, b2: CircleBound): Boolean {
+        return V.Distance(b1.origin, b2.origin) < b1.radius + b2.radius;
+    }
+    export function Add(lhs: Bound, rhs: Bound): Bound {
+        return {
+            Contains: (pos: Vector) => lhs.Contains(pos) || rhs.Contains(pos)
+        }
+    }
+    export function Sub(lhs: Bound, rhs: Bound): Bound {
+        return {
+            Contains: (pos: Vector) => lhs.Contains(pos) && !rhs.Contains(pos)
+        }
     }
 }
