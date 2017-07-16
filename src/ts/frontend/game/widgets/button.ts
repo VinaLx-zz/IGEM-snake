@@ -1,5 +1,6 @@
 /// <reference path="../game-control/event-dispatcher.ts" />
 /// <reference path="../../util/vector.ts" />
+/// <reference path="../../util/bound.ts" />
 /// <reference path="./interfaces.ts" />
 
 interface MouseEventCatcher {

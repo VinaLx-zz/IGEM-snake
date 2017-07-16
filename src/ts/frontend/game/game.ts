@@ -7,8 +7,10 @@ class Game {
         this.canvas = canvas; // just in case
         this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
         this.gameStatus = new GameStatus(canvas.width, canvas.height);
-        this.layerControl = new LayerControlImpl([], this.gameStatus);
         this.DispatchAllEvents();
+        this.layers = []
+        this.layerControl = new LayerControlImpl(this.layers, this.gameStatus);
+        this.layerControl.PushLayer(new StartLayer(this.layerControl));
     }
     private DrawAll(time: number): void {
         // draw layers from bottom to top
@@ -83,6 +85,11 @@ class Game {
     }
 
     public Start(): void {
+        const callback = (time: number) => {
+            this.DrawAll(time);
+            window.requestAnimationFrame(callback);
+        }
+        window.requestAnimationFrame(callback);
         // TODO
     }
 
@@ -92,3 +99,11 @@ class Game {
     gameStatus: GameStatus;
     layerControl: LayerControl;
 }
+
+$(function () {
+    const canvas = <HTMLCanvasElement>$("#canvas")[0];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const game = new Game(canvas);
+    game.Start();
+})

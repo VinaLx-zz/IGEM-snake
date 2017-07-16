@@ -1,4 +1,4 @@
-/// <reference path="../util/function.ts" />
+/// <reference path="../../util/function.ts" />
 
 class ProgressBarModel {
     constructor(...observers: ProgressBarObserver[]) {
