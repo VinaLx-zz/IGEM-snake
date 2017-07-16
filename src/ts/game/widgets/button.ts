@@ -1,129 +1,95 @@
+/// <reference path="../game-control/event-dispatcher.ts" />
+/// <reference path="../../util/vector.ts" />
 /// <reference path="./interfaces.ts" />
 
-interface ButtonCallback {
-    (pos: Vector): void;
+interface MouseEventCatcher {
+    MouseDown: MouseEventCallback;
+    MouseUp: MouseEventCallback;
+    MouseMove: MouseEventCallback;
 }
 
-interface ClickButtonLike {
-    ClickAt: ButtonCallback;
+interface Holdable {
+    Hold: MouseEventCallback;
+    Release: MouseEventCallback;
 }
 
-interface HoldButtonLike {
-    HoldAt: ButtonCallback;
+interface Clickable {
+    Click: MouseEventCallback;
 }
 
-interface ButtonLike extends ClickButtonLike, HoldButtonLike { }
-
-class ClickButton implements ClickButtonLike, Bounding {
-    constructor(onClick: ButtonCallback, bound: Bound) {
-        this.onClick = onClick;
-        this.bound = bound;
+class ClickButton implements Clickable, MouseEventCatcher, Bounding {
+    constructor(onClick: MouseEventCallback, bound: Bound) {
+        this.Click = onClick;
     }
-    ClickAt(pos: Vector): void {
+    MouseDown(pos: Vector): void {
         if (this.bound.Contains(pos)) {
-            this.onClick(pos);
+            ++this.count;
         }
     }
-    onClick: ButtonCallback;
-    bound: Bound;
-}
-
-class HoldButton implements HoldButtonLike, Bounding {
-    constructor(onHold: ButtonCallback, bound: Bound) {
-        this.onHold = onHold;
-        this.bound = bound;
-    }
-    HoldAt(pos: Vector): void {
-        if (this.bound.Contains(pos)) {
-            this.onHold(pos);
+    MouseUp(pos: Vector): void {
+        if (this.count > 0 && this.bound.Contains(pos)) {
+            this.Click(pos);
+            this.count == 0;
         }
     }
-    onHold: ButtonCallback;
+    MouseMove(pos: Vector): void {
+        // do nothing
+        // TODO: can optimize the click logic when there is single touch
+    }
+
+    Click: MouseEventCallback;
     bound: Bound;
+    count: number = 0;
 }
 
-class Button implements ButtonLike, Bounding {
-    constructor(onClick: ButtonCallback, onHold: ButtonCallback, bound: Bound) {
-        this.clickButton = new ClickButton(onClick, bound);
-        this.holdButton = new HoldButton(onHold, bound);
+class HoldButton implements Holdable, MouseEventCatcher, Bounding {
+    constructor(
+        onHold: MouseEventCallback,
+        onRelease: MouseEventCallback,
+        bound: Bound) {
+        this.Hold = onHold;
+        this.Release = onRelease;
         this.bound = bound;
     }
-    HoldAt(pos: Vector): void {
-        this.holdButton.HoldAt(pos);
+    MouseDown(pos: Vector): void {
+        if (this.bound.Contains(pos)) {
+            this.Hold(pos);
+        }
     }
-    ClickAt(pos: Vector): void {
-        this.clickButton.ClickAt(pos);
+
+    MouseUp(pos: Vector): void {
+        if (this.bound.Contains(pos)) {
+            this.Release(pos);
+        }
     }
-    clickButton: ClickButton;
-    holdButton: HoldButton;
+
+    MouseMove(pos: Vector): void {
+        if (this.bound.Contains(pos)) {
+            this.Hold(pos);
+        }
+    }
+
+    Hold: MouseEventCallback;
+    Release: MouseEventCallback;
     bound: Bound;
 }
 
 namespace Button {
-    // button combinations
-
-    // add click click
-    export function AddCC(
-        b1: ClickButtonLike, b2: ClickButtonLike): ClickButtonLike {
+    export function Add(
+        a: MouseEventCatcher, b: MouseEventCatcher): MouseEventCatcher {
         return {
-            ClickAt: (pos: Vector) => {
-                b1.ClickAt(pos);
-                b2.ClickAt(pos);
-            }
-        }
-    }
-    // add hold hold
-    export function AddHH(
-        b1: HoldButtonLike, b2: HoldButtonLike): HoldButtonLike {
-        return {
-            HoldAt: (pos: Vector) => {
-                b1.HoldAt(pos);
-                b2.HoldAt(pos);
-            }
-        }
-    }
-    // add click hold
-    export function AddCH(
-        click: ClickButtonLike, hold: HoldButtonLike): ButtonLike {
-        return {
-            ClickAt: (pos: Vector) => click.ClickAt(pos),
-            HoldAt: (pos: Vector) => hold.HoldAt(pos)
-        }
-    }
-    // add hold click
-    export function AddHC(
-        hold: HoldButtonLike, click: ClickButtonLike): ButtonLike {
-        return AddCH(click, hold);
-    }
-    export function AddC(
-        btn: ButtonLike, click: ClickButtonLike): ButtonLike {
-        return {
-            ClickAt: (pos: Vector) => {
-                btn.ClickAt(pos);
-                click.ClickAt(pos);
+            MouseDown: pos => {
+                a.MouseDown(pos);
+                b.MouseDown(pos);
             },
-            HoldAt: (pos: Vector) => btn.HoldAt(pos)
-        }
-    }
-    export function AddH(btn: ButtonLike, hold: HoldButtonLike): ButtonLike {
-        return {
-            ClickAt: (pos: Vector) => btn.ClickAt(pos),
-            HoldAt: (pos: Vector) => {
-                btn.HoldAt(pos);
-                hold.HoldAt(pos);
-            }
-        }
-    }
-    export function Add(b1: ButtonLike, b2: ButtonLike): ButtonLike {
-        return {
-            ClickAt: (pos: Vector) => {
-                b1.ClickAt(pos);
-                b2.ClickAt(pos);
+            MouseMove: pos => {
+                a.MouseMove(pos);
+                b.MouseMove(pos);
             },
-            HoldAt: (pos: Vector) => {
-                b1.HoldAt(pos);
-                b2.HoldAt(pos);
+            MouseUp: pos => {
+                a.MouseUp(pos);
+                b.MouseUp(pos);
             }
-        }
+        };
     }
 }

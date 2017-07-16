@@ -28,13 +28,13 @@ class Game {
         this.canvas.ontouchmove = (e: TouchEvent) => {
             e.preventDefault();
             forEachTouch(e, t =>
-                this.TopLayer().eventDispatcher.MouseHold(
+                this.TopLayer().eventDispatcher.MouseMove(
                     new Vector(t.clientX, t.clientY)))
         };
         this.canvas.ontouchstart = (e: TouchEvent) => {
             e.preventDefault();
             forEachTouch(e, t =>
-                this.TopLayer().eventDispatcher.MouseClick(
+                this.TopLayer().eventDispatcher.MouseDown(
                     new Vector(t.clientX, t.clientY)))
         };
         this.canvas.ontouchcancel = (e: TouchEvent) => {
@@ -51,17 +51,14 @@ class Game {
         }
     }
     private DispathMouseEvent(): void {
-        this.canvas.onclick = (e: MouseEvent) => {
-            this.TopLayer().eventDispatcher.MouseClick(
-                new Vector(e.clientX, e.clientY));
-        }
         this.canvas.onmousemove = (e: MouseEvent) => {
+            // triggered only when holding hthe primary button
             if (!(e.buttons & 1)) return;
-            this.TopLayer().eventDispatcher.MouseHold(
+            this.TopLayer().eventDispatcher.MouseMove(
                 new Vector(e.clientX, e.clientY));
         }
         this.canvas.onmousedown = (e: MouseEvent) => {
-            this.TopLayer().eventDispatcher.MouseHold(
+            this.TopLayer().eventDispatcher.MouseDown(
                 new Vector(e.clientX, e.clientY));
         }
         this.canvas.onmouseup = (e: MouseEvent) => {
