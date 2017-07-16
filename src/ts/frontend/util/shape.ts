@@ -1,8 +1,8 @@
 /// <reference path="./vector.ts" />
 class Rectangle {
-    constructor(topLeft: Vector, botRight: Vector) {
-        this.topLeft = topLeft;
-        this.botRight = botRight;
+    constructor(x: number, y: number, w: number, h: number) {
+        this.topLeft = new Vector(x, y);
+        this.botRight = new Vector(x + w, y + h);
     }
     get Width(): number {
         return this.maxX - this.minX;

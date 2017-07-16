@@ -1,6 +1,7 @@
 /// <reference path="../game-control/event-dispatcher.ts" />
 /// <reference path="../../util/vector.ts" />
 /// <reference path="../../util/bound.ts" />
+/// <reference path="../../util/function.ts" />
 /// <reference path="./interfaces.ts" />
 
 interface MouseEventCatcher {
@@ -21,6 +22,7 @@ interface Clickable {
 class ClickButton implements Clickable, MouseEventCatcher, Bounding {
     constructor(onClick: MouseEventCallback, bound: Bound) {
         this.Click = onClick;
+        this.bound = bound;
     }
     MouseDown(pos: Vector): void {
         if (this.bound.Contains(pos)) {
@@ -76,7 +78,7 @@ class HoldButton implements Holdable, MouseEventCatcher, Bounding {
 }
 
 namespace Button {
-    export function Add(
+    export function AddTwo(
         a: MouseEventCatcher, b: MouseEventCatcher): MouseEventCatcher {
         return {
             MouseDown: pos => {
@@ -92,5 +94,10 @@ namespace Button {
                 b.MouseUp(pos);
             }
         };
+    }
+    export function Add(
+        m: MouseEventCatcher,
+        ...ms: MouseEventCatcher[]): MouseEventCatcher {
+        return Func.foldl(ms, m, AddTwo);
     }
 }
