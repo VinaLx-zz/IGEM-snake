@@ -1,4 +1,6 @@
 **/node_modules/
 **/.DS_Store
 **/.vscode
-package_lock.json
+src/script/script.js
+src/app.js
+package-lock.json
