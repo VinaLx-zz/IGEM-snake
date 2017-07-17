@@ -7,4 +7,11 @@ namespace Func {
         }
         return res;
     }
+    export function seq<A>(
+        lhs: (a: A) => void, rhs: (b: A) => void): (a: A) => void {
+        return a => {
+            lhs(a);
+            rhs(a);
+        }
+    }
 }

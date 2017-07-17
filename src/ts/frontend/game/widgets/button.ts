@@ -78,6 +78,13 @@ class HoldButton implements Holdable, MouseEventCatcher, Bounding {
 }
 
 namespace Button {
+    export function Noop() {
+        return {
+            MouseDown: Func.Noop,
+            MouseUp: Func.Noop,
+            MouseMove: Func.Noop
+        }
+    }
     export function AddTwo(
         a: MouseEventCatcher, b: MouseEventCatcher): MouseEventCatcher {
         return {
