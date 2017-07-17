@@ -49,7 +49,7 @@ namespace Paint {
             ctx.beginPath();
             ctx.arc(x, y, r, beg, end);
             ctx.fill();
-        })
+        });
     }
     export function Circle(color: string, x: number, y: number, r: number) {
         return ArcFill(color, x, y, r, 0, 2 * Math.PI);

@@ -1,5 +1,6 @@
 /// <reference path="./abstract-layer.ts" />
 /// <reference path="../widgets/button.ts" />
+/// <reference path="./setting-layer.ts" />
 
 class SecondLayer extends AbstractLayer {
     constructor(control: LayerControl, color: () => string) {
@@ -47,7 +48,7 @@ class StartLayer extends AbstractLayer {
         const blackButton = new ClickButton(() => this.color = "black", blackBound);
         const otherBound = new RectBound(0, height / 2, width, height);
         const otherButton = new ClickButton(
-            () => this.control.PushLayer(this.secondLayer), otherBound);
+            () => this.control.PushLayer(new SettingLayer(this.control)), otherBound);
         return Button.Add(blue, red, blackButton, otherButton);
     }
 

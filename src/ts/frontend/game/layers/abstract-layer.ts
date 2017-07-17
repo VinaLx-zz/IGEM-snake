@@ -8,12 +8,12 @@
 abstract class AbstractLayer  {
     constructor(control: LayerControl, option: EventDispatchOption) {
         this.control = control;
-        this.painter = this.Painter();
         this.buttons = this.Buttons();
         const dispatcher = new EventDispatcherImpl(option);
         dispatcher.OnMouseDown(p => this.buttons.MouseDown(p));
         dispatcher.OnMouseUp(p => this.buttons.MouseUp(p));
         dispatcher.OnMouseMove(p => this.buttons.MouseMove(p));
+        this.painter = this.Painter();
         this.eventDispatcher = dispatcher;
     }
 

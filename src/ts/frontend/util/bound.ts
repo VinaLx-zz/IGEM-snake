@@ -14,6 +14,13 @@ class RectBound implements AdjustableBound {
     constructor(x: number, y: number, w: number, h: number) {
         this.r = new Rectangle(x, y, w, h);
     }
+    Left(): number { return this.r.minX; }
+    Right(): number { return this.r.maxX; }
+    Up(): number { return this.r.minY; }
+    Down(): number { return this.r.maxY; }
+    Width(): number { return this.r.Width; }
+    Height(): number { return this.r.Height; }
+
     Contains(pos: Vector): Boolean {
         return pos.X >= this.r.minX &&
             pos.Y >= this.r.minY &&
@@ -35,8 +42,8 @@ class RectBound implements AdjustableBound {
 }
 
 class CircleBound implements AdjustableBound {
-    constructor(origin: Vector, radius: number) {
-        this.origin = origin;
+    constructor(x: number, y: number, radius: number) {
+        this.origin = new Vector(x, y);
         this.radius = radius;
     }
     Contains(pos: Vector): Boolean {

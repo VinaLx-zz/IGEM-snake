@@ -32,7 +32,7 @@ class ClickButton implements Clickable, MouseEventCatcher, Bounding {
     MouseUp(pos: Vector): void {
         if (this.count > 0 && this.bound.Contains(pos)) {
             this.Click(pos);
-            this.count == 0;
+            this.count = 0;
         }
     }
     MouseMove(pos: Vector): void {
