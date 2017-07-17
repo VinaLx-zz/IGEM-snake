@@ -9,14 +9,14 @@ class SecondLayer extends AbstractLayer {
             MouseMove: p => this.buttons.MouseMove(p)
         })
         this.buttons = new ClickButton(
-            () => this.control.PopLayer(), new RectBound(100, 550, 50, 50));
+            () => this.control.PopLayer(), new RectBound(550, 100, 50, 50));
         this.color = color;
     }
-    Draw(ctx: CanvasRenderingContext2D, time: number) {
-        ctx.fillStyle = "green";
-        ctx.fillRect(100, 100, 500, 500);
-        ctx.fillStyle = this.color();
-        ctx.fillRect(100, 550, 50, 50);
+
+    Painter(): Painter {
+        return Paint.Rect("green", 100, 100, 500, 500)
+            .Then(Paint.Delay(
+                () => Paint.Rect(this.color(), 550, 100, 50, 50)));
     }
     color: () => string;
     buttons: MouseEventCatcher;
@@ -44,17 +44,15 @@ class StartLayer extends AbstractLayer {
             () => this.control.PushLayer(this.secondLayer), otherBound);
         this.buttons = Button.Add(blue, red, blackButton, otherButton);
     }
-    Draw(ctx: CanvasRenderingContext2D, time: number) {
+
+    Painter(): Painter {
         const width = this.control.gameStatus.canvasWidth;
         const height = this.control.gameStatus.canvasHeight;
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, width, height);
-        ctx.fillStyle = "blue";
-        ctx.fillRect(100, 100, 100, 100);
-        ctx.fillStyle = "red";
-        ctx.fillRect(300, 100, 100, 100);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(0, height / 2, width, height)
+        return Paint.Rect("white", 0, 0, width, height)
+            .Then(Paint.Rect("blue", 100, 100, 100, 100))
+            .Then(Paint.Rect("red", 300, 100, 100, 100))
+            .Then(Paint.Delay(
+                () => Paint.Rect(this.color, 0, height / 2, width, height)));
     }
     secondLayer: SecondLayer;
     buttons: MouseEventCatcher;
