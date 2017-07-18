@@ -19,6 +19,14 @@ class Painter {
             ctx.restore();
         });
     }
+    Scale(x: number, y: number): Painter {
+        return new Painter((ctx, time) => {
+            ctx.save();
+            ctx.scale(x, y);
+            this.Paint(ctx, time);
+            ctx.restore();
+        })
+    }
 }
 
 namespace Paint {

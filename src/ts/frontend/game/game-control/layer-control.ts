@@ -4,13 +4,13 @@
 interface LayerControl {
     PushLayer(layer: Layer): void;
     PopLayer(): void;
-    gameStatus: GameStatus;
+    gs: GameStatus;
 }
 
 class LayerControlImpl implements LayerControl {
     constructor(layers: Layer[], gameStatus: GameStatus) {
         this.layers = layers;
-        this.gameStatus = gameStatus;
+        this.gs = gameStatus;
     }
     PushLayer(layer: Layer): void {
         this.layers.push(layer);
@@ -19,5 +19,5 @@ class LayerControlImpl implements LayerControl {
         this.layers.pop();
     }
     layers: Layer[];
-    gameStatus: GameStatus;
+    gs: GameStatus;
 }

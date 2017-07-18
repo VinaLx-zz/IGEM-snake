@@ -13,12 +13,7 @@ abstract class AbstractLayer  {
         dispatcher.OnMouseDown(p => this.buttons.MouseDown(p));
         dispatcher.OnMouseUp(p => this.buttons.MouseUp(p));
         dispatcher.OnMouseMove(p => this.buttons.MouseMove(p));
-        this.painter = this.Painter();
         this.eventDispatcher = dispatcher;
-    }
-
-    Draw(ctx: CanvasRenderingContext2D, time: number): void {
-        this.painter.Paint(ctx, time);
     }
 
     abstract Painter(): Painter;
@@ -27,5 +22,4 @@ abstract class AbstractLayer  {
     buttons: MouseEventCatcher;
     control: LayerControl;
     eventDispatcher: EventDispatcher;
-    painter: Painter;
 }

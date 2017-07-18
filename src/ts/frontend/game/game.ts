@@ -4,9 +4,9 @@
 
 class Game {
     constructor(canvas: HTMLCanvasElement) {
-        this.canvas = canvas; // just in case
+        this.canvas = Game.OrientCanvasSize(canvas);
         this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
-        this.gameStatus = new GameStatus(canvas.width, canvas.height);
+        this.gameStatus = new GameStatus();
         this.DispatchAllEvents();
         this.layers = []
         this.layerControl = new LayerControlImpl(this.layers, this.gameStatus);
@@ -14,7 +14,33 @@ class Game {
     }
     private DrawAll(time: number): void {
         // draw layers from bottom to top
-        this.layers.forEach(layer => layer.Draw(this.context, time));
+        this.Painter().Paint(this.context, time);
+    }
+    private Painter(): Painter {
+        let p = Paint.Noop();
+        for (const layer of this.layers) {
+            p = p.Then(layer.Painter());
+        }
+        return p.Scale(this.canvas.width, this.canvas.width);
+    }
+    static OrientCanvasSize(canvas: HTMLCanvasElement): HTMLCanvasElement {
+        const wh = window.innerHeight, ww = window.innerWidth, wh_ww = wh / ww;
+        canvas.height = wh;
+        canvas.width = ww;
+        const h_w = SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR;
+        if (h_w > wh_ww) {
+            canvas.width = wh / h_w;
+        } else {
+            canvas.height = ww * h_w;
+        }
+        return canvas;
+    }
+
+    private Translate(x: number, y: number): Vector {
+        const cpos = $(this.canvas).position();
+        return new Vector(
+            (x - cpos.left) / this.canvas.width,
+            (y - cpos.top) / this.canvas.width);
     }
 
     // dispatch all events to layer(s)
@@ -31,25 +57,25 @@ class Game {
             e.preventDefault();
             forEachTouch(e, t =>
                 this.TopLayer().eventDispatcher.MouseMove(
-                    new Vector(t.clientX, t.clientY)))
+                    this.Translate(t.clientX, t.clientY)))
         };
         this.canvas.ontouchstart = (e: TouchEvent) => {
             e.preventDefault();
             forEachTouch(e, t =>
                 this.TopLayer().eventDispatcher.MouseDown(
-                    new Vector(t.clientX, t.clientY)))
+                    this.Translate(t.clientX, t.clientY)))
         };
         this.canvas.ontouchcancel = (e: TouchEvent) => {
             e.preventDefault();
             forEachTouch(e, t =>
                 this.TopLayer().eventDispatcher.MouseUp(
-                    new Vector(t.clientX, t.clientY)))
+                    this.Translate(t.clientX, t.clientY)))
         }
         this.canvas.ontouchend = (e: TouchEvent) => {
             e.preventDefault();
             forEachTouch(e, t =>
                 this.TopLayer().eventDispatcher.MouseUp(
-                    new Vector(t.clientX, t.clientY)))
+                    this.Translate(t.clientX, t.clientY)))
         }
     }
     private DispathMouseEvent(): void {
@@ -57,15 +83,15 @@ class Game {
             // triggered only when holding hthe primary button
             if (!(e.buttons & 1)) return;
             this.TopLayer().eventDispatcher.MouseMove(
-                new Vector(e.clientX, e.clientY));
+                this.Translate(e.clientX, e.clientY));
         }
         this.canvas.onmousedown = (e: MouseEvent) => {
             this.TopLayer().eventDispatcher.MouseDown(
-                new Vector(e.clientX, e.clientY));
+                this.Translate(e.clientX, e.clientY));
         }
         this.canvas.onmouseup = (e: MouseEvent) => {
             this.TopLayer().eventDispatcher.MouseUp(
-                new Vector(e.clientX, e.clientY));
+                this.Translate(e.clientX, e.clientY));
         }
     }
     private DispatchKeyboardEvent(): void {
@@ -102,8 +128,6 @@ class Game {
 
 $(function () {
     const canvas = <HTMLCanvasElement>$("#canvas")[0];
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     const game = new Game(canvas);
     game.Start();
 })

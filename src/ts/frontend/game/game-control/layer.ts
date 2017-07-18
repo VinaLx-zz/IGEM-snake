@@ -2,5 +2,5 @@
 
 interface Layer {
     eventDispatcher: EventDispatcher;
-    Draw(context: CanvasRenderingContext2D, time: number): void;
+    Painter(): Painter;
 }

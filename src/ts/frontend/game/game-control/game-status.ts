@@ -1,9 +1,6 @@
 // global game status that a layer can access
 class GameStatus {
-    constructor (width: number, height: number) {
-        this.canvasWidth = width;
-        this.canvasHeight = height;
-    }
-    canvasWidth: number;
-    canvasHeight: number;
+    music: number = 50;
+    sound: number = 50;
+    leftRocker: Boolean = true;
 }
