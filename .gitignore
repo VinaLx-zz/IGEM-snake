@@ -2,5 +2,6 @@
 **/.DS_Store
 **/.vscode
 src/script/script.js
+src/script/size.js
 src/app.js
 package-lock.json
