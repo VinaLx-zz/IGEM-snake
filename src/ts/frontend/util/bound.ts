@@ -10,41 +10,37 @@ interface AdjustableBound extends Bound {
     Adjust(pos: Vector): Vector;
 }
 
-class RectBound implements AdjustableBound {
+class RectBound extends Rectangle implements AdjustableBound {
     constructor(x: number, y: number, w: number, h: number) {
-        this.r = new Rectangle(x, y, w, h);
+        super(x, y, w, h);
     }
-    Left(): number { return this.r.minX; }
-    Right(): number { return this.r.maxX; }
-    Up(): number { return this.r.minY; }
-    Down(): number { return this.r.maxY; }
-    Width(): number { return this.r.Width; }
-    Height(): number { return this.r.Height; }
+    Left(): number { return this.minX; }
+    Right(): number { return this.maxX; }
+    Up(): number { return this.minY; }
+    Down(): number { return this.maxY; }
 
     Contains(pos: Vector): Boolean {
-        return pos.X >= this.r.minX &&
-            pos.Y >= this.r.minY &&
-            pos.X <= this.r.maxX &&
-            pos.Y <= this.r.maxY;
+        return pos.X >= this.minX &&
+            pos.Y >= this.minY &&
+            pos.X <= this.maxX &&
+            pos.Y <= this.maxY;
     }
     Adjust(pos: Vector): Vector {
         return pos.Alter(x => {
-            if (x < this.r.minX) return this.r.minX;
-            if (x > this.r.maxX) return this.r.maxX;
+            if (x < this.minX) return this.minX;
+            if (x > this.maxX) return this.maxX;
             return x;
         }, y => {
-            if (y < this.r.minY) return this.r.minY;
-            if (y > this.r.maxY) return this.r.maxY;
+            if (y < this.minY) return this.minY;
+            if (y > this.maxY) return this.maxY;
             return y;
         })
     }
-    r: Rectangle;
 }
 
-class CircleBound implements AdjustableBound {
+class CircleBound extends Circle implements AdjustableBound {
     constructor(x: number, y: number, radius: number) {
-        this.origin = new Vector(x, y);
-        this.radius = radius;
+        super(x, y, radius);
     }
     Contains(pos: Vector): Boolean {
         return V.Distance(pos, this.origin) <= this.radius;
@@ -58,8 +54,6 @@ class CircleBound implements AdjustableBound {
             this.origin,
             d.Mult(this.radius / V.Distance(this.origin, pos)));
     }
-    origin: Vector;
-    radius: number;
 }
 
 class CircularRectBound extends RectBound {
@@ -68,18 +62,18 @@ class CircularRectBound extends RectBound {
     }
     Adjust(pos: Vector): Vector {
         return pos.Alter(x => {
-            const width = this.r.Width;
-            if (x < this.r.minX)
-                return this.r.maxX - (this.r.minX - x) % width;
-            if (x > this.r.maxX)
-                return this.r.minX + (x - this.r.maxX) % width;
+            const width = this.Width();
+            if (x < this.minX)
+                return this.maxX - (this.minX - x) % width;
+            if (x > this.maxX)
+                return this.minX + (x - this.maxX) % width;
             return x;
         }, y => {
-            const height = this.r.Height;
-            if (y < this.r.minY)
-                return this.r.maxY - (this.r.minY - y) % height;
-            if (y > this.r.maxY) {
-                return this.r.minY + (y - this.r.maxY) % height;
+            const height = this.Height();
+            if (y < this.minY)
+                return this.maxY - (this.minY - y) % height;
+            if (y > this.maxY) {
+                return this.minY + (y - this.maxY) % height;
             }
             return y;
         })

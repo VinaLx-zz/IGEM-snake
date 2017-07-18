@@ -1,4 +1,5 @@
 /// <reference path="../../util/function.ts" />
+/// <reference path="../../util/interfaces.ts" />
 
 class Painter {
     constructor(f: (ctx: CanvasRenderingContext2D, time: number) => void) {
@@ -61,5 +62,9 @@ namespace Paint {
     }
     export function Circle(color: string, x: number, y: number, r: number) {
         return ArcFill(color, x, y, r, 0, 2 * Math.PI);
+    }
+    export function PositionedImage(
+        a: Positioned & Sized, img: HTMLImageElement) {
+        return Picture(img, a.X(), a.Y(), a.Width(), a.Height());
     }
 }

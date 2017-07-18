@@ -1,6 +1,6 @@
 /// <reference path="./button.ts" />
 
-class SlidingBar extends HoldButton {
+class SlidingBar extends HoldButton<RectBound> {
     constructor(
         init: number, bound: RectBound,
         onChange: (n: number) => void) {
@@ -9,13 +9,11 @@ class SlidingBar extends HoldButton {
             onChange(this.progress);
         }, Func.Noop, bound)
         this.slider = init / 100 * bound.Width() + bound.Left();
-        this.bound = bound;
     }
     get progress(): number {
         return Math.round(
             (this.slider - this.bound.Left()) /
-            this.bound.r.Width * 100);
+            this.bound.Width() * 100);
     }
     slider: number;
-    bound: RectBound;
 }

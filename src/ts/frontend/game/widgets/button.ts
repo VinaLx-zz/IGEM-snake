@@ -19,8 +19,9 @@ interface Clickable {
     Click: MouseEventCallback;
 }
 
-class ClickButton implements Clickable, MouseEventCatcher, Bounding {
-    constructor(onClick: MouseEventCallback, bound: Bound) {
+class ClickButton<B extends Bound = Bound>
+    implements Clickable, MouseEventCatcher {
+    constructor(onClick: MouseEventCallback, bound: B) {
         this.Click = onClick;
         this.bound = bound;
     }
@@ -41,15 +42,16 @@ class ClickButton implements Clickable, MouseEventCatcher, Bounding {
     }
 
     Click: MouseEventCallback;
-    bound: Bound;
+    bound: B;
     count: number = 0;
 }
 
-class HoldButton implements Holdable, MouseEventCatcher, Bounding {
+class HoldButton<B extends Bound = Bound>
+    implements Holdable, MouseEventCatcher {
     constructor(
         onHold: MouseEventCallback,
         onRelease: MouseEventCallback,
-        bound: Bound) {
+        bound: B) {
         this.Hold = onHold;
         this.Release = onRelease;
         this.bound = bound;
@@ -74,7 +76,7 @@ class HoldButton implements Holdable, MouseEventCatcher, Bounding {
 
     Hold: MouseEventCallback;
     Release: MouseEventCallback;
-    bound: Bound;
+    bound: B;
 }
 
 namespace Button {
