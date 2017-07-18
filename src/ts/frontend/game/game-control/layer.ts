@@ -2,5 +2,5 @@
 
 interface Layer {
     eventDispatcher: EventDispatcher;
-    Painter(): Painter;
+    painter: Painter;
 }

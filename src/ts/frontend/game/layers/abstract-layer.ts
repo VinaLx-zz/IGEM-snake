@@ -14,6 +14,7 @@ abstract class AbstractLayer  {
         dispatcher.OnMouseUp(p => this.buttons.MouseUp(p));
         dispatcher.OnMouseMove(p => this.buttons.MouseMove(p));
         this.eventDispatcher = dispatcher;
+        this.painter = this.Painter();
     }
 
     abstract Painter(): Painter;
@@ -22,4 +23,5 @@ abstract class AbstractLayer  {
     buttons: MouseEventCatcher;
     control: LayerControl;
     eventDispatcher: EventDispatcher;
+    painter: Painter;
 }

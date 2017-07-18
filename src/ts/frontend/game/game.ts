@@ -19,7 +19,7 @@ class Game {
     private Painter(): Painter {
         let p = Paint.Noop();
         for (const layer of this.layers) {
-            p = p.Then(layer.Painter());
+            p = p.Then(layer.painter);
         }
         return p.Scale(this.canvas.width, this.canvas.width);
     }
@@ -37,10 +37,9 @@ class Game {
     }
 
     private Translate(x: number, y: number): Vector {
-        const cpos = $(this.canvas).position();
         return new Vector(
-            (x - cpos.left) / this.canvas.width,
-            (y - cpos.top) / this.canvas.width);
+            (x - this.canvas.offsetLeft) / this.canvas.width,
+            (y - this.canvas.offsetTop) / this.canvas.width);
     }
 
     // dispatch all events to layer(s)
@@ -48,6 +47,8 @@ class Game {
         // TODO
         this.DispatchTouchEvent();
         this.DispathMouseEvent();
+        window.onresize = e =>
+            this.canvas = Game.OrientCanvasSize(this.canvas);
     }
     private DispatchTouchEvent(): void {
         const forEachTouch = (e: TouchEvent, f: (t: Touch) => void) => {
