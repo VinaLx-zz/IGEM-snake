@@ -1,6 +1,6 @@
 /// <reference path="../../util/function.ts" />
 
-class ProgressBarModel {
+class ProgressBar {
     constructor(...observers: ProgressBarObserver[]) {
         this.observers = observers;
     }
