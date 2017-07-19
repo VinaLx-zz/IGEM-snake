@@ -10,4 +10,10 @@ declare namespace SZ {
         const SETTING_Y: number;
         const BUTTON_R: number;
     }
+    namespace SETTING {
+        const LAYER_X: number;
+        const LAYER_Y: number;
+        const LAYER_W: number;
+        const LAYER_H: number;
+    }
 }
