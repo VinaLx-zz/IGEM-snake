@@ -1,6 +1,6 @@
 namespace IMG {
     function image(src: string): HTMLImageElement {
-        const img = new Image();
+        const img = new Image(600, 600);
         img.src = src;
         return img;
     }
