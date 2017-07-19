@@ -67,4 +67,14 @@ namespace Paint {
         a: Positioned & Sized, img: HTMLImageElement) {
         return Picture(img, a.X(), a.Y(), a.Width(), a.Height());
     }
+    export function Text(
+        font: string, text: string, x: number, y: number,
+        color: string = "black", baseline: string = "top") {
+        return new Painter(ctx => {
+            ctx.textBaseline = baseline;
+            ctx.font = font;
+            ctx.fillStyle = color;
+            ctx.fillText(text, x, y);
+        })
+    }
 }

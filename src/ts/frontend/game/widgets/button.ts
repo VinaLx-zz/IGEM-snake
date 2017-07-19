@@ -2,7 +2,6 @@
 /// <reference path="../../util/vector.ts" />
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../../util/function.ts" />
-/// <reference path="./interfaces.ts" />
 
 interface MouseEventCatcher {
     MouseDown: MouseEventCallback;

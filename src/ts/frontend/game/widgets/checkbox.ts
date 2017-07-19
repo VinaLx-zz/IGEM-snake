@@ -1,20 +1,18 @@
 /// <reference path="./button.ts" />
 
-class CheckBox extends ClickButton {
+class CheckBox<B extends Bound> extends ClickButton<B> {
     constructor(
-        init: Boolean, bound: Bound, pos: Vector,
+        init: Boolean, bound: B,
         onChange: (checked: Boolean) => void) {
         super(() => {
             this.Toggle();
             onChange(this.checked);
         }, bound);
         this.checked = init;
-        this.position = pos;
     }
     Check(): void { this.checked = true; }
     Uncheck(): void { this.checked = false; }
     Toggle(): void { this.checked = !this.checked; }
 
-    position: Vector;
     checked: Boolean;
 }
