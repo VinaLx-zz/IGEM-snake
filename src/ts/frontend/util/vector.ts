@@ -63,6 +63,16 @@ class Vector {
     public Div(c: number): Vector {
         return this.AlterBoth(n => n / c);
     }
+    // assume direction is a unit vector
+    public TowardDirection(direction: Vector, n: number): Vector {
+        return V.Add(direction.Mult(n), this);
+    }
+    public Toward(to: Vector, n: number): Vector {
+        return this.TowardDirection(V.Minus(to, this).Direction(), n);
+    }
+    public Stretch(from: Vector, n: number): Vector {
+        return this.Toward(from, -n);
+    }
     public ApplyTo<A>(f: (x: number, y: number) => A): A {
         return f.apply(undefined, this.Pair());
     }

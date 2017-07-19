@@ -19,7 +19,7 @@ declare namespace SZ {
     namespace GAME {
         const SNAKE_HEAD_R: number;
         const SNAKE_BODY_R: number;
-        const HEAD_BODY_DIST: number;
+        const SNAKE_BODY_DIST: number;
         const ENERGY_R: number;
         const PROM_W: number;
         const PROM_H: number;
