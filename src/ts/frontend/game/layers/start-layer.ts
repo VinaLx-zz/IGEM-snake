@@ -1,10 +1,14 @@
 /// <reference path="./abstract-layer.ts" />
 /// <reference path="./setting-layer.ts" />
+/// <reference path="./mode-choose-layer.ts" />
+/// <reference path="./help-layer.ts" />
 
 class StartLayer extends AbstractLayer {
     constructor(control: LayerControl) {
         super(control, {});
         this.settingLayer = new SettingLayer(control);
+        this.helpLayer = new HelpLayer(control);
+        this.modeLayer = new ModeChooseLayer(control);
     }
 
     Painter(): Painter {
@@ -29,11 +33,11 @@ class StartLayer extends AbstractLayer {
 
     Buttons(): MouseEventCatcher {
         this.start = new ClickButton(
-            Func.Noop,
+            () => this.control.PushLayer(this.modeLayer),
             new CircleBound(
                 SZ.START.PLAY_X, SZ.START.PLAY_Y, SZ.START.BUTTON_R));
         this.help = new ClickButton(
-            Func.Noop,
+            () => this.control.PushLayer(this.helpLayer),
             new CircleBound(
                 SZ.START.HELP_X, SZ.START.HELP_Y, SZ.START.BUTTON_R));
         this.setting = new ClickButton(
@@ -49,4 +53,6 @@ class StartLayer extends AbstractLayer {
     setting: ClickButton<CircleBound>;
 
     settingLayer: Layer;
+    helpLayer: Layer;
+    modeLayer: Layer;
 }

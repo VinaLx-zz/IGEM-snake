@@ -1,6 +1,12 @@
 declare namespace SZ {
     const WIDTH_FACTOR: number;
     const HEIGHT_FACTOR: number;
+
+    const BACK_X: number;
+    const BACK_Y: number;
+    const BACK_W: number;
+    const BACK_H: number;
+
     namespace START {
         const PLAY_X: number;
         const PLAY_Y: number;
@@ -15,6 +21,30 @@ declare namespace SZ {
         const LAYER_Y: number;
         const LAYER_W: number;
         const LAYER_H: number;
+    }
+    namespace MODE {
+        const MODE_W: number;
+        const MODE_H: number;
+        const MODE_X: number;
+        const EASY_Y: number;
+        const NORMAL_Y: number;
+        const HARD_Y: number;
+        const TUTORIAL_X: number;
+        const TUTORIAL_Y: number;
+        const TUTORIAL_W: number;
+        const TUTORIAL_H: number;
+    }
+    namespace HELP {
+        const TEXT_H: number;
+        const STORY_X: number;
+        const STORY_Y: number;
+        const STORY_W: number;
+        const PLAY_X: number;
+        const PLAY_Y: number;
+        const PLAY_W: number;
+        const LEARN_X: number;
+        const LEARN_Y: number;
+        const LEARN_W: number;
     }
     namespace GAME {
         const SNAKE_HEAD_R: number;

@@ -8,45 +8,33 @@ class SettingLayer extends AbstractLayer {
         super(control, {});
     }
     Painter(): Painter {
-        return this.PaintBackground()
-            .Then(this.PaintMiddle());
+        return this.PaintBackground();
     }
     private PaintBackground(): Painter {
-        return Paint.Rect(
-            "brown", 0, 0, 1, SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR);
-    }
-    private PaintMiddle() {
-        return Paint.Rect(
-            "gray",
-            SZ.SETTING.LAYER_X,
-            SZ.SETTING.LAYER_Y,
-            SZ.SETTING.LAYER_W,
-            SZ.SETTING.LAYER_H)
+        return Paint.Background(IMG.BG.setting)
+            .Then(Paint.PositionedImage(this.back.bound, IMG.BTN.back));
     }
 
     Buttons(): MouseEventCatcher {
-        return Button.Noop();
+        this.back = new CloseButton<RectBound>(
+            new RectBound(
+                SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
+        return this.back;
     }
 
     soundEffect: SlidingBar;
     music: SlidingBar;
     left: CheckBox<RectBound>;
     right: CheckBox<RectBound>;
-    close: CloseButton;
+    back: CloseButton<RectBound>;
 
     private static SlidingPainter(bar: SlidingBar): Painter {
-        const b = bar.bound;
-        return Paint.Rect("red", b.Left(), b.Up(), b.Width(), b.Height())
-            .Then(Paint.Delay(() =>
-                Paint.Rect("black", bar.slider - 10, b.Up(), 20, b.Height())
-            )).Then(Paint.Delay(() =>
-                Paint.Rect("green", b.Left(), b.Up(), bar.slider - b.Left() - 10, b.Height())
-            ))
+        return Paint.Noop();
     }
     private static CheckBoxPainter(bar: CheckBox<RectBound>): Painter {
         return Paint.Noop();
     }
     private static CloseButtonPainter(): Painter {
-        return Paint.Rect("black", 0, 0, 50, 50);
+        return Paint.Noop();
     }
 }
