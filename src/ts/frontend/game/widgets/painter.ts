@@ -77,4 +77,7 @@ namespace Paint {
             ctx.fillText(text, x, y);
         })
     }
+    export function Background(img: HTMLImageElement): Painter {
+        return Picture(img, 0, 0, 1, SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR);
+    }
 }

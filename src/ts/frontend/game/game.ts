@@ -1,6 +1,7 @@
 /// <reference path="./game-control/game-status.ts" />
 /// <reference path="./game-control/layer-control.ts" />
 /// <reference path="./game-control/layer.ts" />
+/// <reference path="./layers/start-layer.ts" />
 
 class Game {
     constructor(canvas: HTMLCanvasElement) {
