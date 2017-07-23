@@ -11,6 +11,7 @@ interface Snake extends Movable {
     Head(): Vector;
     Tail(): Vector;
     Length(): number;
+    direction: Vector;
 }
 
 class Nematode implements Snake {

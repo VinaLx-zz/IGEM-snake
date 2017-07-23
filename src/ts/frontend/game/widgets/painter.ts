@@ -34,6 +34,13 @@ namespace Paint {
     export function Noop(): Painter {
         return new Painter(Func.Noop);
     }
+    export function If(
+        b: () => Boolean, ifTrue: Painter, ifFalse: Painter): Painter {
+        return Delay(() => {
+            if (b()) return ifTrue;
+            return ifFalse;
+        });
+    }
     export function Delay(d: () => Painter) {
         return new Painter((ctx, time) => d().Paint(ctx, time));
     }
@@ -79,5 +86,8 @@ namespace Paint {
     }
     export function Background(img: HTMLImageElement): Painter {
         return Picture(img, 0, 0, 1, SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR);
+    }
+    export function BackgroundColor(color: string): Painter {
+        return Rect(color, 0, 0, 1, SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR);
     }
 }

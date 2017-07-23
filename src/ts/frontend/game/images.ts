@@ -23,4 +23,10 @@ namespace IMG {
         export const how2play = image("images/help/how-to-play.png");
         export const learnBio = image("images/help/synthetic-bio.png");
     }
+    export namespace GAME {
+        export const rockerBack = image("images/game/rocker-back.png");
+        export const rockerDot = image("images/game/rocker-dot.png");
+        export const acceleration = image("images/game/acceleration.png");
+        export const setting = image("images/game/setting.png");
+    }
 }

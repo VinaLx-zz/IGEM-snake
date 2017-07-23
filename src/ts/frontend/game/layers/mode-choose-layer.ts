@@ -1,5 +1,6 @@
 /// <reference path="./abstract-layer.ts" />
 /// <reference path="../widgets/close-button.ts" />
+/// <reference path="./game-layer.ts" />
 
 class ModeChooseLayer extends AbstractLayer {
     constructor(control: LayerControl) {
@@ -19,11 +20,14 @@ class ModeChooseLayer extends AbstractLayer {
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
         const mx = SZ.MODE.MODE_X, mw = SZ.MODE.MODE_W, mh = SZ.MODE.MODE_H;
         this.easy = new ClickButton(
-            Func.Noop, new RectBound(mx, SZ.MODE.EASY_Y, mw, mh));
+            this.NewGame(Level.Easy),
+            new RectBound(mx, SZ.MODE.EASY_Y, mw, mh));
         this.normal = new ClickButton(
-            Func.Noop, new RectBound(mx, SZ.MODE.NORMAL_Y, mw, mh));
+            this.NewGame(Level.Normal),
+            new RectBound(mx, SZ.MODE.NORMAL_Y, mw, mh));
         this.hard = new ClickButton(
-            Func.Noop, new RectBound(mx, SZ.MODE.HARD_Y, mw, mh));
+            this.NewGame(Level.Hard),
+            new RectBound(mx, SZ.MODE.HARD_Y, mw, mh));
         this.tutorial = new ClickButton(
             Func.Noop, new RectBound(
                 SZ.MODE.TUTORIAL_X,
@@ -32,6 +36,12 @@ class ModeChooseLayer extends AbstractLayer {
                 SZ.MODE.TUTORIAL_H));
         return Button.Add(
             this.back, this.easy, this.hard, this.normal, this.tutorial);
+    }
+    NewGame(level: Level): () => void {
+        return () => {
+            this.control.PopLayer();
+            this.control.PushLayer(new GameLayer(level, this.control));
+        }
     }
     back: CloseButton<RectBound>
     easy: ClickButton<RectBound>

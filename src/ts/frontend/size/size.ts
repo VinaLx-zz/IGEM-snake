@@ -46,4 +46,33 @@ namespace SZ {
         export const LEARN_Y: number = 0.426;
         export const LEARN_W: number = 0.5;
     }
+
+    export namespace GAME {
+        export const SNAKE_HEAD_R: number = 0;
+        export const SNAKE_BODY_R: number = 0;
+        export const SNAKE_BODY_DIST: number = 0;
+        export const ENERGY_R: number = 0;
+        export const PROM_W: number = 0;
+        export const PROM_H: number = 0;
+        export const RBS_W: number = 0;
+        export const RBS_H: number = 0;
+        export const CDS_W: number = 0;
+        export const CDS_H: number = 0;
+        export const TERM_W: number = 0;
+        export const TERM_H: number = 0;
+
+        export const ROCKER_R: number = 0.08;
+        export const ROCKER_Y: number = 0.64;
+        export const ROCKER_DOT_R: number = 0.032;
+        export const LEFT_ROCKER_X: number = 0.1125;
+        export const RIGHT_ROCKER_X: number = 1 - LEFT_ROCKER_X;
+        export const ACCELERATION_R: number = 0.051;
+        export const ACCELERATION_Y: number = 0.65;
+        export const RIGHT_ACCELERATION_X: number = 0.90625;
+        export const LEFT_ACCELERATION_X: number = 1 - RIGHT_ACCELERATION_X;
+        export const SETTING_R: number = 0.03125;
+        export const SETTING_Y: number = 0.53125;
+        export const RIGHT_SETTING_X: number = 0.90625;
+        export const LEFT_SETTING_X: number = 1 - RIGHT_SETTING_X;
+    }
 }

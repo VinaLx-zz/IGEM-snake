@@ -59,5 +59,19 @@ declare namespace SZ {
         const CDS_H: number;
         const TERM_W: number;
         const TERM_H: number;
+
+        const ROCKER_R: number;
+        const ROCKER_Y: number;
+        const ROCKER_DOT_R: number;
+        const LEFT_ROCKER_X: number;
+        const RIGHT_ROCKER_X: number;
+        const ACCELERATION_R: number;
+        const ACCELERATION_Y: number;
+        const LEFT_ACCELERATION_X: number;
+        const RIGHT_ACCELERATION_X: number;
+        const SETTING_R: number;
+        const SETTING_Y: number;
+        const LEFT_SETTING_X: number;
+        const RIGHT_SETTING_X: number;
     }
 }
