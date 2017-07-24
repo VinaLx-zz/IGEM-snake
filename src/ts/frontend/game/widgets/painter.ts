@@ -20,6 +20,15 @@ class Painter {
             ctx.restore();
         });
     }
+    ClipRect(x: number, y: number, w: number, h: number): Painter {
+        return new Painter((ctx, time) => {
+            ctx.save();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            this.Paint(ctx, time);
+            ctx.restore();
+        })
+    }
     Scale(x: number, y: number): Painter {
         return new Painter((ctx, time) => {
             ctx.save();

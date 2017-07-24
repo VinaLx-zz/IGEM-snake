@@ -70,6 +70,13 @@ class Nematode implements Snake {
                 "black", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R, 0.00125));
     }
 
+    Accelerate(): void {
+        this.accelerating = true;
+    }
+    SlowDown(): void {
+        this.accelerating = false;
+    }
+
     private SpeedPoint(): number {
         if (this.accelerating)
             return param.SNAKE_ACCELERATED_SPEED;

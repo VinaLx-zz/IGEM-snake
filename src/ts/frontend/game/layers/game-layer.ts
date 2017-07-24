@@ -1,6 +1,7 @@
 /// <reference path="../widgets/snake.ts" />
 /// <reference path="../widgets/rocker.ts" />
 /// <reference path="../../util/bound.ts" />
+/// <reference path="../widgets/aceleration-orb.ts" />
 
 enum Level { Easy, Normal, Hard };
 
@@ -49,7 +50,7 @@ class GameLayer extends AbstractLayer {
         this.GameStop();
         this.stamp = window.setInterval(() => {
             this.TakeTurn();
-        }, 33.3333);
+        }, 1000 / param.FRAME_PER_SEC);
     }
 
     GameStop(): void {
@@ -63,10 +64,7 @@ class GameLayer extends AbstractLayer {
     }
 
     private PaintAcceleration(): Painter {
-        return Paint.Delay(() => {
-            return Paint.PositionedImage(
-                this.acceleration.bound, IMG.GAME.acceleration);
-        })
+        return this.acceleration.Painter();
     }
     private PaintSnake(): Painter {
         return Paint.Delay(() => this.snake.Paint());
@@ -98,11 +96,12 @@ class GameLayer extends AbstractLayer {
         return new ClickButton(Func.Noop, GameLayer.SettingBound(leftRocker));
     }
 
-    private InitAcceleration(): HoldButton<CircleBound> {
+    private InitAcceleration(): AccelerationOrb {
         const leftRocker = this.control.gs.leftRocker;
-        return new HoldButton(
-            Func.Noop, Func.Noop,
-            GameLayer.AccelerationBound(leftRocker));
+        return new AccelerationOrb(
+            GameLayer.AccelerationBound(leftRocker),
+            () => this.snake.Accelerate(),
+            () => this.snake.SlowDown());
     }
 
     private InitRocker(): Rocker {
@@ -131,7 +130,7 @@ class GameLayer extends AbstractLayer {
             Bound.Add(this.acceleration.bound, this.setting.bound));
     }
 
-    acceleration: HoldButton<CircleBound>
+    acceleration: AccelerationOrb;
     setting: ClickButton<CircleBound>
     rocker: Rocker;
     snake: Nematode;
