@@ -7,7 +7,18 @@ enum Level { Easy, Normal, Hard };
 class GameLayer extends AbstractLayer {
     constructor(level: Level, control: LayerControl) {
         super(control, {})
+        this.board = new CircularRectBound(0, 0, 1, 0.75);
+        this.InitSnake();
+        this.GameStart();
     }
+
+    private InitSnake(): void {
+        this.snake = new Nematode(0.5, 0.375);
+        for (let i = 0; i < 10; ++i) {
+            this.snake.Grow(this.board);
+        }
+    }
+
     Painter(): Painter {
         return this.PaintBackground()
             .Then(this.PaintFoods())
@@ -19,7 +30,7 @@ class GameLayer extends AbstractLayer {
             .Then(this.PaintSetting());
     }
     private PaintBackground(): Painter {
-        return Paint.BackgroundColor("yellow");
+        return Paint.BackgroundColor("white");
     }
     private PaintRocker(): Painter {
         return Paint.Delay(() => {
@@ -34,6 +45,23 @@ class GameLayer extends AbstractLayer {
         });
     }
 
+    GameStart() {
+        this.GameStop();
+        this.stamp = window.setInterval(() => {
+            this.TakeTurn();
+        }, 33.3333);
+    }
+
+    GameStop(): void {
+        if (this.stamp) {
+            window.clearInterval(this.stamp);
+            this.stamp = null;
+        }
+    }
+    private TakeTurn(): void {
+        this.snake.Move(this.board);
+    }
+
     private PaintAcceleration(): Painter {
         return Paint.Delay(() => {
             return Paint.PositionedImage(
@@ -41,7 +69,7 @@ class GameLayer extends AbstractLayer {
         })
     }
     private PaintSnake(): Painter {
-        return Paint.Noop();
+        return Paint.Delay(() => this.snake.Paint());
     }
     private PaintFoods(): Painter {
         return Paint.Noop();
@@ -62,7 +90,6 @@ class GameLayer extends AbstractLayer {
         this.setting = this.InitSetting();
         this.acceleration = this.InitAcceleration();
         this.rocker = this.InitRocker();
-        console.log(this.rocker.dot);
         return Button.Add(this.setting, this.acceleration, this.rocker);
     }
 
@@ -83,8 +110,9 @@ class GameLayer extends AbstractLayer {
         const x = leftRocker ? SZ.GAME.LEFT_ROCKER_X : SZ.GAME.RIGHT_ROCKER_X;
         const y = SZ.GAME.ROCKER_Y;
         return new Rocker(
-            new Vector(x, y),  this.RockerBound(),
-            new CircleBound(x, y, SZ.GAME.ROCKER_R), this.snake);
+            new Vector(x, y), this.RockerBound(),
+            new CircleBound(x, y, SZ.GAME.ROCKER_R),
+            dir => this.snake.direction = dir);
     }
     private static SettingBound(leftRocker: Boolean): CircleBound {
         const x = leftRocker ? SZ.GAME.RIGHT_SETTING_X : SZ.GAME.LEFT_SETTING_X;
@@ -107,4 +135,6 @@ class GameLayer extends AbstractLayer {
     setting: ClickButton<CircleBound>
     rocker: Rocker;
     snake: Nematode;
+    board: CircularRectBound;
+    stamp: number | null;
 }

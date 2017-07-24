@@ -32,7 +32,7 @@ class Nematode implements Snake {
         let p = param.POINTS_BETWEEN_BODY;
         const d = this.direction.Neg();
         for (let i = 0; i < param.POINTS_BETWEEN_BODY; ++i)
-            this.body.unshift(b.Adjust(
+            this.body.push(b.Adjust(
                 this.Tail().TowardDirection(d, param.DIST_BETWEEN_POINTS)));
     }
     Shrink(): void {
@@ -51,8 +51,23 @@ class Nematode implements Snake {
         return 1 + (this.body.length - 1) / param.POINTS_BETWEEN_BODY;
     }
     Paint(): Painter {
-        // TODO
-        return Paint.Noop();
+        let res = Paint.Noop();
+        for (let i = this.body.length - 1; i > 0;
+            i -= param.POINTS_BETWEEN_BODY) {
+            const p = this.body.get(i);
+            res = res.Then(Nematode.PaintBody(p));
+        }
+        return res.Then(Nematode.PaintHead(this.body.peekFront()));
+    }
+    private static PaintBody(v: Vector): Painter {
+        return Paint.Circle("green", v.X, v.Y, SZ.GAME.SNAKE_BODY_R)
+            .Then(Paint.CircleStroke(
+                "black", v.X, v.Y, SZ.GAME.SNAKE_BODY_R, 0.00125));
+    }
+    private static PaintHead(v: Vector): Painter {
+        return Paint.Circle("yellow", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R)
+            .Then(Paint.CircleStroke(
+                "black", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R, 0.00125));
     }
 
     private SpeedPoint(): number {

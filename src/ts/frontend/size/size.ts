@@ -48,9 +48,9 @@ namespace SZ {
     }
 
     export namespace GAME {
-        export const SNAKE_HEAD_R: number = 0;
-        export const SNAKE_BODY_R: number = 0;
-        export const SNAKE_BODY_DIST: number = 0;
+        export const SNAKE_HEAD_R: number = 0.02125;
+        export const SNAKE_BODY_R: number = SNAKE_HEAD_R;
+        export const SNAKE_BODY_DIST: number = 0.03125;
         export const ENERGY_R: number = 0;
         export const PROM_W: number = 0;
         export const PROM_H: number = 0;

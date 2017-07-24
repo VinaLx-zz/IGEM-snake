@@ -18,14 +18,14 @@ abstract class DirectionControl extends HoldButton<Bound> {
 class Rocker extends DirectionControl {
     constructor(
         center: Vector, b: Bound, circle: CircleBound,
-        snake: Snake) {
+        onChange: (dir: Vector) => void) {
         super(center, b);
         this.dot = this.center;
         this.circle = circle;
-        this.snake = snake;
+        this.change = onChange;
     }
     DirectionChange(direction: Vector, pos: Vector) {
-        // this.snake.direction = direction;
+        this.change(direction);
         this.dot = this.circle.Adjust(pos);
     }
     ResetDirection(): void {
@@ -33,5 +33,5 @@ class Rocker extends DirectionControl {
     }
     dot: Vector;
     circle: CircleBound;
-    snake: Snake;
+    change: (dir: Vector) => void;
 }

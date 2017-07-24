@@ -70,6 +70,21 @@ namespace Paint {
     export function Circle(color: string, x: number, y: number, r: number) {
         return ArcFill(color, x, y, r, 0, 2 * Math.PI);
     }
+    export function ArcStroke(
+        color: string, x: number, y: number,
+        r: number, beg: number, end: number, lineWidth: number = 1): Painter {
+        return new Painter(ctx => {
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, r, beg, end);
+            ctx.stroke();
+        });
+    }
+    export function CircleStroke(
+        color: string, x: number, y: number, r: number, lineWidth: number = 1) {
+        return ArcStroke(color, x, y, r, 0, 2 * Math.PI, lineWidth);
+    }
     export function PositionedImage(
         a: Positioned & Sized, img: HTMLImageElement) {
         return Picture(img, a.X(), a.Y(), a.Width(), a.Height());
