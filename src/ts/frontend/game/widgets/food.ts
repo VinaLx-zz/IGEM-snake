@@ -44,7 +44,7 @@ class Energy extends AbstractFood<CircleBound> {
     }
     Eat(): void {
         this.progressBar.increase(
-            param.ENERGY_TIME_GAIN / param.TIME_PER_UNIT);
+            param.ENERGY_TIME_GAIN / param.LIFE_TIME_PER_UNIT);
     }
     progressBar: ProgressBar;
 }
