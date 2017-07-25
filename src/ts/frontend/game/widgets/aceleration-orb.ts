@@ -1,5 +1,6 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="./progress-bar.ts" />
+/// <reference path="../game-control/time-interval-control.ts" />
 
 class AccelerationOrb extends HoldButton<CircleBound> {
     constructor(
@@ -10,7 +11,7 @@ class AccelerationOrb extends HoldButton<CircleBound> {
         });
         this.pb.progress = 100;
         this.decreasing = new TimeIntervalControl(
-            () => this.Decrement(), param.FRAME_PER_SEC);
+            () => this.Decrement(), 1000 / param.FRAME_PER_SEC);
         this.slowDownCallback = slowDown;
         this.accelerateCallback = accelerate;
     }

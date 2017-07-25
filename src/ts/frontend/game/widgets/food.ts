@@ -1,17 +1,18 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../parameters.ts" />
+/// <reference path="../images.ts" />
 
 namespace food {
     export enum Color {
-        RED,   // acceleration
-        GREEN, // vision
-        YELLOW // score
+        RED    = 0, // acceleration
+        GREEN  = 1, // vision
+        YELLOW = 2  // score
     }
     export enum Part {
-        PROM, // the angled arrow
-        RBS,  // the semi-circle
-        CDS,  // the polygon
-        TERM  // the T shaped
+        PROM = 0,  // the angled arrow
+        RBS  = 1,  // the semi-circle
+        CDS  = 2,  // the polygon
+        TERM = 3   // the T shaped
     }
     export function GenerateSequence(color: Color): Part[] {
         return [Part.PROM, Part.RBS, Part.CDS, Part.TERM];
@@ -23,8 +24,8 @@ interface Food {
     Reachable(pos: Vector): Boolean;
 }
 
-abstract class AbstractFood<B extends Bound> {
-    constructor(bound: B) {
+abstract class AbstractFood {
+    constructor(bound: PositionedBound) {
         this.bound = bound;
     }
 
@@ -33,10 +34,10 @@ abstract class AbstractFood<B extends Bound> {
     Reachable(pos: Vector): Boolean {
         return this.bound.Contains(pos);
     }
-    bound: B;
+    bound: PositionedBound;
 }
 
-class Energy extends AbstractFood<CircleBound> {
+class Energy extends AbstractFood {
     constructor(
         x: number, y: number, r: number, pb: ProgressBar) {
         super(new CircleBound(x, y, r));
@@ -49,7 +50,7 @@ class Energy extends AbstractFood<CircleBound> {
     progressBar: ProgressBar;
 }
 
-class Part extends AbstractFood<RectBound> {
+class Part extends AbstractFood {
     constructor(
         x: number, y: number, w: number, h: number,
         type: food.Part, color: food.Color,

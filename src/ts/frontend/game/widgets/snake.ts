@@ -58,14 +58,7 @@ class Nematode implements Snake {
     Length(): number {
         return 1 + (this.body.length - 1) / param.POINTS_BETWEEN_BODY;
     }
-    Paint(): Painter {
-        let res = Paint.Noop();
-        let bodies = this.Bodies();
-        for (let i = bodies.length - 1; i >= 0; --i) {
-            res = res.Then(Nematode.PaintBody(bodies[i]));
-        }
-        return res.Then(Nematode.PaintHead(this.body.peekFront()));
-    }
+
     static PaintBody(v: Vector): Painter {
         return Paint.Circle("green", v.X, v.Y, SZ.GAME.SNAKE_BODY_R)
             .Then(Paint.CircleStroke(

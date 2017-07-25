@@ -10,7 +10,9 @@ interface AdjustableBound extends Bound {
     Adjust(pos: Vector): Vector;
 }
 
-class RectBound extends Rectangle implements AdjustableBound {
+interface PositionedBound extends Bound, Sized, Positioned {}
+
+class RectBound extends Rectangle implements AdjustableBound, PositionedBound {
     constructor(x: number, y: number, w: number, h: number) {
         super(x, y, w, h);
     }
@@ -38,7 +40,7 @@ class RectBound extends Rectangle implements AdjustableBound {
     }
 }
 
-class CircleBound extends Circle implements AdjustableBound {
+class CircleBound extends Circle implements AdjustableBound, PositionedBound {
     constructor(x: number, y: number, radius: number) {
         super(x, y, radius);
     }

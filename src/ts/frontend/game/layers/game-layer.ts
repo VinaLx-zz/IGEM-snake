@@ -10,6 +10,8 @@ class GameLayer extends AbstractLayer {
         super(control, {})
         this.board = new CircularRectBound(0, 0, 1, 0.75);
         this.InitSnake();
+        this.go = new TimeIntervalControl(
+            () => { this.TakeTurn(); }, 1000 / param.FRAME_PER_SEC);
         this.GameStart();
     }
 
@@ -47,18 +49,13 @@ class GameLayer extends AbstractLayer {
     }
 
     GameStart() {
-        this.GameStop();
-        this.stamp = window.setInterval(() => {
-            this.TakeTurn();
-        }, 1000 / param.FRAME_PER_SEC);
+        this.go.Start();
     }
 
     GameStop(): void {
-        if (this.stamp) {
-            window.clearInterval(this.stamp);
-            this.stamp = null;
-        }
+        this.go.Stop();
     }
+
     private TakeTurn(): void {
         this.snake.Move(this.board);
     }
@@ -87,7 +84,6 @@ class GameLayer extends AbstractLayer {
             return res.Then(
                 Nematode.PaintHead(this.Translate(this.snake.Head())));
         })
-        // return Paint.Delay(() => this.snake.Paint());
     }
     private PaintFoods(): Painter {
         return Paint.Noop();
@@ -155,5 +151,5 @@ class GameLayer extends AbstractLayer {
     rocker: Rocker;
     snake: Nematode;
     board: CircularRectBound;
-    stamp: number | null;
+    go: TimeIntervalControl;
 }
