@@ -1,5 +1,9 @@
+interface TimeIntervalCallback {
+    (time: number): void;
+}
+
 class TimeIntervalControl {
-    constructor(callback: () => void, interval: number) {
+    constructor(callback: TimeIntervalCallback, interval: number) {
         this.callback = callback;
         this.interval = interval;
     }
@@ -15,7 +19,12 @@ class TimeIntervalControl {
     IsStopped(): Boolean {
         return this.stamp === null;
     }
+    private Callback(): void {
+        this.time += this.interval;
+        this.callback(this.time);
+    }
     interval: number;
-    callback: () => void;
+    callback: TimeIntervalCallback;
+    time: number = 0;
     stamp: number | null = null;
 }

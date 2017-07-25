@@ -98,6 +98,10 @@ namespace Paint {
         a: Positioned & Sized, img: HTMLImageElement) {
         return Picture(img, a.X(), a.Y(), a.Width(), a.Height());
     }
+    export function RepositionedImage(
+        pos: Vector, a: Sized, img: HTMLImageElement) {
+        return Picture(img, pos.X, pos.Y, a.Width(), a.Height());
+    }
     export function Text(
         font: string, text: string, x: number, y: number,
         color: string = "black", baseline: string = "top") {

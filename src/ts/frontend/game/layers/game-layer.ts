@@ -2,16 +2,31 @@
 /// <reference path="../widgets/rocker.ts" />
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../widgets/aceleration-orb.ts" />
+/// <reference path="../widgets/food.ts" />
 
 enum Level { Easy, Normal, Hard };
 
+interface FoodGenerator {
+    (time: number, layer: GameLayer): Food;
+}
+
+namespace game {
+    function DummyGenerator(): Food {
+        return new Energy(0, 0, 0, new ProgressBar());
+    }
+    export function NewGameByLevel(
+        l: Level, control: LayerControl): GameLayer {
+        return new GameLayer(DummyGenerator, control);
+    }
+}
+
 class GameLayer extends AbstractLayer {
-    constructor(level: Level, control: LayerControl) {
+    constructor(foodgen: FoodGenerator, control: LayerControl) {
         super(control, {})
         this.board = new CircularRectBound(0, 0, 1, 0.75);
         this.InitSnake();
         this.go = new TimeIntervalControl(
-            () => { this.TakeTurn(); }, 1000 / param.FRAME_PER_SEC);
+            t => { this.TakeTurn(t); }, 1000 / param.FRAME_PER_SEC);
         this.GameStart();
     }
 
@@ -41,22 +56,15 @@ class GameLayer extends AbstractLayer {
                 this.rocker.circle, IMG.GAME.rockerBack)
                 .Then(Paint.PositionedImage(
                     new Circle(
-                        this.rocker.dot.X,
-                        this.rocker.dot.Y,
+                        this.rocker.dot.X, this.rocker.dot.Y,
                         SZ.GAME.ROCKER_DOT_R),
                     IMG.GAME.rockerDot));
         });
     }
+    GameStart(): void { this.go.Start(); }
+    GameStop(): void { this.go.Stop(); }
 
-    GameStart() {
-        this.go.Start();
-    }
-
-    GameStop(): void {
-        this.go.Stop();
-    }
-
-    private TakeTurn(): void {
+    private TakeTurn(time: number): void {
         this.snake.Move(this.board);
     }
 
