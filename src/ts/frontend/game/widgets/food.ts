@@ -19,25 +19,26 @@ namespace food {
     }
 }
 
-interface Food {
-    Eat(): void;
-    Reachable(pos: Vector): Boolean;
-}
-
-abstract class AbstractFood {
+abstract class Food implements Positioned, Sized {
     constructor(bound: PositionedBound) {
         this.bound = bound;
     }
 
     abstract Eat(): void;
+    protected abstract Image(): HTMLImageElement;
 
     Reachable(pos: Vector): Boolean {
         return this.bound.Contains(pos);
     }
+    Width(): number { return this.bound.Width(); }
+    Height(): number { return this.bound.Height(); }
+    X(): number { return this.bound.X(); }
+    Y(): number { return this.bound.Y(); }
+
     bound: PositionedBound;
 }
 
-class Energy extends AbstractFood {
+class Energy extends Food {
     constructor(
         x: number, y: number, r: number, pb: ProgressBar) {
         super(new CircleBound(x, y, r));
@@ -47,10 +48,22 @@ class Energy extends AbstractFood {
         this.progressBar.increase(
             param.ENERGY_TIME_GAIN / param.LIFE_TIME_PER_UNIT);
     }
+    Image(): HTMLImageElement {
+        return IMG.FOOD.energy;
+    }
     progressBar: ProgressBar;
 }
 
-class Part extends AbstractFood {
+/**
+ * first dim is color
+ * second is type(part)
+ */
+const foodTable: HTMLImageElement[][] = [
+    [IMG.FOOD.prom_r, IMG.FOOD.rbs_r, IMG.FOOD.cds_r, IMG.FOOD.term_r],
+    [IMG.FOOD.prom_g, IMG.FOOD.rbs_g, IMG.FOOD.cds_g, IMG.FOOD.term_g],
+    [IMG.FOOD.prom_y, IMG.FOOD.rbs_y, IMG.FOOD.cds_y, IMG.FOOD.term_y]];
+
+class Part extends Food {
     constructor(
         x: number, y: number, w: number, h: number,
         type: food.Part, color: food.Color,
@@ -62,6 +75,9 @@ class Part extends AbstractFood {
     }
     Eat(): void {
         this.machine.Consume(this.type, this.color);
+    }
+    Image(): HTMLImageElement {
+        return foodTable[this.color][this.type];
     }
     type: food.Part;
     color: food.Color;

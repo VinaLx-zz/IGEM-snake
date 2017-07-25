@@ -29,4 +29,19 @@ namespace IMG {
         export const acceleration = image("images/game/acceleration.png");
         export const setting = image("images/game/setting.png");
     }
+    export namespace FOOD {
+        export const prom_r = image("images/food/prom-r.png");
+        export const rbs_r = image("images/food/rbs-r.png");
+        export const cds_r = image("images/food/cds-r.png");
+        export const term_r = image("images/food/term-r.png");
+        export const prom_g = image("images/food/prom-g.png");
+        export const rbs_g = image("images/food/rbs-g.png");
+        export const cds_g = image("images/food/cds-g.png");
+        export const term_g = image("images/food/term-g.png");
+        export const prom_y = image("images/food/prom-y.png");
+        export const rbs_y = image("images/food/rbs-y.png");
+        export const cds_y = image("images/food/cds-y.png");
+        export const term_y = image("images/food/term-y.png");
+        export const energy = image("images/food/energy.png");
+    }
 }
