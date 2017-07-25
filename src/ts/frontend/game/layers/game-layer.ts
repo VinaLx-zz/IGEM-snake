@@ -63,11 +63,31 @@ class GameLayer extends AbstractLayer {
         this.snake.Move(this.board);
     }
 
+    /**
+     * translate v in the logical screen to real screen
+     */
+    private Translate(v: Vector): Vector {
+        const [cx, cy] = this.snake.Head().Pair();
+        const tmp = v.Alter(
+            x => x - (cx - 0.5),
+            y => y - (cy - SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR / 2));
+        return this.board.Adjust(tmp);
+    }
+
     private PaintAcceleration(): Painter {
         return this.acceleration.Painter();
     }
     private PaintSnake(): Painter {
-        return Paint.Delay(() => this.snake.Paint());
+        return Paint.Delay(() => {
+            const bodies = this.snake.Bodies();
+            let res = Paint.Noop();
+            for (let i = bodies.length - 1; i >= 0; --i) {
+                res = res.Then(Nematode.PaintBody(this.Translate(bodies[i])));
+            }
+            return res.Then(
+                Nematode.PaintHead(this.Translate(this.snake.Head())));
+        })
+        // return Paint.Delay(() => this.snake.Paint());
     }
     private PaintFoods(): Painter {
         return Paint.Noop();

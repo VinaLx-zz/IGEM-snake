@@ -44,6 +44,14 @@ class Nematode implements Snake {
     Head(): Vector {
         return this.body.peekFront();
     }
+    Bodies(): Vector[] {
+        let res = [];
+        const step = param.POINTS_BETWEEN_BODY;
+        for (let i = step; i < this.body.length; i += step) {
+            res.push(this.body.get(i));
+        }
+        return res;
+    }
     Tail(): Vector {
         return this.body.peekBack();
     }
@@ -52,19 +60,18 @@ class Nematode implements Snake {
     }
     Paint(): Painter {
         let res = Paint.Noop();
-        for (let i = this.body.length - 1; i > 0;
-            i -= param.POINTS_BETWEEN_BODY) {
-            const p = this.body.get(i);
-            res = res.Then(Nematode.PaintBody(p));
+        let bodies = this.Bodies();
+        for (let i = bodies.length - 1; i >= 0; --i) {
+            res = res.Then(Nematode.PaintBody(bodies[i]));
         }
         return res.Then(Nematode.PaintHead(this.body.peekFront()));
     }
-    private static PaintBody(v: Vector): Painter {
+    static PaintBody(v: Vector): Painter {
         return Paint.Circle("green", v.X, v.Y, SZ.GAME.SNAKE_BODY_R)
             .Then(Paint.CircleStroke(
                 "black", v.X, v.Y, SZ.GAME.SNAKE_BODY_R, 0.00125));
     }
-    private static PaintHead(v: Vector): Painter {
+    static PaintHead(v: Vector): Painter {
         return Paint.Circle("yellow", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R)
             .Then(Paint.CircleStroke(
                 "black", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R, 0.00125));
