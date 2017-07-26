@@ -45,8 +45,8 @@ class Energy extends Food {
         this.progressBar = pb;
     }
     Eat(): void {
-        this.progressBar.increase(
-            param.ENERGY_TIME_GAIN / param.LIFE_TIME_PER_UNIT);
+        //  this.progressBar.increase(
+        //  paray.ENERGY_TIME_GAIN / param.LIFE_TIME_PER_UNIT);
     }
     Image(): HTMLImageElement {
         return IMG.FOOD.energy;
