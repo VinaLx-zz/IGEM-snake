@@ -3,6 +3,7 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../widgets/aceleration-orb.ts" />
 /// <reference path="../widgets/food.ts" />
+/// <reference path="../widgets/board.ts" />
 
 enum Level { Easy, Normal, Hard };
 
@@ -26,7 +27,6 @@ class GameLayer extends AbstractLayer {
         super(control, {}, true);
         this.params = params;
         this.InitBoard();
-        this.InitSnake();
         this.Init(); // init from super
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
@@ -34,23 +34,21 @@ class GameLayer extends AbstractLayer {
     }
 
     private InitBoard(): void {
-        this.board = new CircularRectBound(
-            0, 0, this.params.BOARD_WIDTH, this.params.BOARD_HEIGHT);
-    }
-
-    private InitSnake(): void {
         this.snake = new Nematode(
             new Vector(0.5, 0.375), this.params.SNAKE_NORMAL_SPEED,
             this.params.SNAKE_ACCELERATED_SPEED);
-        for (let i = 0; i < 10; ++i) {
-            this.snake.Grow(this.board);
+        const p = this.params;
+        this.board = new Board(
+            new Vector(p.BOARD_WIDTH, p.BOARD_HEIGHT),
+            this.snake, p.INIT_VISION);
+        for (let i = 0; i < p.SNAKE_INIT_LENGTH; ++i) {
+            this.board.SnakeGrow();
         }
     }
 
     Painter(): Painter {
         return this.PaintBackground()
-            .Then(this.PaintFoods())
-            .Then(this.PaintSnake())
+            .Then(this.board.Painter())
             .Then(this.PaintRocker())
             .Then(this.PaintAcceleration())
             .Then(this.PaintProgressBars())
@@ -75,36 +73,11 @@ class GameLayer extends AbstractLayer {
     GameStop(): void { this.go.Stop(); }
 
     private TakeTurn(time: number): void {
-        this.snake.Move(this.board);
-    }
-
-    /**
-     * translate v in the logical screen to real screen
-     */
-    private Translate(v: Vector): Vector {
-        const [cx, cy] = this.snake.Head().Pair();
-        const tmp = v.Alter(
-            x => x - (cx - 0.5),
-            y => y - (cy - SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR / 2));
-        return this.board.Adjust(tmp);
+        this.board.MoveSnake();
     }
 
     private PaintAcceleration(): Painter {
         return this.acceleration.Painter();
-    }
-    private PaintSnake(): Painter {
-        return Paint.Delay(() => {
-            const bodies = this.snake.Bodies();
-            let res = Paint.Noop();
-            for (let i = bodies.length - 1; i >= 0; --i) {
-                res = res.Then(Nematode.PaintBody(this.Translate(bodies[i])));
-            }
-            return res.Then(
-                Nematode.PaintHead(this.Translate(this.snake.Head())));
-        })
-    }
-    private PaintFoods(): Painter {
-        return Paint.Noop();
     }
     private PaintProgressBars(): Painter {
         return Paint.Noop();
@@ -167,10 +140,10 @@ class GameLayer extends AbstractLayer {
     }
 
     acceleration: AccelerationOrb;
-    setting: ClickButton<CircleBound>
+    setting: ClickButton<CircleBound>;
     rocker: Rocker;
     snake: Nematode;
-    board: CircularRectBound;
+    board: Board;
     go: TimeIntervalControl;
     params: Readonly<GameParam>;
 }

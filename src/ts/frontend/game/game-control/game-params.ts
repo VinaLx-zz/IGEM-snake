@@ -7,6 +7,7 @@ class GameParam {
     // speed measured by points between body
     SNAKE_NORMAL_SPEED: number = 4;
     SNAKE_ACCELERATED_SPEED: number = 8;
+    SNAKE_INIT_LENGTH: number = 10;
 
     // time increase in second of each energy food
     ENERGY_TIME_GAIN: number = 1;
@@ -23,6 +24,8 @@ class GameParam {
     get ACCELERATE_CONSUME_PER_FRAME(): number {
         return 1 / this.ACCELERATE_TIME_PER_UNIT / param.FRAME_PER_SEC;
     }
+
+    INIT_VISION: number = 0;
 }
 
 namespace gameParam {
