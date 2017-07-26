@@ -5,7 +5,7 @@
 class AccelerationOrb extends HoldButton<CircleBound> {
     constructor(
         bound: CircleBound, timeGain: number, timePerUnit: number,
-        accelerate: () => void, slowDown: () => void) {
+        snake: Nematode) {
         super(() => this.Accelerate(), () => this.SlowDown(), bound);
         this.pb = new ProgressBar({
             whenEmpty: () => this.SlowDown()
@@ -13,8 +13,7 @@ class AccelerationOrb extends HoldButton<CircleBound> {
         this.pb.progress = 100;
         this.decreasing = new TimeIntervalControl(
             () => this.Decrement(), 1000 / param.FRAME_PER_SEC);
-        this.slowDownCallback = slowDown;
-        this.accelerateCallback = accelerate;
+        this.snake = snake;
         this.timeGain = timeGain;
         this.timePerUnit = timePerUnit;
     }
@@ -40,13 +39,13 @@ class AccelerationOrb extends HoldButton<CircleBound> {
 
     private Accelerate(): void {
         if (!this.decreasing.IsStopped() || this.pb.progress === 0) return;
-        this.accelerateCallback();
+        this.snake.Accelerate();
         this.decreasing.Start();
     }
 
     private SlowDown(): void {
         if (this.decreasing.IsStopped()) return;
-        this.slowDownCallback();
+        this.snake.SlowDown();
         this.decreasing.Stop();
     }
 
@@ -58,8 +57,7 @@ class AccelerationOrb extends HoldButton<CircleBound> {
     }
 
     pb: ProgressBar;
-    accelerateCallback: () => void;
-    slowDownCallback: () => void;
+    snake: Nematode;
     decreasing: TimeIntervalControl;
     /**
      * time gain after each increment

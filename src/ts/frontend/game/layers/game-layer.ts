@@ -109,8 +109,7 @@ class GameLayer extends AbstractLayer {
             GameLayer.AccelerationBound(leftRocker),
             this.params.ACCELERATE_TIME_GAIN,
             this.params.ACCELERATE_TIME_PER_UNIT,
-            () => this.snake.Accelerate(),
-            () => this.snake.SlowDown());
+            this.board.snake);
     }
 
     private InitRocker(): Rocker {
