@@ -13,10 +13,7 @@ class StoryLayer extends AbstractLayer {
             new RectBound(
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
         this.next = new ClickButton(
-            () => {
-                this.slide.Next();
-                this.Painter();
-            },
+            () => this.slide.Next(),
             new CircleBound(SZ.STORY.NEXT_X, SZ.STORY.BUTTON_Y, SZ.STORY.BUTTON_R));
         this.prev = new ClickButton(
             () => this.slide.Prev(),
