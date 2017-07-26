@@ -15,8 +15,13 @@ interface Snake extends Movable {
 }
 
 class Nematode implements Snake {
-    constructor(x: number, y: number) {
-        this.body = new Deque([new Vector(x, y)]);
+    constructor(
+        initPos: Vector, normalSpeed: number, accelerateSpeed: number,
+        direction: Vector = new Vector(0, -1)) {
+        this.body = new Deque([initPos]);
+        this.normalSpeed = normalSpeed;
+        this.accelerateSpeed = accelerateSpeed;
+        this.direction = direction;
     }
 
     Move(b: AdjustableBound): void {
@@ -79,8 +84,8 @@ class Nematode implements Snake {
 
     private SpeedPoint(): number {
         if (this.accelerating)
-            return param.SNAKE_ACCELERATED_SPEED;
-        return param.SNAKE_NORMAL_SPEED;
+            return this.accelerateSpeed;
+        return this.normalSpeed;
     }
 
     X(): number { return this.Head().X; }
@@ -89,5 +94,7 @@ class Nematode implements Snake {
 
     body: Deque<Vector>;
     accelerating: Boolean = false;
-    direction: Vector = new Vector(0, -1); // default upward
+    direction: Vector;
+    normalSpeed: number;
+    accelerateSpeed: number;
 }

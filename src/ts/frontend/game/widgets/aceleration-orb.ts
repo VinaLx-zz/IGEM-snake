@@ -4,7 +4,8 @@
 
 class AccelerationOrb extends HoldButton<CircleBound> {
     constructor(
-        bound: CircleBound, accelerate: () => void, slowDown: () => void) {
+        bound: CircleBound, timeGain: number, timePerUnit: number,
+        accelerate: () => void, slowDown: () => void) {
         super(() => this.Accelerate(), () => this.SlowDown(), bound);
         this.pb = new ProgressBar({
             whenEmpty: () => this.SlowDown()
@@ -14,6 +15,8 @@ class AccelerationOrb extends HoldButton<CircleBound> {
             () => this.Decrement(), 1000 / param.FRAME_PER_SEC);
         this.slowDownCallback = slowDown;
         this.accelerateCallback = accelerate;
+        this.timeGain = timeGain;
+        this.timePerUnit = timePerUnit;
     }
 
     public Reposition(x: number, y: number): void {
@@ -48,15 +51,22 @@ class AccelerationOrb extends HoldButton<CircleBound> {
     }
 
     Increment(): void {
-        this.pb.increase(
-            param.ACCELERATE_TIME_GAIN / param.ACCELERATE_TIME_PER_UNIT);
+        this.pb.increase(this.timeGain / this.timePerUnit);
     }
     Decrement(): void {
-        this.pb.decrease(param.ACCELERATE_LOSS_PER_FRAME);
+        this.pb.decrease(1 / this.timePerUnit / param.FRAME_PER_SEC);
     }
 
     pb: ProgressBar;
     accelerateCallback: () => void;
     slowDownCallback: () => void;
     decreasing: TimeIntervalControl;
+    /**
+     * time gain after each increment
+     */
+    timeGain: number;
+    /**
+     * time represented by each unit of the progress bar
+     */
+    timePerUnit: number;
 }

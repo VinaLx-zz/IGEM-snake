@@ -14,4 +14,14 @@ namespace Func {
             rhs(a);
         }
     }
+
+    /**
+     * assign routine from TS documentation
+     */
+    export function Assign<A>(a: A, props: Partial<A>): void {
+        for (const prop in props) {
+            const v = props[prop];
+            if (v) a[prop] = v;
+        }
+    }
 }

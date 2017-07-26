@@ -16,22 +16,32 @@ namespace game {
     }
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
-        return new GameLayer(DummyGenerator, control);
+        return new GameLayer(gameParam.Default(), DummyGenerator, control);
     }
 }
 
 class GameLayer extends AbstractLayer {
-    constructor(foodgen: FoodGenerator, control: LayerControl) {
-        super(control, {})
-        this.board = new CircularRectBound(0, 0, 1, 0.75);
+    constructor(
+        params: GameParam, foodgen: FoodGenerator, control: LayerControl) {
+        super(control, {}, true);
+        this.params = params;
+        this.InitBoard();
         this.InitSnake();
+        this.Init(); // init from super
         this.go = new TimeIntervalControl(
-            t => { this.TakeTurn(t); }, 1000 / param.FRAME_PER_SEC);
+            t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
         this.GameStart();
     }
 
+    private InitBoard(): void {
+        this.board = new CircularRectBound(
+            0, 0, this.params.BOARD_WIDTH, this.params.BOARD_HEIGHT);
+    }
+
     private InitSnake(): void {
-        this.snake = new Nematode(0.5, 0.375);
+        this.snake = new Nematode(
+            new Vector(0.5, 0.375), this.params.SNAKE_NORMAL_SPEED,
+            this.params.SNAKE_ACCELERATED_SPEED);
         for (let i = 0; i < 10; ++i) {
             this.snake.Grow(this.board);
         }
@@ -124,6 +134,8 @@ class GameLayer extends AbstractLayer {
         const leftRocker = this.control.gs.leftRocker;
         return new AccelerationOrb(
             GameLayer.AccelerationBound(leftRocker),
+            this.params.ACCELERATE_TIME_GAIN,
+            this.params.ACCELERATE_TIME_PER_UNIT,
             () => this.snake.Accelerate(),
             () => this.snake.SlowDown());
     }
@@ -160,4 +172,5 @@ class GameLayer extends AbstractLayer {
     snake: Nematode;
     board: CircularRectBound;
     go: TimeIntervalControl;
+    params: Readonly<GameParam>;
 }
