@@ -10,6 +10,17 @@ namespace IMG {
         export const help = image("images/help/background.png");
         export const mode = image("images/mode/background.png");
     }
+    export namespace STORY {
+        export const page = [
+            image("images/story/0.png"),
+            image("images/story/1.png"),
+            image("images/story/2.png"),
+            image("images/story/3.png"),
+            image("images/story/4.png")
+        ];
+        export const prev = image("images/story/prev.png");
+        export const next = image("images/story/next.png");
+    }
     export namespace BTN {
         export const start = image("images/start/startbutton.png");
         export const setting = image("images/start/settingbutton.png");
