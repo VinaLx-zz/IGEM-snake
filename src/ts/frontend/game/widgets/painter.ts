@@ -6,6 +6,13 @@ class Painter {
         this.Paint = f;
     }
     Paint: (ctx: CanvasRenderingContext2D, time: number) => void;
+    Pure(): Painter {
+        return new Painter((ctx, time) => {
+            ctx.save();
+            this.Paint(ctx, time);
+            ctx.restore();
+        });
+    }
     Then(p: Painter): Painter {
         return new Painter((ctx, time) => {
             this.Paint(ctx, time);
@@ -14,28 +21,28 @@ class Painter {
     }
     Translate(x: number, y: number): Painter {
         return new Painter((ctx, time) => {
-            ctx.save();
             ctx.translate(x, y);
             this.Paint(ctx, time);
-            ctx.restore();
-        });
+        }).Pure();
     }
     ClipRect(x: number, y: number, w: number, h: number): Painter {
         return new Painter((ctx, time) => {
-            ctx.save();
             ctx.rect(x, y, w, h);
             ctx.clip();
             this.Paint(ctx, time);
-            ctx.restore();
-        })
+        }).Pure();
     }
     Scale(x: number, y: number): Painter {
         return new Painter((ctx, time) => {
-            ctx.save();
             ctx.scale(x, y);
             this.Paint(ctx, time);
-            ctx.restore();
-        })
+        }).Pure();
+    }
+    Rotate(pos: Vector, deg: number): Painter {
+        return new Painter((ctx, time) => {
+            ctx.rotate(deg);
+            this.Paint(ctx, time);
+        }).Translate(pos.X, pos.Y);
     }
 }
 
@@ -58,6 +65,10 @@ namespace Paint {
         return new Painter(ctx => {
             ctx.drawImage(img, x, y, w, h);
         })
+    }
+    export function CirclePicture(
+        img: HTMLImageElement, ox: number, oy: number, r: number): Painter {
+        return Picture(img, ox - r, oy - r , 2 * r, 2 * r);
     }
     export function Rect(
         color: string, x: number, y: number, w: number, h: number) {

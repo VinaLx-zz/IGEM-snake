@@ -9,6 +9,9 @@ class GeneticCircuits extends ColorfulFoodMachine {
             [food.Color.YELLOW, () => bbb.Increment(food.Color.YELLOW)]);
     }
     Painter(): Painter {
-        return Paint.Noop();
+        return Paint.Picture(
+            IMG.GAME.geneticCircuits,
+            SZ.GAME.TARGET_X, SZ.GAME.TARGET_Y,
+            SZ.GAME.TARGET_W, SZ.GAME.TARGET_H);
     }
 }

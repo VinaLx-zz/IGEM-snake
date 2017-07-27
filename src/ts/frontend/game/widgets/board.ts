@@ -37,7 +37,7 @@ class Board {
             res = res.Then(Nematode.PaintBody(this.Translate(bodies[i])));
         }
         return res.Then(
-            Nematode.PaintHead(this.Translate(this.snake.Head())));
+            this.snake.PaintHead(this.Translate(this.snake.Head())));
     }
     AddFood(food: Food): void {
         this.foods.Push(food);

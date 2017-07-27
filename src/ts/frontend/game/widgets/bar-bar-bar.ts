@@ -12,7 +12,7 @@ class EnergyBar extends SimpleConfiguredBar {
     constructor(
         initTime: number, spu: number, timeGain: number, spb: number,
         snake: Nematode, lose: () => void) {
-        super(timeGain / spu, 1 / spu,
+        super(timeGain / spu, 1 / spu / param.FRAME_PER_SEC,
             { whenEmpty: lose, whenChange: () => this.ResizeSnake() });
         this.snake = snake;
         this.progress = initTime / spu;
@@ -23,7 +23,7 @@ class EnergyBar extends SimpleConfiguredBar {
         if (lengthShouldBe > this.snake.Length()) {
             for (; this.snake.Length() < lengthShouldBe;) this.snake.Grow();
         } else {
-            for (; this.snake.Length() > lengthShouldBe;) this.snake.Grow();
+            for (; this.snake.Length() > lengthShouldBe;) this.snake.Shrink();
         }
     }
     snake: Nematode;
@@ -61,7 +61,10 @@ class BarBarBar {
     }
 
     Painter(): Painter {
-        return Paint.Noop();
+        return Paint.Picture(
+            IMG.GAME.progressBars,
+            SZ.GAME.PROGRESS_X, SZ.GAME.PROGRESS_Y,
+            SZ.GAME.PROGRESS_W, SZ.GAME.PROGRESS_H);
     }
 
     Decrement(): void {

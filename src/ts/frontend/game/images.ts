@@ -39,6 +39,10 @@ namespace IMG {
         export const rockerDot = image("images/game/rocker-dot.png");
         export const acceleration = image("images/game/acceleration.png");
         export const setting = image("images/game/setting.png");
+        export const progressBars = image("images/game/progress-bars.png");
+        export const geneticCircuits = image("images/game/genetic-circuit.png");
+        export const snakeHead = image("images/game/brown-head.png");
+        export const snakeBody = image("images/game/brown-body.png");
     }
     export namespace FOOD {
         export const prom_r = image("images/food/prom-r.png");

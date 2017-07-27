@@ -66,14 +66,17 @@ class Nematode implements Snake {
     }
 
     static PaintBody(v: Vector): Painter {
-        return Paint.Circle("green", v.X, v.Y, SZ.GAME.SNAKE_BODY_R)
-            .Then(Paint.CircleStroke(
-                "black", v.X, v.Y, SZ.GAME.SNAKE_BODY_R, 0.00125));
+        return Paint.CirclePicture(
+            IMG.GAME.snakeBody, v.X, v.Y, SZ.GAME.SNAKE_BODY_R);
     }
-    static PaintHead(v: Vector): Painter {
-        return Paint.Circle("yellow", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R)
-            .Then(Paint.CircleStroke(
-                "black", v.X, v.Y, SZ.GAME.SNAKE_HEAD_R, 0.00125));
+    PaintHead(v: Vector): Painter {
+        let deg = Math.atan(this.direction.Y / this.direction.X);
+        if (this.direction.X >= 0) {
+            deg = deg + Math.PI;
+        }
+        return Paint.CirclePicture(
+            IMG.GAME.snakeHead, 0, 0, SZ.GAME.SNAKE_HEAD_R)
+            .Rotate(v, deg);
     }
 
     Accelerate(): void {

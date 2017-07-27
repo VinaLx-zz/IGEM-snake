@@ -13,7 +13,7 @@ class GameParam {
     ENERGY_TIME_GAIN: number = 1;
     // time in second of each unit of time progress bar represents (total 100)
     LIFE_TIME_PER_UNIT: number = 1;
-    LIFE_TIME_INIT: number = 0;
+    LIFE_TIME_INIT: number = 100;
 
     ACCELERATE_TIME_INIT: number = 0;
     ACCELERATE_TIME_GAIN: number = 1;

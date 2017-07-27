@@ -57,14 +57,8 @@ declare namespace SZ {
         const SNAKE_BODY_R: number;
         const SNAKE_BODY_DIST: number;
         const ENERGY_R: number;
-        const PROM_W: number;
-        const PROM_H: number;
-        const RBS_W: number;
-        const RBS_H: number;
-        const CDS_W: number;
-        const CDS_H: number;
-        const TERM_W: number;
-        const TERM_H: number;
+        const PART_H: number;
+        const PART_W: number;
 
         const ROCKER_R: number;
         const ROCKER_Y: number;
@@ -79,5 +73,14 @@ declare namespace SZ {
         const SETTING_Y: number;
         const LEFT_SETTING_X: number;
         const RIGHT_SETTING_X: number;
+
+        const TARGET_X: number;
+        const TARGET_Y: number;
+        const TARGET_W: number;
+        const TARGET_H: number;
+        const PROGRESS_X: number;
+        const PROGRESS_Y: number;
+        const PROGRESS_W: number;
+        const PROGRESS_H: number;
     }
 }

@@ -27,10 +27,11 @@ class GameLayer extends AbstractLayer {
         this.params = params;
         this.InitBoard();
         this.InitBars();
-        this.Init(); // init from super
+        this.buttons = this.Buttons();
+        this.InitGeneticCircuits();
+        this.painter = this.Painter();
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
-        this.InitGeneticCircuits();
         this.GameStart();
     }
     private InitGeneticCircuits() {
@@ -74,7 +75,7 @@ class GameLayer extends AbstractLayer {
         return this.board.Painter();
     }
     private PaintBackground(): Painter {
-        return Paint.BackgroundColor("white");
+        return Paint.BackgroundColor("#fffaf0");
     }
     private PaintRocker(): Painter {
         return Paint.Delay(() => {

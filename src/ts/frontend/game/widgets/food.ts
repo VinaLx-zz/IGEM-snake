@@ -19,28 +19,12 @@ namespace food {
     export function GenerateSequence(color: Color): Part[] {
         return [Part.PROM, Part.RBS, Part.CDS, Part.TERM];
     }
-    export function GetPromoter(
-        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
+    export function GetPart(
+        color: Color, part: Part, pos: Vector, machine: FoodMachine) {
         return new ColorPart(
-            pos.X, pos.Y, SZ.GAME.PROM_W, SZ.GAME.PROM_H,
-            Part.PROM, c, machine);
+            pos.X, pos.Y, SZ.GAME.PART_W, SZ.GAME.PART_H, part, color, machine);
     }
-    export function GetRBS(
-        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
-        return new ColorPart(
-            pos.X, pos.Y, SZ.GAME.RBS_W, SZ.GAME.RBS_H, Part.RBS, c, machine);
-    }
-    export function GetCDS(
-        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
-        return new ColorPart(
-            pos.X, pos.Y, SZ.GAME.CDS_W, SZ.GAME.CDS_H, Part.CDS, c, machine);
-    }
-    export function GetTerminator(
-        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
-        return new ColorPart(
-            pos.X, pos.Y, SZ.GAME.TERM_W, SZ.GAME.TERM_H,
-            Part.TERM, c, machine);
-    }
+
     export function GetEnergy(pos: Vector, pb: EnergyBar): Energy {
         return new Energy(pos.X, pos.Y, SZ.GAME.ENERGY_R, pb);
     }

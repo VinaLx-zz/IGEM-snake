@@ -57,14 +57,8 @@ namespace SZ {
         export const SNAKE_BODY_R: number = SNAKE_HEAD_R;
         export const SNAKE_BODY_DIST: number = 0.03125;
         export const ENERGY_R: number = 0;
-        export const PROM_W: number = 0;
-        export const PROM_H: number = 0;
-        export const RBS_W: number = 0;
-        export const RBS_H: number = 0;
-        export const CDS_W: number = 0;
-        export const CDS_H: number = 0;
-        export const TERM_W: number = 0;
-        export const TERM_H: number = 0;
+        export const PART_H: number = 0.01875;
+        export const PART_W: number = 0.0225;
 
         export const ROCKER_R: number = 0.08;
         export const ROCKER_Y: number = 0.64;
@@ -79,5 +73,14 @@ namespace SZ {
         export const SETTING_Y: number = 0.53125;
         export const RIGHT_SETTING_X: number = 0.90625;
         export const LEFT_SETTING_X: number = 1 - RIGHT_SETTING_X;
+
+        export const TARGET_X: number = 0.7625;
+        export const TARGET_Y: number = 0.0325;
+        export const TARGET_W: number = 0.225;
+        export const TARGET_H: number = 0.1975;
+        export const PROGRESS_X: number = 0.04875;
+        export const PROGRESS_Y: number = 0.046875;
+        export const PROGRESS_W: number = 0.1525;
+        export const PROGRESS_H: number = 0.16875;
     }
 }
