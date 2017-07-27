@@ -1,6 +1,7 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../parameters.ts" />
 /// <reference path="../images.ts" />
+/// <reference path="./progress-bar.ts" />
 /// <reference path="../../util/enum.ts" />
 
 namespace food {
@@ -41,18 +42,17 @@ abstract class Food implements Positioned, Sized {
 
 class Energy extends Food {
     constructor(
-        x: number, y: number, r: number, pb: ProgressBar) {
+        x: number, y: number, r: number, pb: EnergyBar) {
         super(new CircleBound(x, y, r));
-        this.progressBar = pb;
+        this.pb = pb;
     }
     Eat(): void {
-        //  this.progressBar.increase(
-        //  paray.ENERGY_TIME_GAIN / param.LIFE_TIME_PER_UNIT);
+        this.pb.increment();
     }
     Image(): HTMLImageElement {
         return IMG.FOOD.energy;
     }
-    progressBar: ProgressBar;
+    pb: EnergyBar;
 }
 
 /**

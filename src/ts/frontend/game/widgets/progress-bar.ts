@@ -1,4 +1,14 @@
-class ProgressBar {
+interface IProgressBar {
+    increase(n: number): void;
+    decrease(n: number): void;
+}
+
+interface ConfiguredProgressBar extends IProgressBar {
+    increment(): void;
+    decrement(): void;
+}
+
+class ProgressBar implements IProgressBar {
     constructor(...observers: ProgressBarObserver[]) {
         this.observers = observers;
     }
@@ -30,6 +40,23 @@ class ProgressBar {
     }
     observers: ProgressBarObserver[];
     progress: number = 0;
+}
+
+class SimpleConfiguredBar extends ProgressBar implements ConfiguredProgressBar {
+    constructor(
+        incRate: number, decRate: number, ...observers: ProgressBarObserver[]) {
+        super(...observers);
+        this.incRate = incRate;
+        this.decRate = decRate;
+    }
+    increment(): void {
+        this.increase(this.incRate);
+    }
+    decrement(): void {
+        this.decrease(this.decRate);
+    }
+    incRate: number;
+    decRate: number;
 }
 
 interface ProgressBarCallBack {
