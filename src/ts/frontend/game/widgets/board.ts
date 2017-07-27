@@ -5,11 +5,11 @@
 
 class Board {
     constructor(
-        size: Vector, snake: Nematode, vision: number, foods: Food[] = []) {
+        snake: Nematode, vision: number, foods: Food[] = []) {
         this.vision = vision;
         this.snake = snake;
+        this.bound = snake.bound;
         this.foods = List.FromArray(foods);
-        this.bound = new CircularRectBound(0, 0, size.X, size.Y);
     }
     Painter(): Painter {
         return Paint.Delay(() => this.PaintFoods().Then(this.PaintSnake()));
@@ -43,11 +43,11 @@ class Board {
         this.foods.Push(food);
     }
     MoveSnake(): void {
-        this.snake.Move(this.bound);
+        this.snake.Move();
         this.TryEatFood();
     }
     SnakeGrow(): void {
-        this.snake.Grow(this.bound);
+        this.snake.Grow();
     }
     SnakeShrink(): void {
         this.snake.Shrink();
@@ -56,7 +56,7 @@ class Board {
         const foods = this.foods.RemoveIf(f => f.Reachable(this.snake.Head()));
         foods.forEach(f => f.Eat());
     }
-    bound: CircularRectBound;
+    bound: AdjustableBound;
     snake: Nematode;
     foods: List<Food>;
     vision: number;

@@ -2,7 +2,7 @@
 /// <reference path="./painter.ts" />
 
 interface Movable extends Positioned {
-    Move(b: AdjustableBound): void;
+    Move(): void;
 }
 
 interface Snake extends Movable {
@@ -17,27 +17,28 @@ interface Snake extends Movable {
 class Nematode implements Snake {
     constructor(
         initPos: Vector, normalSpeed: number, accelerateSpeed: number,
-        direction: Vector = new Vector(0, -1)) {
+        bound: AdjustableBound, direction: Vector = new Vector(0, -1)) {
         this.body = new Deque([initPos]);
         this.normalSpeed = normalSpeed;
         this.accelerateSpeed = accelerateSpeed;
         this.direction = direction;
+        this.bound = bound;
     }
 
-    Move(b: AdjustableBound): void {
+    Move(): void {
         const p = this.SpeedPoint();
         for (let i = 0; i < p; ++i) {
             const newHead = this.Head().TowardDirection(
                 this.direction, param.DIST_BETWEEN_POINTS);
-            this.body.unshift(b.Adjust(newHead));
+            this.body.unshift(this.bound.Adjust(newHead));
             this.body.pop();
         }
     }
-    Grow(b: AdjustableBound): void {
+    Grow(): void {
         let p = param.POINTS_BETWEEN_BODY;
         const d = this.direction.Neg();
         for (let i = 0; i < param.POINTS_BETWEEN_BODY; ++i)
-            this.body.push(b.Adjust(
+            this.body.push(this.bound.Adjust(
                 this.Tail().TowardDirection(d, param.DIST_BETWEEN_POINTS)));
     }
     Shrink(): void {
@@ -92,6 +93,7 @@ class Nematode implements Snake {
     Y(): number { return this.Head().Y; }
     Position(): Vector { return this.Head(); }
 
+    bound: AdjustableBound;
     body: Deque<Vector>;
     accelerating: Boolean = false;
     direction: Vector;

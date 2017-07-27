@@ -13,7 +13,7 @@ interface FoodGenerator {
 
 namespace game {
     function DummyGenerator(): Food {
-        return new Energy(0, 0, 0, new ProgressBar());
+        return <Food>{};
     }
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
@@ -34,13 +34,13 @@ class GameLayer extends AbstractLayer {
     }
 
     private InitBoard(): void {
+        const p = this.params;
+        const bound = new CircularRectBound(
+            0, 0, p.BOARD_WIDTH, p.BOARD_HEIGHT);
         this.snake = new Nematode(
             new Vector(0.5, 0.375), this.params.SNAKE_NORMAL_SPEED,
-            this.params.SNAKE_ACCELERATED_SPEED);
-        const p = this.params;
-        this.board = new Board(
-            new Vector(p.BOARD_WIDTH, p.BOARD_HEIGHT),
-            this.snake, p.INIT_VISION);
+            this.params.SNAKE_ACCELERATED_SPEED, bound);
+        this.board = new Board(this.snake, p.INIT_VISION);
         for (let i = 0; i < p.SNAKE_INIT_LENGTH; ++i) {
             this.board.SnakeGrow();
         }
