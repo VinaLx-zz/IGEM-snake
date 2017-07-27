@@ -6,18 +6,43 @@
 
 namespace food {
     export enum Color {
-        RED    = 0, // acceleration
-        GREEN  = 1, // vision
+        RED = 0, // acceleration
+        GREEN = 1, // vision
         YELLOW = 2  // score
     }
     export enum Part {
         PROM = 0,  // the angled arrow
-        RBS  = 1,  // the semi-circle
-        CDS  = 2,  // the polygon
+        RBS = 1,  // the semi-circle
+        CDS = 2,  // the polygon
         TERM = 3   // the T shaped
     }
     export function GenerateSequence(color: Color): Part[] {
         return [Part.PROM, Part.RBS, Part.CDS, Part.TERM];
+    }
+    export function GetPromoter(
+        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
+        return new ColorPart(
+            pos.X, pos.Y, SZ.GAME.PROM_W, SZ.GAME.PROM_H,
+            Part.PROM, c, machine);
+    }
+    export function GetRBS(
+        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
+        return new ColorPart(
+            pos.X, pos.Y, SZ.GAME.RBS_W, SZ.GAME.RBS_H, Part.RBS, c, machine);
+    }
+    export function GetCDS(
+        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
+        return new ColorPart(
+            pos.X, pos.Y, SZ.GAME.CDS_W, SZ.GAME.CDS_H, Part.CDS, c, machine);
+    }
+    export function GetTerminator(
+        c: Color, pos: Vector, machine: FoodMachine): ColorPart {
+        return new ColorPart(
+            pos.X, pos.Y, SZ.GAME.TERM_W, SZ.GAME.TERM_H,
+            Part.TERM, c, machine);
+    }
+    export function GetEnergy(pos: Vector, pb: EnergyBar): Energy {
+        return new Energy(pos.X, pos.Y, SZ.GAME.ENERGY_R, pb);
     }
 }
 
@@ -64,7 +89,7 @@ const foodTable: HTMLImageElement[][] = [
     [IMG.FOOD.prom_g, IMG.FOOD.rbs_g, IMG.FOOD.cds_g, IMG.FOOD.term_g],
     [IMG.FOOD.prom_y, IMG.FOOD.rbs_y, IMG.FOOD.cds_y, IMG.FOOD.term_y]];
 
-class Part extends Food {
+class ColorPart extends Food {
     constructor(
         x: number, y: number, w: number, h: number,
         type: food.Part, color: food.Color,

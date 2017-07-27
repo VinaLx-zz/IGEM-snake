@@ -13,19 +13,18 @@ class GameParam {
     ENERGY_TIME_GAIN: number = 1;
     // time in second of each unit of time progress bar represents (total 100)
     LIFE_TIME_PER_UNIT: number = 1;
+    LIFE_TIME_INIT: number = 0;
 
-    get ENERGY_LOSS_PER_FRAME(): number {
-        return 1 / this.LIFE_TIME_PER_UNIT / param.FRAME_PER_SEC;
-    }
-
+    ACCELERATE_TIME_INIT: number = 0;
     ACCELERATE_TIME_GAIN: number = 1;
     ACCELERATE_TIME_PER_UNIT: number = 0.1;
 
-    get ACCELERATE_CONSUME_PER_FRAME(): number {
-        return 1 / this.ACCELERATE_TIME_PER_UNIT / param.FRAME_PER_SEC;
-    }
+    VISION_INIT: number = 0;
+    VISION_DEC_PER_FRAME: number = 0;
+    VISION_GAIN: number = 0;
 
-    INIT_VISION: number = 0;
+    TARGET_DEC_PER_FRAME: number = 0;
+    TARGET_GAIN: number = 0;
 }
 
 namespace gameParam {

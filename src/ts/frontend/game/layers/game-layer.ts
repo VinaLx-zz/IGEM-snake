@@ -4,20 +4,19 @@
 /// <reference path="../widgets/aceleration-orb.ts" />
 /// <reference path="../widgets/food.ts" />
 /// <reference path="../widgets/board.ts" />
+/// <reference path="../widgets/bar-bar-bar.ts" />
+/// <reference path="../widgets/genetic-circuit.ts" />
 
 enum Level { Easy, Normal, Hard };
 
 interface FoodGenerator {
-    (time: number, layer: GameLayer): Food;
+    (time: number, layer: GameLayer): void;
 }
 
 namespace game {
-    function DummyGenerator(): Food {
-        return <Food>{};
-    }
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
-        return new GameLayer(gameParam.Default(), DummyGenerator, control);
+        return new GameLayer(gameParam.Default(), Func.Noop, control);
     }
 }
 
@@ -27,10 +26,15 @@ class GameLayer extends AbstractLayer {
         super(control, {}, true);
         this.params = params;
         this.InitBoard();
+        this.InitBars();
         this.Init(); // init from super
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
+        this.InitGeneticCircuits();
         this.GameStart();
+    }
+    private InitGeneticCircuits() {
+        this.geneticCircuits = new GeneticCircuits(this.bbb, this.acceleration);
     }
 
     private InitBoard(): void {
@@ -40,20 +44,34 @@ class GameLayer extends AbstractLayer {
         this.snake = new Nematode(
             new Vector(0.5, 0.375), this.params.SNAKE_NORMAL_SPEED,
             this.params.SNAKE_ACCELERATED_SPEED, bound);
-        this.board = new Board(this.snake, p.INIT_VISION);
+        this.board = new Board(this.snake, p.VISION_INIT);
         for (let i = 0; i < p.SNAKE_INIT_LENGTH; ++i) {
             this.board.SnakeGrow();
         }
     }
+    private InitBars(): void {
+        const p = this.params;
+        const eb = new EnergyBar(
+            p.LIFE_TIME_INIT, p.LIFE_TIME_PER_UNIT, p.ENERGY_TIME_GAIN,
+            10, this.snake, Func.Noop);
+        const vsb = new VisionBar(
+            p.VISION_GAIN, p.VISION_DEC_PER_FRAME, this.board);
+        const vcb = new VictoryBar(
+            p.TARGET_GAIN, p.TARGET_DEC_PER_FRAME, Func.Noop);
+        this.bbb = new BarBarBar(eb, vsb, vcb);
+    }
 
     Painter(): Painter {
         return this.PaintBackground()
-            .Then(this.board.Painter())
+            .Then(this.PaintBoard())
             .Then(this.PaintRocker())
             .Then(this.PaintAcceleration())
             .Then(this.PaintProgressBars())
             .Then(this.PaintTargets())
             .Then(this.PaintSetting());
+    }
+    private PaintBoard(): Painter {
+        return this.board.Painter();
     }
     private PaintBackground(): Painter {
         return Paint.BackgroundColor("white");
@@ -74,17 +92,19 @@ class GameLayer extends AbstractLayer {
 
     private TakeTurn(time: number): void {
         this.board.MoveSnake();
+        this.bbb.Decrement();
+        this.generateFood(time, this);
     }
 
     private PaintAcceleration(): Painter {
         return this.acceleration.Painter();
     }
     private PaintProgressBars(): Painter {
-        return Paint.Noop();
+        return this.bbb.Painter();
     }
     private PaintTargets(): Painter {
-        return Paint.Noop();
-    };
+        return this.geneticCircuits.Painter();
+    }
     private PaintSetting(): Painter {
         return Paint.Delay(() => {
             return Paint.PositionedImage(this.setting.bound, IMG.GAME.setting);
@@ -127,7 +147,9 @@ class GameLayer extends AbstractLayer {
         return new CircleBound(x, y, SZ.GAME.SETTING_R);
     }
     private static AccelerationBound(leftRocker: Boolean): CircleBound {
-        const x = leftRocker ? SZ.GAME.RIGHT_ACCELERATION_X : SZ.GAME.LEFT_ACCELERATION_X;
+        const x = leftRocker ?
+            SZ.GAME.RIGHT_ACCELERATION_X :
+            SZ.GAME.LEFT_ACCELERATION_X;
         const y = SZ.GAME.ACCELERATION_Y;
         return new CircleBound(x, y, SZ.GAME.ACCELERATION_R);
     }
@@ -142,7 +164,10 @@ class GameLayer extends AbstractLayer {
     setting: ClickButton<CircleBound>;
     rocker: Rocker;
     snake: Nematode;
+    bbb: BarBarBar;
     board: Board;
+    geneticCircuits: GeneticCircuits;
+    generateFood: FoodGenerator;
     go: TimeIntervalControl;
     params: Readonly<GameParam>;
 }
