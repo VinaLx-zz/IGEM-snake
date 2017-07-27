@@ -1,6 +1,7 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../parameters.ts" />
 /// <reference path="../images.ts" />
+/// <reference path="../../util/enum.ts" />
 
 namespace food {
     export enum Color {
@@ -25,7 +26,7 @@ abstract class Food implements Positioned, Sized {
     }
 
     abstract Eat(): void;
-    protected abstract Image(): HTMLImageElement;
+    abstract Image(): HTMLImageElement;
 
     Reachable(pos: Vector): Boolean {
         return this.bound.Contains(pos);
@@ -97,7 +98,7 @@ type FoodDispatcher = {
 
 class ColorfulFoodMachine implements FoodMachine {
     constructor(...colorWithCompletes: [food.Color, TargetCompleteCallback][]) {
-        this.dispatcher = {};
+        this.dispatcher = ColorfulFoodMachine.InitDispatcher();
         for (const [color, complete] of colorWithCompletes) {
             this.dispatcher[color] =
                 new Target(complete, () => food.GenerateSequence(color));
@@ -105,6 +106,13 @@ class ColorfulFoodMachine implements FoodMachine {
     }
     Consume(type: food.Part, color: food.Color): void {
         this.dispatcher[color].Consume(type);
+    }
+    private static InitDispatcher(): FoodDispatcher {
+        let dispatcher: FoodDispatcher = {};
+        for (const v of Enum.Values(food.Color)) {
+            dispatcher[v] = new Target(Func.Noop, Func.Const([]));
+        }
+        return dispatcher;
     }
     dispatcher: FoodDispatcher;
 }

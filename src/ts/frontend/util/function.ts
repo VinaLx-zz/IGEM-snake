@@ -14,6 +14,12 @@ namespace Func {
             rhs(a);
         }
     }
+    export function Const<A>(a: A): () => A {
+        return () => a;
+    }
+    export function Identity<A>(a: A): A {
+        return a;
+    }
 
     /**
      * assign routine from TS documentation

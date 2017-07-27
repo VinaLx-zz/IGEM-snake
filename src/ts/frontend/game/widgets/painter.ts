@@ -99,7 +99,9 @@ namespace Paint {
         return Picture(img, a.X(), a.Y(), a.Width(), a.Height());
     }
     export function RepositionedImage(
-        pos: Vector, a: Sized, img: HTMLImageElement) {
+        a: Positioned & Sized,
+        f: (v: Vector) => Vector, img: HTMLImageElement) {
+        const pos = f(new Vector(a.X(), a.Y()));
         return Picture(img, pos.X, pos.Y, a.Width(), a.Height());
     }
     export function Text(

@@ -12,7 +12,7 @@ class Board {
         this.bound = new CircularRectBound(0, 0, size.X, size.Y);
     }
     Painter(): Painter {
-        return Paint.Delay(() => this.PaintFood().Then(this.PaintSnake()));
+        return Paint.Delay(() => this.PaintFoods().Then(this.PaintSnake()));
     }
     private Translate(v: Vector): Vector {
         const [cx, cy] = this.snake.Head().Pair();
@@ -21,8 +21,14 @@ class Board {
             y => y - (cy - SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR / 2));
         return this.bound.Adjust(tmp);
     }
-    private PaintFood(): Painter {
-        return Paint.Noop();
+    private PaintFoods(): Painter {
+        let p = Paint.Noop();
+        this.foods.ForEach(f => p = p.Then(this.PaintFood(f)));
+        return p;
+    }
+    private PaintFood(food: Food): Painter {
+        return Paint.RepositionedImage(
+            food, v => this.Translate(v), food.Image());
     }
     private PaintSnake(): Painter {
         const bodies = this.snake.Bodies();
