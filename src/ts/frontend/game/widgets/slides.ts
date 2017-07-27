@@ -1,4 +1,4 @@
-class StorySlides {
+class Slides {
     constructor(images: HTMLImageElement[]) {
         this.images = images;
     }

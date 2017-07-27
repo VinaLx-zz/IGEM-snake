@@ -52,6 +52,12 @@ namespace SZ {
         export const BUTTON_Y: number = 0.6;
         export const BUTTON_R: number = 0.022172949;
     }
+    export namespace BIOLOGY {
+        export const PREV_X: number = 0.22;
+        export const NEXT_X: number = 0.65;
+        export const BUTTON_Y: number = 0.2;
+        export const BUTTON_R: number = 0.022172949;
+    }
     export namespace GAME {
         export const SNAKE_HEAD_R: number = 0.02125;
         export const SNAKE_BODY_R: number = SNAKE_HEAD_R;
