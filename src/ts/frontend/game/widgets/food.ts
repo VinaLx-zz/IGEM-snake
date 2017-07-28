@@ -16,10 +16,6 @@ namespace food {
         CDS = 2,  // the polygon
         TERM = 3   // the T shaped
     }
-    export function GenerateSequence(color: Color): Part[] {
-        return [Part.PROM, Part.RBS, Part.CDS, Part.TERM,
-                Part.PROM, Part.RBS, Part.CDS, Part.TERM];
-    }
     export function GetPart(
         color: Color, part: Part, pos: Vector, machine: FoodMachine) {
         return new ColorPart(
@@ -100,20 +96,34 @@ class ColorPart extends Food {
 interface TargetCompleteCallback {
     (sequence: food.Part[]): void;
 }
-
 interface FoodMachine {
     Consume(type: food.Part, color: food.Color): void;
+}
+interface SequenceGenerator {
+    Generate(color: food.Color): food.Part[];
 }
 type FoodDispatcher = {
     [color: number]: Target;
 }
 
+class RandomPickGenerator implements SequenceGenerator {
+    constructor(sequences: food.Part[][]) {
+        this.library = sequences;
+    }
+    Generate(): food.Part[] {
+        return this.library[Math.ceil(Math.random() * this.library.length)];
+    }
+    library: food.Part[][];
+}
+
 class ColorfulFoodMachine implements FoodMachine {
-    constructor(...colorWithCompletes: [food.Color, TargetCompleteCallback][]) {
+    constructor(
+        seqGen: SequenceGenerator,
+        ...colorWithCompletes: [food.Color, TargetCompleteCallback][]) {
         this.dispatcher = ColorfulFoodMachine.InitDispatcher();
         for (const [color, complete] of colorWithCompletes) {
             this.dispatcher[color] =
-                new Target(complete, () => food.GenerateSequence(color));
+                new Target(complete, () => seqGen.Generate(color));
         }
     }
     Consume(type: food.Part, color: food.Color): void {

@@ -2,8 +2,9 @@
 /// <reference path="./bar-bar-bar.ts" />
 
 class GeneticCircuits extends ColorfulFoodMachine {
-    constructor(bbb: BarBarBar, ab: AccelerationOrb) {
+    constructor(gen: SequenceGenerator, bbb: BarBarBar, ab: AccelerationOrb) {
         super(
+            gen,
             [food.Color.GREEN, () => bbb.Increment(food.Color.GREEN)],
             [food.Color.RED, () => ab.Increment()],
             [food.Color.YELLOW, () => bbb.Increment(food.Color.YELLOW)]);

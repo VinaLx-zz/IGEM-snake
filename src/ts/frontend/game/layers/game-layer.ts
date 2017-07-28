@@ -31,27 +31,35 @@ namespace game {
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
         const gen = new LeveledGenerator(l);
-        return new GameLayer(gameParam.Default(), gen, control);
+        const seqGen = SequenceGeneratorByLevel(l);
+        return new GameLayer(gameParam.Default(), gen, seqGen, control);
+    }
+    export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
+        return {
+            Generate: Func.Const([food.Part.PROM, food.Part.CDS, food.Part.RBS, food.Part.TERM])
+        }
     }
 }
 
 class GameLayer extends AbstractLayer {
     constructor(
-        params: GameParam, foodgen: FoodGenerator, control: LayerControl) {
+        params: GameParam, foodgen: FoodGenerator,
+        seqGen: SequenceGenerator, control: LayerControl) {
         super(control, {}, true);
         this.params = params;
         this.InitBoard();
         this.InitBars();
         this.buttons = this.Buttons();
-        this.InitGeneticCircuits();
+        this.InitGeneticCircuits(seqGen);
         this.painter = this.Painter();
         this.generator = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
         this.GameStart();
     }
-    private InitGeneticCircuits() {
-        this.geneticCircuits = new GeneticCircuits(this.bbb, this.acceleration);
+    private InitGeneticCircuits(gen: SequenceGenerator) {
+        this.geneticCircuits = new GeneticCircuits(
+            gen, this.bbb, this.acceleration);
     }
 
     private InitBoard(): void {
