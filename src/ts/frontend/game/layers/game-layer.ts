@@ -6,6 +6,7 @@
 /// <reference path="../widgets/board.ts" />
 /// <reference path="../widgets/bar-bar-bar.ts" />
 /// <reference path="../widgets/genetic-circuit.ts" />
+/// <reference path="../widgets/food-library.ts" />
 
 interface FoodAdder {
     (layer: GameLayer): void;
@@ -57,10 +58,12 @@ namespace game {
             gameParam.Default(), gen, seqGen, control);
     }
     export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
-        return {
-            Generate: Func.Const(
-                [food.Part.PROM, food.Part.CDS, food.Part.RBS, food.Part.TERM])
-        }
+        const lib =
+            l == Level.Easy ? foodLibrary.StrsToPartLib(foodLibrary.easy) :
+                l == Level.Normal ?
+                    foodLibrary.StrsToPartLib(foodLibrary.normal) :
+                    foodLibrary.StrsToPartLib(foodLibrary.hard);
+        return new RandomPickGenerator(lib);
     }
 }
 
