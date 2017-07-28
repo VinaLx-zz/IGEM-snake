@@ -65,18 +65,18 @@ class Nematode implements Snake {
         return 1 + (this.body.length - 1) / param.POINTS_BETWEEN_BODY;
     }
 
-    static PaintBody(v: Vector): Painter {
-        return Paint.CirclePicture(
-            IMG.GAME.snakeBody, v.X, v.Y, SZ.GAME.SNAKE_BODY_R);
+    PaintBody(v: Vector): Painter {
+        const img = this.bright ? IMG.GAME.lightBody : IMG.GAME.brownBody;
+        return Paint.CirclePicture(img, v.X, v.Y, SZ.GAME.SNAKE_BODY_R);
     }
     PaintHead(v: Vector): Painter {
+        const img = this.bright ? IMG.GAME.lightHead : IMG.GAME.brownHead;
         let deg = Math.atan(this.direction.Y / this.direction.X);
         if (this.direction.X >= 0) {
             deg = deg + Math.PI;
         }
         return Paint.CirclePicture(
-            IMG.GAME.snakeHead, 0, 0, SZ.GAME.SNAKE_HEAD_R)
-            .Rotate(v, deg);
+            img, 0, 0, SZ.GAME.SNAKE_HEAD_R).Rotate(v, deg);
     }
 
     Accelerate(): void {
@@ -94,8 +94,9 @@ class Nematode implements Snake {
 
     bound: AdjustableBound;
     body: Deque<Vector>;
-    accelerating: Boolean = false;
     direction: Vector;
     normalSpeed: number;
     accelerateSpeed: number;
+    accelerating: Boolean = false;
+    bright: Boolean = false;
 }

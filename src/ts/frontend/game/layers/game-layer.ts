@@ -7,23 +7,44 @@
 /// <reference path="../widgets/bar-bar-bar.ts" />
 /// <reference path="../widgets/genetic-circuit.ts" />
 
-enum Level { Easy, Normal, Hard };
+interface FoodAdder {
+    (layer: GameLayer): void;
+}
+
+namespace Adder {
+    export const None = Func.Noop;
+    export function Energy(pos: Vector): FoodAdder {
+        return layer =>
+            layer.board.AddFood(food.GetEnergy(pos, layer.bbb.energy));
+    }
+    export function Part(
+        color: food.Color, type: food.Part, pos: Vector): FoodAdder {
+        return layer =>
+            layer.board.AddFood(
+                food.GetPart(color, type, pos, layer.geneticCircuits));
+    }
+}
 
 interface FoodGenerator {
-    Generate(time: number, layer: GameLayer): void;
+    Generate(time: number, layer: GameLayer): FoodAdder;
 }
+
+enum Level { Easy, Normal, Hard };
 
 class LeveledGenerator implements FoodGenerator {
     constructor(level: Level) {
-
+        this.level = level;
     }
-    Generate(time: number, layer: GameLayer): void {
+    Generate(time: number, layer: GameLayer): FoodAdder {
+        // TODO
         const tag = Math.floor(time / 10000);
         if (tag != this.prevTag) {
-            layer.board.AddFood(food.GetEnergy(V.Both(0), layer.bbb.energy));
             this.prevTag = tag;
+            return Adder.Energy(V.Both(0));
         }
+        return Adder.None;
     }
+    level: Level;
     prevTag: number = 0;
 }
 
@@ -32,11 +53,13 @@ namespace game {
         l: Level, control: LayerControl): GameLayer {
         const gen = new LeveledGenerator(l);
         const seqGen = SequenceGeneratorByLevel(l);
-        return new GameLayer(gameParam.Default(), gen, seqGen, control);
+        return new GameLayer(
+            gameParam.Default(), gen, seqGen, control);
     }
     export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
         return {
-            Generate: Func.Const([food.Part.PROM, food.Part.CDS, food.Part.RBS, food.Part.TERM])
+            Generate: Func.Const(
+                [food.Part.PROM, food.Part.CDS, food.Part.RBS, food.Part.TERM])
         }
     }
 }
@@ -82,7 +105,7 @@ class GameLayer extends AbstractLayer {
         const vsb = new VisionBar(
             p.VISION_GAIN, p.VISION_DEC_PER_FRAME, this.board);
         const vcb = new VictoryBar(
-            p.TARGET_GAIN, p.TARGET_DEC_PER_FRAME, Func.Noop);
+            p.TARGET_GAIN, p.TARGET_DEC_PER_FRAME, this.snake, Func.Noop);
         this.bbb = new BarBarBar(eb, vsb, vcb);
     }
 
@@ -118,7 +141,7 @@ class GameLayer extends AbstractLayer {
     private TakeTurn(time: number): void {
         this.board.MoveSnake();
         this.bbb.Decrement();
-        this.generator.Generate(time, this);
+        this.generator.Generate(time, this)(this);
     }
 
     private PaintAcceleration(): Painter {

@@ -34,7 +34,7 @@ class Board {
         const bodies = this.snake.Bodies();
         let res = Paint.Noop();
         for (let i = bodies.length - 1; i >= 0; --i) {
-            res = res.Then(Nematode.PaintBody(this.Translate(bodies[i])));
+            res = res.Then(this.snake.PaintBody(this.Translate(bodies[i])));
         }
         return res.Then(
             this.snake.PaintHead(this.Translate(this.snake.Head())));

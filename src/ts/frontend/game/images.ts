@@ -56,8 +56,10 @@ namespace IMG {
         export const setting = image("images/game/setting.png");
         export const progressBars = image("images/game/progress-bars.png");
         export const geneticCircuits = image("images/game/genetic-circuit.png");
-        export const snakeHead = image("images/game/brown-head.png");
-        export const snakeBody = image("images/game/brown-body.png");
+        export const brownHead = image("images/game/brown-head.png");
+        export const brownBody = image("images/game/brown-body.png");
+        export const lightHead = image("images/game/light-head.png");
+        export const lightBody = image("images/game/light-body.png");
     }
     export namespace FOOD {
         export const prom_r = image("images/food/prom-r.png");

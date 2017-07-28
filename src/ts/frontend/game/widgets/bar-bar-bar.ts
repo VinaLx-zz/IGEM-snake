@@ -35,24 +35,28 @@ class VisionBar extends SimpleConfiguredBar {
     constructor(incRate: number, decRate: number, board: Board) {
         super(incRate, decRate, {
             whenChange: (now, change) => {
-                this.AdjustBrightness();
                 this.board.vision = now;
             }
         });
         this.board = board;
-    }
-    AdjustBrightness(): void {
-        // TODO
     }
     board: Board;
 }
 
 class VictoryBar extends SimpleConfiguredBar {
     constructor(
-        incRate: number, decRate: number, win: () => void) {
-        super(incRate, decRate, { whenFull: win });
-        this.progress = 100;
+        incRate: number, decRate: number, snake: Nematode, win: () => void) {
+        super(incRate, decRate, {
+            whenFull: win,
+            whenChange: () => this.AdjustBrightness()
+        });
+        this.progress = 0;
+        this.snake = snake;
     }
+    AdjustBrightness(): void {
+        this.snake.bright = this.progress >= 90;
+    }
+    snake: Nematode;
 }
 
 class BarBarBar {
