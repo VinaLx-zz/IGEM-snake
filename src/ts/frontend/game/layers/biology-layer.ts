@@ -2,10 +2,10 @@
 /// <reference path="../widgets/close-button.ts" />
 /// <reference path="../widgets/slides.ts" />
 
-class StoryLayer extends AbstractLayer {
+class BiologyLayer extends AbstractLayer {
     constructor(control: LayerControl) {
         super(control, {}, true);
-        this.slide = new Slides(IMG.STORY.page);
+        this.slide = new Slides(IMG.BIOLOGY.page);
         this.Init(); // Init from super
     }
     Buttons(): MouseEventCatcher {
@@ -14,10 +14,10 @@ class StoryLayer extends AbstractLayer {
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
         this.next = new ClickButton(
             () => this.slide.Next(),
-            new CircleBound(SZ.STORY.NEXT_X, SZ.STORY.BUTTON_Y, SZ.STORY.BUTTON_R));
+            new CircleBound(SZ.BIOLOGY.NEXT_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_R));
         this.prev = new ClickButton(
             () => this.slide.Prev(),
-            new CircleBound(SZ.STORY.PREV_X, SZ.STORY.BUTTON_Y, SZ.STORY.BUTTON_R));
+            new CircleBound(SZ.BIOLOGY.PREV_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_R));
         return Button.Add(this.back, this.next, this.prev);
     }
     Painter(): Painter {
@@ -28,11 +28,11 @@ class StoryLayer extends AbstractLayer {
     }
 
     PaintNextButton(): Painter {
-        return Paint.PositionedImage(this.next.bound, IMG.STORY.next);
+        return Paint.PositionedImage(this.next.bound, IMG.BIOLOGY.next);
     }
 
     PaintPrevButton(): Painter {
-        return Paint.PositionedImage(this.prev.bound, IMG.STORY.prev);
+        return Paint.PositionedImage(this.prev.bound, IMG.BIOLOGY.prev);
     }
 
     back: CloseButton<RectBound>;

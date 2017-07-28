@@ -1,11 +1,13 @@
 /// <reference path="./abstract-layer.ts" />
 /// <reference path="./story-layer.ts" />
+/// <reference path="./biology-layer.ts" />
 /// <reference path="../widgets/close-button.ts" />
 
 class HelpLayer extends AbstractLayer {
     constructor(control: LayerControl) {
         super(control, {});
         this.storyLayer = new StoryLayer(control);
+        this.biologyLayer = new BiologyLayer(control);
     }
     Buttons(): MouseEventCatcher {
         this.back = new CloseButton(
@@ -17,10 +19,13 @@ class HelpLayer extends AbstractLayer {
             new RectBound(
                 SZ.HELP.STORY_X, SZ.HELP.STORY_Y, SZ.HELP.STORY_W, th))
         this.how2play = new ClickButton(
-            Func.Noop, new RectBound(
+            // (): void => this.control.PushLayer(this.tutorialLayer),
+            Func.Noop,
+            new RectBound(
                 SZ.HELP.PLAY_X, SZ.HELP.PLAY_Y, SZ.HELP.PLAY_W, th))
         this.learn = new ClickButton(
-            Func.Noop, new RectBound(
+            (): void => this.control.PushLayer(this.biologyLayer),
+            new RectBound(
                 SZ.HELP.LEARN_X, SZ.HELP.LEARN_Y, SZ.HELP.LEARN_W, th))
         return Button.Add(this.back, this.story, this.how2play, this.learn);
     }
@@ -37,4 +42,5 @@ class HelpLayer extends AbstractLayer {
     learn: ClickButton<RectBound>;
 
     storyLayer: Layer;
+    biologyLayer: Layer;
 }
