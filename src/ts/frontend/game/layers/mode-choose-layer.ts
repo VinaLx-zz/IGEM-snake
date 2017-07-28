@@ -11,8 +11,7 @@ class ModeChooseLayer extends AbstractLayer {
             .Then(Paint.PositionedImage(this.back.bound, IMG.BTN.back))
             .Then(Paint.PositionedImage(this.easy.bound, IMG.BTN.easy))
             .Then(Paint.PositionedImage(this.normal.bound, IMG.BTN.normal))
-            .Then(Paint.PositionedImage(this.hard.bound, IMG.BTN.hard))
-            .Then(Paint.PositionedImage(this.tutorial.bound, IMG.BTN.tutorial));
+            .Then(Paint.PositionedImage(this.hard.bound, IMG.BTN.hard));
     }
     Buttons(): MouseEventCatcher {
         this.back = new CloseButton(
@@ -28,14 +27,8 @@ class ModeChooseLayer extends AbstractLayer {
         this.hard = new ClickButton(
             this.NewGame(Level.Hard),
             new RectBound(mx, SZ.MODE.HARD_Y, mw, mh));
-        this.tutorial = new ClickButton(
-            Func.Noop, new RectBound(
-                SZ.MODE.TUTORIAL_X,
-                SZ.MODE.TUTORIAL_Y,
-                SZ.MODE.TUTORIAL_W,
-                SZ.MODE.TUTORIAL_H));
         return Button.Add(
-            this.back, this.easy, this.hard, this.normal, this.tutorial);
+            this.back, this.easy, this.hard, this.normal);
     }
     NewGame(level: Level): () => void {
         return () => {
@@ -47,5 +40,4 @@ class ModeChooseLayer extends AbstractLayer {
     easy: ClickButton<RectBound>
     normal: ClickButton<RectBound>
     hard: ClickButton<RectBound>
-    tutorial: ClickButton<RectBound>
 }

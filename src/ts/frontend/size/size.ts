@@ -23,16 +23,12 @@ namespace SZ {
         export const LAYER_H: number = 0.55;
     }
     export namespace MODE {
-        export const MODE_W: number = 0.16;
-        export const MODE_H: number = 0.05;
-        export const MODE_X: number = 0.42;
-        export const EASY_Y: number = 0.26;
-        export const NORMAL_Y: number = 0.36;
-        export const HARD_Y: number = 0.46;
-        export const TUTORIAL_X: number = 0.41;
-        export const TUTORIAL_Y: number = 0.57875;
-        export const TUTORIAL_W: number = 0.1843;
-        export const TUTORIAL_H: number = 0.01625;
+        export const MODE_W: number = 0.1925;
+        export const MODE_H: number = 0.095625;
+        export const MODE_X: number = 0.5 - MODE_W / 2;
+        export const EASY_Y: number = 0.2396875;
+        export const NORMAL_Y: number = EASY_Y + 0.105;
+        export const HARD_Y: number = NORMAL_Y + 0.105;
     }
     export namespace HELP {
         export const TEXT_H: number = 0.0225;

@@ -111,7 +111,7 @@ class RandomPickGenerator implements SequenceGenerator {
         this.library = sequences;
     }
     Generate(): food.Part[] {
-        return this.library[Math.ceil(Math.random() * this.library.length)];
+        return this.library[Math.floor(Math.random() * this.library.length)];
     }
     library: food.Part[][];
 }

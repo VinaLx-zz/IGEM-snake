@@ -29,10 +29,6 @@ declare namespace SZ {
         const EASY_Y: number;
         const NORMAL_Y: number;
         const HARD_Y: number;
-        const TUTORIAL_X: number;
-        const TUTORIAL_Y: number;
-        const TUTORIAL_W: number;
-        const TUTORIAL_H: number;
     }
     namespace HELP {
         const TEXT_H: number;
