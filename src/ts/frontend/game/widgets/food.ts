@@ -17,7 +17,8 @@ namespace food {
         TERM = 3   // the T shaped
     }
     export function GenerateSequence(color: Color): Part[] {
-        return [Part.PROM, Part.RBS, Part.CDS, Part.TERM];
+        return [Part.PROM, Part.RBS, Part.CDS, Part.TERM,
+                Part.PROM, Part.RBS, Part.CDS, Part.TERM];
     }
     export function GetPart(
         color: Color, part: Part, pos: Vector, machine: FoodMachine) {

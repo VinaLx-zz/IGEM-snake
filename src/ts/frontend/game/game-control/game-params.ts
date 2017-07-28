@@ -19,7 +19,7 @@ class GameParam {
     ACCELERATE_TIME_GAIN: number = 1;
     ACCELERATE_TIME_PER_UNIT: number = 0.1;
 
-    VISION_INIT: number = 0;
+    VISION_INIT: number = 100;
     VISION_DEC_PER_FRAME: number = 0;
     VISION_GAIN: number = 0;
 

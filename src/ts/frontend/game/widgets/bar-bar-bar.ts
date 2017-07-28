@@ -37,7 +37,8 @@ class VisionBar extends SimpleConfiguredBar {
             whenChange: (now, change) => {
                 this.AdjustBrightness();
                 this.board.vision = now;
-            }});
+            }
+        });
         this.board = board;
     }
     AdjustBrightness(): void {
@@ -50,6 +51,7 @@ class VictoryBar extends SimpleConfiguredBar {
     constructor(
         incRate: number, decRate: number, win: () => void) {
         super(incRate, decRate, { whenFull: win });
+        this.progress = 100;
     }
 }
 
@@ -61,11 +63,34 @@ class BarBarBar {
     }
 
     Painter(): Painter {
+        const y = SZ.GAME.PROGRESS_INNER_ORIGIN_Y;
         return Paint.Picture(
             IMG.GAME.progressBars,
             SZ.GAME.PROGRESS_X, SZ.GAME.PROGRESS_Y,
-            SZ.GAME.PROGRESS_W, SZ.GAME.PROGRESS_H);
+            SZ.GAME.PROGRESS_W, SZ.GAME.PROGRESS_H)
+            .Then(Paint.Delay(() =>
+                BarBarBar.PaintProgress(
+                    "#E9CA33", SZ.GAME.YELLOW_X, y, this.victory.progress)
+                    .Then(BarBarBar.PaintProgress(
+                        "#0E874E", SZ.GAME.GREEN_X, y, this.vision.progress)
+                    .Then(BarBarBar.PaintProgress(
+                        "#1F80AA", SZ.GAME.BLUE_X, y, this.energy.progress)))));
     }
+
+    private static PaintProgress(
+        color: string, rx: number, ry: number, progress: number): Painter {
+        const r = SZ.GAME.PROGRESS_INNER_W / 2;
+        const ox = rx + SZ.GAME.PROGRESS_X, oy = ry + SZ.GAME.PROGRESS_Y;
+        const x = ox - r, y = oy - SZ.GAME.PROGRESS_INNER_H;
+        const totalHeight = SZ.GAME.PROGRESS_INNER_H + r;
+        const resHeight = totalHeight * progress / 100;
+        return Paint.ArcFill(color, ox, oy, r, 0, Math.PI)
+            .Then(Paint.Rect(
+                color, x, y,
+                SZ.GAME.PROGRESS_INNER_W, SZ.GAME.PROGRESS_INNER_H))
+            .ClipRect(x, y + totalHeight - resHeight, 2 * r, resHeight);
+    }
+
 
     Decrement(): void {
         this.energy.decrement();

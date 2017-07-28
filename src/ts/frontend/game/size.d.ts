@@ -82,5 +82,21 @@ declare namespace SZ {
         const PROGRESS_Y: number;
         const PROGRESS_W: number;
         const PROGRESS_H: number;
+        const PROGRESS_INNER_W: number;
+        const PROGRESS_INNER_H: number;
+        // x, y is the coordinate of origin at the bottom of the tubes
+        // relative to the whole progress image
+        const PROGRESS_INNER_ORIGIN_Y: number;
+        const GREEN_X: number;
+        const YELLOW_X: number;
+        const BLUE_X: number;
+
+        const TARGET_CAND_W: number;
+        const TARGET_CAND_H: number;
+        const TARGET_BEG_X: number;
+        const YELLOW_BEG_Y: number;
+        const GREEN_BEG_Y: number;
+        const RED_BEG_Y: number;
+        const TARGET_CAND_OFFSET: number;
     }
 }

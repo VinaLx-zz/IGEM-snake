@@ -30,6 +30,7 @@ class GameLayer extends AbstractLayer {
         this.buttons = this.Buttons();
         this.InitGeneticCircuits();
         this.painter = this.Painter();
+        this.generateFood = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
         this.GameStart();

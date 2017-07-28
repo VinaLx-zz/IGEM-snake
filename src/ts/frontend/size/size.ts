@@ -82,5 +82,22 @@ namespace SZ {
         export const PROGRESS_Y: number = 0.046875;
         export const PROGRESS_W: number = 0.1525;
         export const PROGRESS_H: number = 0.16875;
+
+        export const PROGRESS_INNER_W: number = 0.02;
+        export const PROGRESS_INNER_H: number = 0.12;
+        // x, y is the coordinate of origin at the bottom of the tubes
+        // relative to the whole progress image
+        export const PROGRESS_INNER_ORIGIN_Y: number = 0.133125;
+        export const YELLOW_X: number = 0.016875;
+        export const GREEN_X: number = 0.07125;
+        export const BLUE_X: number = 0.125625;
+
+        export const TARGET_CAND_W: number = PART_W;
+        export const TARGET_CAND_H: number = PART_H;
+        export const TARGET_BEG_X: number = 0.0625;
+        export const YELLOW_BEG_Y: number = 0.0709375;
+        export const GREEN_BEG_Y: number = 0.1103125;
+        export const RED_BEG_Y: number = 0.1496875;
+        export const TARGET_CAND_OFFSET: number = 0.00625 + TARGET_CAND_W;
     }
 }
