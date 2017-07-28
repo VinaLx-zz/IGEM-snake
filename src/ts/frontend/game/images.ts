@@ -21,6 +21,21 @@ namespace IMG {
         export const prev = image("images/story/prev.png");
         export const next = image("images/story/next.png");
     }
+    export namespace BIOLOGY {
+        export const page = [
+            image("images/biology/0.png"),
+            image("images/biology/1.png"),
+            image("images/biology/2.png"),
+            image("images/biology/3.png"),
+            image("images/biology/4.png"),
+            image("images/biology/5.png"),
+            image("images/biology/6.png"),
+            image("images/biology/7.png"),
+            image("images/biology/8.png")
+        ];
+        export const prev = image("images/biology/prev.png");
+        export const next = image("images/biology/next.png");
+    }
     export namespace BTN {
         export const start = image("images/start/startbutton.png");
         export const setting = image("images/start/settingbutton.png");
