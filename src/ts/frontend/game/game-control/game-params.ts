@@ -10,7 +10,7 @@ class GameParam {
     SNAKE_INIT_LENGTH: number = 10;
 
     // time increase in second of each energy food
-    ENERGY_TIME_GAIN: number = 1;
+    ENERGY_TIME_GAIN: number = 10;
     // time in second of each unit of time progress bar represents (total 100)
     LIFE_TIME_PER_UNIT: number = 1;
     LIFE_TIME_INIT: number = 100;

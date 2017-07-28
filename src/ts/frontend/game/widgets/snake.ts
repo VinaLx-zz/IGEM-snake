@@ -1,7 +1,7 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="./painter.ts" />
 
-interface Movable extends Positioned {
+interface Movable {
     Move(): void;
 }
 
@@ -91,10 +91,6 @@ class Nematode implements Snake {
             return this.accelerateSpeed;
         return this.normalSpeed;
     }
-
-    X(): number { return this.Head().X; }
-    Y(): number { return this.Head().Y; }
-    Position(): Vector { return this.Head(); }
 
     bound: AdjustableBound;
     body: Deque<Vector>;

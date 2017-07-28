@@ -56,7 +56,7 @@ namespace SZ {
         export const SNAKE_HEAD_R: number = 0.02125;
         export const SNAKE_BODY_R: number = SNAKE_HEAD_R;
         export const SNAKE_BODY_DIST: number = 0.03125;
-        export const ENERGY_R: number = 0;
+        export const ENERGY_R: number = 0.009375;
         export const PART_H: number = 0.01875;
         export const PART_W: number = 0.0225;
 

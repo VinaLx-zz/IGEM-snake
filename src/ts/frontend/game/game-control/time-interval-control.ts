@@ -9,7 +9,7 @@ class TimeIntervalControl {
     }
     Start(): void {
         if (this.stamp !== null) return;
-        this.stamp = window.setInterval(this.callback, this.interval);
+        this.stamp = window.setInterval(() => this.Callback(), this.interval);
     }
     Stop(): void {
         if (this.stamp === null) return;

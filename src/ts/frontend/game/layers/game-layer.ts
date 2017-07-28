@@ -10,13 +10,28 @@
 enum Level { Easy, Normal, Hard };
 
 interface FoodGenerator {
-    (time: number, layer: GameLayer): void;
+    Generate(time: number, layer: GameLayer): void;
+}
+
+class LeveledGenerator implements FoodGenerator {
+    constructor(level: Level) {
+
+    }
+    Generate(time: number, layer: GameLayer): void {
+        const tag = Math.floor(time / 10000);
+        if (tag != this.prevTag) {
+            layer.board.AddFood(food.GetEnergy(V.Both(0), layer.bbb.energy));
+            this.prevTag = tag;
+        }
+    }
+    prevTag: number = 0;
 }
 
 namespace game {
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
-        return new GameLayer(gameParam.Default(), Func.Noop, control);
+        const gen = new LeveledGenerator(l);
+        return new GameLayer(gameParam.Default(), gen, control);
     }
 }
 
@@ -30,7 +45,7 @@ class GameLayer extends AbstractLayer {
         this.buttons = this.Buttons();
         this.InitGeneticCircuits();
         this.painter = this.Painter();
-        this.generateFood = foodgen;
+        this.generator = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
         this.GameStart();
@@ -95,7 +110,7 @@ class GameLayer extends AbstractLayer {
     private TakeTurn(time: number): void {
         this.board.MoveSnake();
         this.bbb.Decrement();
-        this.generateFood(time, this);
+        this.generator.Generate(time, this);
     }
 
     private PaintAcceleration(): Painter {
@@ -169,7 +184,7 @@ class GameLayer extends AbstractLayer {
     bbb: BarBarBar;
     board: Board;
     geneticCircuits: GeneticCircuits;
-    generateFood: FoodGenerator;
+    generator: FoodGenerator;
     go: TimeIntervalControl;
     params: Readonly<GameParam>;
 }

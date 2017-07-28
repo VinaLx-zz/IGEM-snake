@@ -13,6 +13,10 @@ class Rectangle implements RectangleLike {
     Width(): number { return this.maxX - this.minX; }
     Height(): number { return this.maxY - this.minY; }
     Position(): Vector { return this.topLeft; }
+    Center(): Vector {
+        return new Vector(
+            (this.minX + this.maxX) / 2, (this.minY + this.maxY) / 2)
+        }
 
     get minX(): number {
         return this.topLeft.X;
@@ -48,6 +52,7 @@ class Circle implements CircleLike {
     Origin(): Vector {
         return this.origin;
     }
+    Center(): Vector { return this.Origin(); }
     R(): number {
         return this.radius;
     }
