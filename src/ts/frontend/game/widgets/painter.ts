@@ -27,6 +27,7 @@ class Painter {
     }
     ClipRect(x: number, y: number, w: number, h: number): Painter {
         return new Painter((ctx, time) => {
+            ctx.beginPath();
             ctx.rect(x, y, w, h);
             ctx.clip();
             this.Paint(ctx, time);

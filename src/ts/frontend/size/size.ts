@@ -1,6 +1,7 @@
 namespace SZ {
     export const WIDTH_FACTOR: number = 4;
     export const HEIGHT_FACTOR: number = 3;
+    export const RELATIVE_HEIGHT: number = HEIGHT_FACTOR / WIDTH_FACTOR;
 
     export const BACK_X: number = 0.90;
     export const BACK_Y: number = 0.71;

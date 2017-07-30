@@ -1,6 +1,7 @@
 declare namespace SZ {
     const WIDTH_FACTOR: number;
     const HEIGHT_FACTOR: number;
+    const RELATIVE_HEIGHT: number;
 
     const BACK_X: number;
     const BACK_Y: number;

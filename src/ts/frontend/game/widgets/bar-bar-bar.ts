@@ -35,7 +35,7 @@ class VisionBar extends SimpleConfiguredBar {
     constructor(incRate: number, decRate: number, board: Board) {
         super(incRate, decRate, {
             whenChange: (now, change) => {
-                this.board.vision = now;
+                this.board.visionBonus = now / 100;
             }
         });
         this.board = board;

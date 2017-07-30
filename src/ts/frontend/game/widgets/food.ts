@@ -36,7 +36,7 @@ abstract class Food implements Positioned, Sized {
     abstract Image(): HTMLImageElement;
 
     Reachable(pos: Vector): Boolean {
-        return V.Distance(pos, this.bound.Center()) < SZ.GAME.SNAKE_HEAD_R;
+        return V.Distance(pos, this.bound.Center()) < SZ.GAME.SNAKE_HEAD_R * 1.1;
     }
     Width(): number { return this.bound.Width(); }
     Height(): number { return this.bound.Height(); }
