@@ -49,13 +49,29 @@ class LeveledGenerator implements FoodGenerator {
     prevTag: number = 0;
 }
 
+class TestGenerator implements FoodGenerator {
+    Generate(time: number, layer: GameLayer): FoodAdder {
+        const tag = Math.floor(time / 5000);
+        if (tag == this.prevTag)
+            return Adder.None;
+        this.prevTag = tag;
+        const x = Math.random();
+        const y = Math.random() * SZ.RELATIVE_HEIGHT;
+        const c = Math.floor(Math.random() * 3);
+        const d = Math.floor(Math.random() * 4);
+        return Adder.Part(c, d, new Vector(x, y))
+    }
+    prevTag: number = -1;
+    t: food.Part = food.Part.PROM;
+}
+
 namespace game {
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
         const gen = new LeveledGenerator(l);
         const seqGen = SequenceGeneratorByLevel(l);
         return new GameLayer(
-            gameParam.Default(), gen, seqGen, control);
+            gameParam.Default(), new TestGenerator(), seqGen, control);
     }
     export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
         const lib =
