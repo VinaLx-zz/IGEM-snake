@@ -1,6 +1,7 @@
+/// <reference path="../../util/bound.ts" />
+/// <reference path="../../util/random.ts" />
 /// <reference path="../widgets/snake.ts" />
 /// <reference path="../widgets/rocker.ts" />
-/// <reference path="../../util/bound.ts" />
 /// <reference path="../widgets/aceleration-orb.ts" />
 /// <reference path="../widgets/food.ts" />
 /// <reference path="../widgets/board.ts" />
@@ -29,27 +30,70 @@ namespace Adder {
     }
 }
 
+enum Level { Easy, Normal, Hard };
+
 interface FoodGenerator {
     Generate(time: number, layer: GameLayer): FoodAdder;
 }
 
-enum Level { Easy, Normal, Hard };
-
-class LeveledGenerator implements FoodGenerator {
-    constructor(level: Level) {
-        this.level = level;
+abstract class IntervalGenerator implements FoodGenerator {
+    constructor(interval: number) {
+        this.interval = interval;
     }
     Generate(time: number, layer: GameLayer): FoodAdder {
-        // TODO
-        const tag = Math.floor(time / 10000);
-        if (tag != this.prevTag) {
-            this.prevTag = tag;
-            return Adder.Energy(V.Both(0));
-        }
-        return Adder.None;
+        const tag = Math.floor(time / this.interval);
+        if (tag === this.prevTag) return Adder.None;
+        this.prevTag = tag;
+        return this.GenerateImpl(time, layer);
     }
-    level: Level;
-    prevTag: number = 0;
+    abstract GenerateImpl(time: number, layer: GameLayer): FoodAdder;
+    interval: number;
+    prevTag: number = -1;
+
+}
+
+class LeveledGenerator extends IntervalGenerator {
+    constructor(level: Level) {
+        super(3000);
+        this.partGen = Random.Nat(4);
+        this.colorGen = Random.Nat(3);
+    }
+    GenerateImpl(time: number, layer: GameLayer): FoodAdder {
+        const max_food = 50;
+        if (this.count >= max_food) {
+            return Adder.None;
+        }
+        return this.GetRandomGen(layer).gen();
+    }
+    private GetRandomGen(layer: GameLayer): RandGen<FoodAdder> {
+        const posGen = Random.Map2(
+            Random.NonNeg(layer.params.BOARD_WIDTH),
+            Random.NonNeg(layer.params.BOARD_HEIGHT),
+            (a, b) => new Vector(a, b));
+        const nextGen = this.NextGen(posGen, layer.geneticCircuits);
+        const restGen = this.PartGen(posGen);
+        const energyGen = this.EnergyGen(posGen);
+        return Random.WeightedGen(
+            [nextGen, 0.3], [restGen, 0.3], [energyGen, 0.4]);
+    }
+    private EnergyGen(posGen: RandGen<Vector>): RandGen<FoodAdder> {
+        return posGen.Map(v => Adder.Energy(v, () => --this.count));
+    }
+    private NextGen(
+        posGen: RandGen<Vector>, circuit: GeneticCircuits): RandGen<FoodAdder> {
+        return posGen.Bind(v =>
+            this.colorGen.Map(c =>
+                Adder.Part(c, circuit.Next(c), v, () => --this.count)));
+    }
+    private PartGen(posGen: RandGen<Vector>): RandGen<FoodAdder> {
+        return posGen.Bind(v =>
+            this.partGen.Bind(p =>
+                this.colorGen.Map(c =>
+                    Adder.Part(c, p, v, () => --this.count))));
+    }
+    partGen: RandGen<number>;
+    colorGen: RandGen<number>;
+    count: number = 0;
 }
 
 class TestGenerator implements FoodGenerator {
@@ -79,7 +123,7 @@ namespace game {
         const gen = new LeveledGenerator(l);
         const seqGen = SequenceGeneratorByLevel(l);
         return new GameLayer(
-            gameParam.Default(), new TestGenerator(), seqGen, control);
+            gameParam.Default(), gen, seqGen, control);
     }
     export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
         const lib =
