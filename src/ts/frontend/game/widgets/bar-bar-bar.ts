@@ -103,10 +103,10 @@ class BarBarBar {
     }
     Increment(c: food.Color | null) {
         switch (c) {
-            case food.Color.GREEN:
+            case food.Color.YELLOW:
                 this.victory.increment();
                 break;
-            case food.Color.YELLOW:
+            case food.Color.GREEN:
                 this.vision.increment();
                 break;
             case null:

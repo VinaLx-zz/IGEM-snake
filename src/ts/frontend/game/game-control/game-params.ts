@@ -19,12 +19,12 @@ class GameParam {
     ACCELERATE_TIME_GAIN: number = 1;
     ACCELERATE_TIME_PER_UNIT: number = 0.1;
 
-    VISION_INIT: number = 0.3;
-    VISION_DEC_PER_FRAME: number = 0;
-    VISION_GAIN: number = 0;
+    BASIC_VISION: number = 0.3;
+    VISION_DEC_PER_FRAME: number = 0.1;
+    VISION_GAIN: number = 20;
 
-    TARGET_DEC_PER_FRAME: number = 0;
-    TARGET_GAIN: number = 0;
+    TARGET_DEC_PER_FRAME: number = 0.03;
+    TARGET_GAIN: number = 30;
 }
 
 namespace gameParam {

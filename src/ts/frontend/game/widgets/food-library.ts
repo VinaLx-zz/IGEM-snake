@@ -4,14 +4,9 @@ namespace foodLibrary {
     export const easy = [
         "PCRTT",
         "PCRRT",
-        "PCRTT",
-        "PCRTPCRT",
-        "PCRTPCRT",
-        "PCRTPCRT",
         "PCRTPCRT",
         "PCRRTPCRT",
         "PCRTPCRCRCRT",
-        "PCRTPCRCRCRT"
     ];
     export const normal = [
         "PCRRT",
@@ -40,12 +35,10 @@ namespace foodLibrary {
         "PCRTPCRCRT",
         "PCRCRTPCRT",
         "PCRTPCRTPCRRT",
-        "PCRTPCRTPCRRT",
         "PCRTPCRRTPCRT",
         "PCRTPCRTRPCRT",
         "PCRTPCRTPCRRT",
         "PCRCRPCRPCRPCRPCR",
-        "PCRCRPCRPCRPCRPCR"
     ]
     function ChrToPart(c: string): food.Part {
         switch (c) {

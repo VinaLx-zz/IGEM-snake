@@ -14,15 +14,18 @@ interface FoodAdder {
 
 namespace Adder {
     export const None = Func.Noop;
-    export function Energy(pos: Vector): FoodAdder {
-        return layer =>
-            layer.board.AddFood(food.GetEnergy(pos, layer.bbb.energy));
-    }
-    export function Part(
-        color: food.Color, type: food.Part, pos: Vector): FoodAdder {
+    export function Energy(
+        pos: Vector, callback: () => void = Func.Noop): FoodAdder {
         return layer =>
             layer.board.AddFood(
-                food.GetPart(color, type, pos, layer.geneticCircuits));
+                food.GetEnergy(pos, layer.bbb.energy, callback));
+    }
+    export function Part(
+        color: food.Color, type: food.Part, pos: Vector,
+        callback: () => void = Func.Noop): FoodAdder {
+        return layer =>
+            layer.board.AddFood(
+                food.GetPart(color, type, pos, layer.geneticCircuits, callback));
     }
 }
 
@@ -52,17 +55,22 @@ class LeveledGenerator implements FoodGenerator {
 class TestGenerator implements FoodGenerator {
     Generate(time: number, layer: GameLayer): FoodAdder {
         const tag = Math.floor(time / 5000);
-        if (tag == this.prevTag)
+        if (tag == this.prevTag || this.count >= 100)
             return Adder.None;
         this.prevTag = tag;
         const x = Math.random();
         const y = Math.random() * SZ.RELATIVE_HEIGHT;
         const c = Math.floor(Math.random() * 3);
         const d = Math.floor(Math.random() * 4);
-        return Adder.Part(c, d, new Vector(x, y))
+        ++this.count;
+        // console.log(`food spawn, count: ${this.count}`);
+        return Adder.Part(c, d, new Vector(x, y), () => {
+            --this.count;
+            // console.log(`food eaten, count: ${this.count}`);
+        });
     }
     prevTag: number = -1;
-    t: food.Part = food.Part.PROM;
+    count: number = 0;
 }
 
 namespace game {
@@ -111,7 +119,7 @@ class GameLayer extends AbstractLayer {
         this.snake = new Nematode(
             new Vector(0.5, 0.375), this.params.SNAKE_NORMAL_SPEED,
             this.params.SNAKE_ACCELERATED_SPEED, bound);
-        this.board = new Board(this.snake, p.VISION_INIT);
+        this.board = new Board(this.snake, p.BASIC_VISION);
         for (let i = 0; i < p.SNAKE_INIT_LENGTH; ++i) {
             this.board.SnakeGrow();
         }

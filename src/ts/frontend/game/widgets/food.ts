@@ -17,22 +17,30 @@ namespace food {
         TERM = 3   // the T shaped
     }
     export function GetPart(
-        color: Color, part: Part, pos: Vector, machine: FoodMachine) {
+        color: Color, part: Part, pos: Vector,
+        machine: FoodMachine, callback: () => void) {
         return new ColorPart(
-            pos.X, pos.Y, SZ.GAME.PART_W, SZ.GAME.PART_H, part, color, machine);
+            pos.X, pos.Y, SZ.GAME.PART_W, SZ.GAME.PART_H, part, color,
+            machine, callback);
     }
 
-    export function GetEnergy(pos: Vector, pb: EnergyBar): Energy {
-        return new Energy(pos.X, pos.Y, SZ.GAME.ENERGY_R, pb);
+    export function GetEnergy(
+        pos: Vector, pb: EnergyBar, callback: () => void): Energy {
+        return new Energy(pos.X, pos.Y, SZ.GAME.ENERGY_R, pb, callback);
     }
 }
 
 abstract class Food implements Positioned, Sized {
-    constructor(bound: PositionedBound) {
+    constructor(bound: PositionedBound, callback: () => void) {
         this.bound = bound;
+        this.callback = callback;
     }
 
-    abstract Eat(): void;
+    Eat(): void {
+        this.callback();
+        this.RegularEat();
+    }
+    abstract RegularEat(): void;
     abstract Image(): HTMLImageElement;
 
     Reachable(pos: Vector): Boolean {
@@ -46,15 +54,17 @@ abstract class Food implements Positioned, Sized {
     Position(): Vector { return this.bound.Position(); }
 
     bound: PositionedBound;
+    callback: () => void;
 }
 
 class Energy extends Food {
     constructor(
-        x: number, y: number, r: number, pb: EnergyBar) {
-        super(new CircleBound(x, y, r));
+        x: number, y: number, r: number, pb: EnergyBar,
+        callback: () => void = Func.Noop) {
+        super(new CircleBound(x, y, r), callback);
         this.pb = pb;
     }
-    Eat(): void {
+    RegularEat(): void {
         this.pb.increment();
     }
     Image(): HTMLImageElement {
@@ -76,13 +86,13 @@ class ColorPart extends Food {
     constructor(
         x: number, y: number, w: number, h: number,
         type: food.Part, color: food.Color,
-        machine: FoodMachine) {
-        super(new RectBound(x, y, w, h));
+        machine: FoodMachine, callback: () => void = Func.Noop) {
+        super(new RectBound(x, y, w, h), callback);
         this.type = type;
         this.color = color;
         this.machine = machine;
     }
-    Eat(): void {
+    RegularEat(): void {
         this.machine.Consume(this.type, this.color);
     }
     Image(): HTMLImageElement {
@@ -157,6 +167,9 @@ class Target {
         } else {
             this.current = 0;
         }
+    }
+    Current(): food.Part {
+        return this.sequence[this.current];
     }
     sequence: food.Part[];
     current: number = 0;

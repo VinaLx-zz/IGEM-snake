@@ -22,6 +22,9 @@ class GeneticCircuits extends ColorfulFoodMachine {
                     .Then(this.PaintCandidates(
                         food.Color.RED, x, SZ.GAME.RED_BEG_Y)))));
     }
+    Next(color: food.Color): food.Part {
+        return this.dispatcher[color].Current();
+    }
     private PaintCandidates(
         color: food.Color, begX: number, begY: number): Painter {
         let result = Paint.Noop();
