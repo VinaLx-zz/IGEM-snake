@@ -38,9 +38,10 @@ class Game {
     }
 
     private Translate(x: number, y: number): Vector {
-        return new Vector(
+        const result = new Vector(
             (x - this.canvas.offsetLeft) / this.canvas.width,
             (y - this.canvas.offsetTop) / this.canvas.width);
+        return result;
     }
 
     // dispatch all events to layer(s)
@@ -52,30 +53,32 @@ class Game {
             this.canvas = Game.OrientCanvasSize(this.canvas);
     }
     private DispatchTouchEvent(): void {
-        const forEachTouch = (e: TouchEvent, f: (t: Touch) => void) => {
-            for (let i = 0; i < e.touches.length; ++i)  f(e.touches[i]);
+        const forEachTouch = (touches: TouchList, f: (t: Touch) => void) => {
+            for (let i = 0; i < touches.length; ++i) {
+                f(touches[i]);
+            }
         }
         this.canvas.ontouchmove = (e: TouchEvent) => {
             e.preventDefault();
-            forEachTouch(e, t =>
+            forEachTouch(e.touches, t =>
                 this.TopLayer().eventDispatcher.MouseMove(
                     this.Translate(t.clientX, t.clientY)))
         };
         this.canvas.ontouchstart = (e: TouchEvent) => {
             e.preventDefault();
-            forEachTouch(e, t =>
+            forEachTouch(e.touches, t =>
                 this.TopLayer().eventDispatcher.MouseDown(
                     this.Translate(t.clientX, t.clientY)))
         };
         this.canvas.ontouchcancel = (e: TouchEvent) => {
             e.preventDefault();
-            forEachTouch(e, t =>
+            forEachTouch(e.changedTouches, t =>
                 this.TopLayer().eventDispatcher.MouseUp(
                     this.Translate(t.clientX, t.clientY)))
         }
         this.canvas.ontouchend = (e: TouchEvent) => {
             e.preventDefault();
-            forEachTouch(e, t =>
+            forEachTouch(e.changedTouches, t =>
                 this.TopLayer().eventDispatcher.MouseUp(
                     this.Translate(t.clientX, t.clientY)))
         }
