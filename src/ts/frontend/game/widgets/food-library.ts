@@ -4,28 +4,17 @@ namespace foodLibrary {
     export const easy = [
         "PCRTT",
         "PCRRT",
-        "PCRTPCRT",
-        "PCRRTPCRT",
-        "PCRTPCRCRCRT",
+        "PCRCRT",
     ];
     export const normal = [
-        "PCRRT",
-        "PCRCRT",
+        "PCRTPCRT",
         "PPCRTPCRT",
         "PCRTPCRRT",
         "PCRRTPCRT",
         "PPCRTPCRT",
         "PCRTPCRRT",
-        "PCRTTPCRTT",
-        "PRTPRTPRRT",
-        "PCRTTPCRTT",
-        "TRCRRCRCRT",
-        "PCRTPCRTPCRRT",
-        "PCRTPCRRTPCRT",
-        "PCRTPCRTRPCRT"
     ];
     export const hard = [
-        "PCRCRT",
         "PCRTPCRCRT",
         "PCRCRTPCRT",
         "PCRTTPCRTT",
@@ -34,11 +23,6 @@ namespace foodLibrary {
         "TRCRRCRCRT",
         "PCRTPCRCRT",
         "PCRCRTPCRT",
-        "PCRTPCRTPCRRT",
-        "PCRTPCRRTPCRT",
-        "PCRTPCRTRPCRT",
-        "PCRTPCRTPCRRT",
-        "PCRCRPCRPCRPCRPCR",
     ]
     function ChrToPart(c: string): food.Part {
         switch (c) {

@@ -122,8 +122,8 @@ namespace game {
         l: Level, control: LayerControl): GameLayer {
         const gen = new LeveledGenerator(l);
         const seqGen = SequenceGeneratorByLevel(l);
-        return new GameLayer(
-            gameParam.Default(), gen, seqGen, control);
+        const params = GameParamsByLevel(l);
+        return new GameLayer(params, gen, seqGen, control);
     }
     export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
         const lib =
@@ -132,6 +132,33 @@ namespace game {
                     foodLibrary.StrsToPartLib(foodLibrary.normal) :
                     foodLibrary.StrsToPartLib(foodLibrary.hard);
         return new RandomPickGenerator(lib);
+    }
+    export function GameParamsByLevel(l: Level): GameParam {
+        let result: GameParam = <GameParam>{};
+        switch (l) {
+            case Level.Easy:
+                result = gameParam.Custom({
+                    ENERGY_TIME_GAIN: 8,
+                    TARGET_DEC_PER_FRAME: 0,
+                    TARGET_GAIN: 20
+                });
+                break;
+            case Level.Normal:
+                result = gameParam.Custom({
+                    ENERGY_TIME_GAIN: 5,
+                    TARGET_DEC_PER_FRAME: 0,
+                    TARGET_GAIN: 20
+                });
+                break;
+            case Level.Hard:
+                result = gameParam.Custom({
+                    ENERGY_TIME_GAIN: 5,
+                    TARGET_DEC_PER_FRAME: 0.001,
+                    TARGET_GAIN: 20
+                });
+                break;
+        }
+        return result;
     }
 }
 
@@ -172,11 +199,12 @@ class GameLayer extends AbstractLayer {
         const p = this.params;
         const eb = new EnergyBar(
             p.LIFE_TIME_INIT, p.LIFE_TIME_PER_UNIT, p.ENERGY_TIME_GAIN,
-            10, this.snake, Func.Noop);
+            10, this.snake, () => this.GameStop());
         const vsb = new VisionBar(
             p.VISION_GAIN, p.VISION_DEC_PER_FRAME, this.board);
         const vcb = new VictoryBar(
-            p.TARGET_GAIN, p.TARGET_DEC_PER_FRAME, this.snake, Func.Noop);
+            p.TARGET_GAIN, p.TARGET_DEC_PER_FRAME, this.snake,
+            () => this.GameStop());
         this.bbb = new BarBarBar(eb, vsb, vcb);
     }
 
