@@ -11,6 +11,8 @@ interface Snake extends Movable {
     Head(): Vector;
     Tail(): Vector;
     Length(): number;
+    Accelerate(): void;
+    SlowDown(): void;
     direction: Vector;
 }
 

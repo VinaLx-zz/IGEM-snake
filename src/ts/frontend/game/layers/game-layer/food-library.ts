@@ -1,4 +1,4 @@
-/// <reference path="./food.ts" />
+/// <reference path="../../widgets/food.ts" />
 
 namespace foodLibrary {
     export const easy = [
