@@ -49,6 +49,7 @@ class Game {
         // TODO
         this.DispatchTouchEvent();
         this.DispathMouseEvent();
+        this.DispatchKeyboardEvent();
         window.onresize = e =>
             this.canvas = Game.OrientCanvasSize(this.canvas);
     }
@@ -100,14 +101,14 @@ class Game {
         }
     }
     private DispatchKeyboardEvent(): void {
-        this.canvas.onkeydown = (e: KeyboardEvent) => {
-            this.TopLayer().eventDispatcher.KeyDown(e.keyCode);
+        window.onkeydown = (e: KeyboardEvent) => {
+            this.TopLayer().eventDispatcher.KeyDown(e.key);
         }
-        this.canvas.onkeypress = (e: KeyboardEvent) => {
-            this.TopLayer().eventDispatcher.KeyPress(e.keyCode);
+        window.onkeypress = (e: KeyboardEvent) => {
+            this.TopLayer().eventDispatcher.KeyPress(e.key);
         }
-        this.canvas.onkeyup = (e: KeyboardEvent) => {
-            this.TopLayer().eventDispatcher.KeyUp(e.keyCode);
+        window.onkeyup = (e: KeyboardEvent) => {
+            this.TopLayer().eventDispatcher.KeyUp(e.key);
         }
     }
 

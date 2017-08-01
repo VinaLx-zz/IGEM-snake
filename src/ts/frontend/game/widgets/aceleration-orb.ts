@@ -37,13 +37,13 @@ class AccelerationOrb extends HoldButton<CircleBound> {
             .ClipRect(x, newY, 2 * r, y + 2 * r - newY);
     }
 
-    private Accelerate(): void {
+    Accelerate(): void {
         if (!this.decreasing.IsStopped() || this.pb.progress === 0) return;
         this.snake.Accelerate();
         this.decreasing.Start();
     }
 
-    private SlowDown(): void {
+    SlowDown(): void {
         if (this.decreasing.IsStopped()) return;
         this.snake.SlowDown();
         this.decreasing.Stop();

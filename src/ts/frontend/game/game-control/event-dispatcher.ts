@@ -11,7 +11,7 @@ interface MouseEventDispatcher {
 }
 
 interface KeyboardEventCallback {
-    (key: number): void;
+    (key: string): void;
 }
 
 interface KeyboardEventDispatcher {

@@ -167,7 +167,10 @@ class GameLayer extends AbstractLayer {
     constructor(
         params: GameParam, foodgen: FoodGenerator,
         seqGen: SequenceGenerator, control: LayerControl) {
-        super(control, {}, true);
+        super(control, {
+            KeyDown: k => k === " " ? this.acceleration.Accelerate() : undefined,
+            KeyUp: k => k === " " ? this.acceleration.SlowDown() : undefined
+        }, true);
         this.params = params;
         this.InitBoard();
         this.InitBars();
