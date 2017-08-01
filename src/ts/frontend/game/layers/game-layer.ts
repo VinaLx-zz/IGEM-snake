@@ -8,6 +8,7 @@
 /// <reference path="../widgets/bar-bar-bar.ts" />
 /// <reference path="../widgets/genetic-circuit.ts" />
 /// <reference path="../widgets/food-library.ts" />
+/// <reference path="../game-control/game-params.ts"  />
 
 interface FoodAdder {
     (layer: GameLayer): void;
