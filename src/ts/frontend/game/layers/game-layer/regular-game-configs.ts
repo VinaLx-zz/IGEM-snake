@@ -20,47 +20,44 @@ class RegularTargetGenerator extends GameSequenceGenerator {
         return Random.OneOf(library);
     }
     seqGen: RandGen<food.Part[]>;
-
 }
 
-class EasyConfig extends DefaultConfig {
-    constructor() {
+class LeveledConfig extends DefaultConfig {
+    constructor(level: Level) {
         super();
+        this.level = level;
+    }
+    TargetGenerator(state: SnakeGameState): TargetGenerator {
+        return new RegularTargetGenerator(
+            this.level,
+            state.VictoryBar(), state.VisionBar(), state.AccelerationBar());
+    }
+    level: Level;
+}
+
+class EasyConfig extends LeveledConfig {
+    constructor() {
+        super(Level.Easy);
         this.ENERGY_TIME_GAIN = 8;
         this.TARGET_DEC_PER_FRAME = 0;
         this.TARGET_GAIN = 25;
     }
-    TargetGenerator(state: SnakeGameState): TargetGenerator {
-        return new RegularTargetGenerator(
-            Level.Easy,
-            state.VictoryBar(), state.VisionBar(), state.AccelerationBar());
-    }
 }
 
-class NormalConfig extends DefaultConfig {
+class NormalConfig extends LeveledConfig {
     constructor() {
-        super();
+        super(Level.Normal);
         this.ENERGY_TIME_GAIN = 5;
         this.TARGET_DEC_PER_FRAME = 0;
         this.TARGET_GAIN = 25;
     }
-    TargetGenerator(state: SnakeGameState): TargetGenerator {
-        return new RegularTargetGenerator(
-            Level.Normal,
-            state.VictoryBar(), state.VisionBar(), state.AccelerationBar());
-    }
 }
 
-class HardConfig extends DefaultConfig {
+class HardConfig extends LeveledConfig {
     constructor() {
-        super();
+        super(Level.Hard);
         this.ENERGY_TIME_GAIN = 4;
         this.TARGET_DEC_PER_FRAME = 0.00001;
         this.TARGET_GAIN = 20;
-    }
-    TargetGenerator(state: SnakeGameState): TargetGenerator {
-        return new RegularTargetGenerator(
-            Level.Hard,
-            state.VictoryBar(), state.VisionBar(), state.AccelerationBar());
     }
 }

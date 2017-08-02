@@ -6,6 +6,8 @@
 /// <reference path="./game-layer/game-config.ts"  />
 /// <reference path="./game-layer/level.ts" />
 /// <reference path="./game-layer/snake-game.ts" />
+/// <reference path="./game-layer/game-layer-interface.ts" />
+
 
 namespace game {
     export function NewGameByLevel(
@@ -13,7 +15,7 @@ namespace game {
         const config = GameConfigByLevel(l);
         const gen = new LeveledGenerator(
             l, config.BOARD_WIDTH, config.BOARD_HEIGHT);
-        return new GameLayer(config, gen, control);
+        return new GameLayerImpl(config, gen, control);
     }
     export function GameConfigByLevel(l: Level): GameConfig {
         switch (l) {
@@ -24,7 +26,7 @@ namespace game {
     }
 }
 
-class GameLayer extends AbstractLayer {
+class GameLayerImpl extends AbstractLayer implements GameLayer {
     constructor(
         config: GameConfig, foodgen: FoodGenerator, control: LayerControl) {
         super(control, {
@@ -32,14 +34,12 @@ class GameLayer extends AbstractLayer {
                 k === " " ? this.game.Snake().Accelerate() : undefined,
             KeyUp: k =>
                 k === " " ? this.game.Snake().SlowDown() : undefined
-        }, true);
+        });
         this.game = new SnakeGame(config);
-        this.buttons = this.Buttons();
-        this.painter = this.Painter();
         this.generator = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
-        this.GameStart();
+        this.Start();
     }
     Painter(): Painter {
         return this.PaintBackground()
@@ -61,8 +61,9 @@ class GameLayer extends AbstractLayer {
                     IMG.GAME.rockerDot));
         });
     }
-    GameStart(): void { this.go.Start(); }
-    GameStop(): void { this.go.Stop(); }
+    Start(): void { this.go.Start(); }
+    Pause(): void { this.go.Stop(); }
+    State(): SnakeGameState { return this.game; }
 
     private TakeTurn(time: number): void {
         this.game.NextState();
