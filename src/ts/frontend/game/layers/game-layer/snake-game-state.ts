@@ -18,6 +18,8 @@ interface SnakeGameState {
     NextFood(c: food.Color): food.Part | null;
     Snake(): Snake;
     NumFoodsOnBoard(): number;
+    Win(): Boolean;
+    Lose(): Boolean;
 
     // mutator
     AddEnergy(pos: Vector, onEaten: () => void): void;

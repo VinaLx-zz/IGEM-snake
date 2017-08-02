@@ -34,8 +34,9 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
                 k === " " ? this.game.Snake().Accelerate() : undefined,
             KeyUp: k =>
                 k === " " ? this.game.Snake().SlowDown() : undefined
-        });
+        }, true);
         this.game = new SnakeGame(config);
+        this.Init();
         this.generator = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
@@ -68,6 +69,10 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     private TakeTurn(time: number): void {
         this.game.NextState();
         this.generator.Generate(time, this.game)(this.game);
+        if (this.game.Win() || this.game.Lose()) {
+            // TODO
+            this.Pause();
+        }
     }
 
     private PaintAcceleration(): Painter {

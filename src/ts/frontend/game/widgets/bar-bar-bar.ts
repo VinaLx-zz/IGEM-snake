@@ -11,9 +11,9 @@ class EnergyBar extends SimpleConfiguredBar {
      */
     constructor(
         initTime: number, spu: number, timeGain: number, spb: number,
-        snake: Nematode, lose: () => void) {
+        snake: Nematode) {
         super(timeGain / spu, 1 / spu / param.FRAME_PER_SEC,
-            { whenEmpty: lose, whenChange: () => this.ResizeSnake() });
+            { whenChange: () => this.ResizeSnake() });
         this.snake = snake;
         this.progress = initTime / spu;
         this.bpu = spu / spb;
@@ -45,9 +45,8 @@ class VisionBar extends SimpleConfiguredBar {
 
 class VictoryBar extends SimpleConfiguredBar {
     constructor(
-        incRate: number, decRate: number, snake: Nematode, win: () => void) {
+        incRate: number, decRate: number, snake: Nematode) {
         super(incRate, decRate, {
-            whenFull: win,
             whenChange: () => this.AdjustBrightness()
         });
         this.progress = 0;
@@ -77,8 +76,8 @@ class BarBarBar {
                     "#E9CA33", SZ.GAME.YELLOW_X, y, this.victory.progress)
                     .Then(BarBarBar.PaintProgress(
                         "#0E874E", SZ.GAME.GREEN_X, y, this.vision.progress)
-                    .Then(BarBarBar.PaintProgress(
-                        "#1F80AA", SZ.GAME.BLUE_X, y, this.energy.progress)))));
+                        .Then(BarBarBar.PaintProgress(
+                            "#1F80AA", SZ.GAME.BLUE_X, y, this.energy.progress)))));
     }
 
     private static PaintProgress(

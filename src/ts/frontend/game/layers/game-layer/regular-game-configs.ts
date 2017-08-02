@@ -32,6 +32,12 @@ class LeveledConfig extends DefaultConfig {
             this.level,
             state.VictoryBar(), state.VisionBar(), state.AccelerationBar());
     }
+    Win(state: SnakeGameState): Boolean {
+        return state.VictoryBar().progress >= 100;
+    }
+    Lose(state: SnakeGameState): Boolean {
+        return state.EnergyBar().progress <= 0;
+    }
     level: Level;
 }
 

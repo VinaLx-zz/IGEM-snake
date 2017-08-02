@@ -11,6 +11,7 @@ class SnakeGame implements SnakeGameState {
         this.accelerationBar = SnakeGame.MakeAccelerationBar(
             this.board.snake, config);
         this.geneticCircuits = this.MakeGeneticCircuits(config);
+        this.config = config;
     }
     Painter(): Painter {
         return this.board.Painter()
@@ -46,6 +47,12 @@ class SnakeGame implements SnakeGameState {
     NumFoodsOnBoard(): number {
         return this.board.foods.Size();
     }
+    Win(): Boolean {
+        return this.config.Win(this);
+    }
+    Lose(): Boolean {
+        return this.config.Lose(this);
+    }
     AddEnergy(pos: Vector, onEaten: () => void): void {
         this.board.AddFood(food.GetEnergy(pos, this.bbb.energy, onEaten));
     }
@@ -69,12 +76,12 @@ class SnakeGame implements SnakeGameState {
         const energy = new EnergyBar(
             config.LIFE_TIME_INIT, config.LIFE_TIME_PER_UNIT,
             config.ENERGY_TIME_GAIN, config.SECONDS_PER_SNAKE_BODY,
-            board.snake, Func.Noop);
+            board.snake);
         const vision = new VisionBar(
             config.VISION_GAIN, config.VISION_DEC_PER_FRAME, board);
         const victory = new VictoryBar(
             config.TARGET_GAIN, config.TARGET_DEC_PER_FRAME,
-            board.snake, Func.Noop)
+            board.snake);
         return new BarBarBar(energy, vision, victory);
     }
     private MakeGeneticCircuits(config: GameConfig): GeneticCircuits {
@@ -89,4 +96,5 @@ class SnakeGame implements SnakeGameState {
     bbb: BarBarBar;
     accelerationBar: AccelerationBar;
     geneticCircuits: GeneticCircuits;
+    config: GameConfig;
 }

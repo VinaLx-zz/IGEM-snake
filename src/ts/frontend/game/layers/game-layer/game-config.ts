@@ -31,8 +31,8 @@ interface GameConfig {
     TARGET_GAIN: number;
 
     TargetGenerator(state: SnakeGameState): TargetGenerator;
-    Win(layer: GameLayer): void;
-    Lose(layer: GameLayer): void;
+    Win(state: SnakeGameState): Boolean;
+    Lose(state: SnakeGameState): Boolean;
 }
 
 class DefaultConfig implements GameConfig {
@@ -67,10 +67,6 @@ class DefaultConfig implements GameConfig {
     TargetGenerator(state: SnakeGameState): TargetGenerator {
         return machine.noopGenerator;
     }
-    Win(layer: GameLayer): void {
-        layer.Pause();
-    }
-    Lose(layer: GameLayer): void {
-        layer.Pause();
-    }
+    Win(state: SnakeGameState): Boolean { return false; }
+    Lose(state: SnakeGameState): Boolean { return false; }
 }
