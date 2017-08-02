@@ -35,8 +35,11 @@ namespace Random {
     export function NonNeg(upperBound: number): RandGen<number> {
         return Random.Map(n => n * upperBound);
     }
-    export function Uniform<A>(...as: A[]): RandGen<A> {
+    export function OneOf<A>(as: A[]): RandGen<A> {
         return Nat(as.length).Map(n => as[n]);
+    }
+    export function Uniform<A>(...as: A[]): RandGen<A> {
+        return OneOf(as);
     }
     export function WeightedGen<A>(...ras: [RandGen<A>, number][]): RandGen<A> {
         let sum = 0;

@@ -10,6 +10,7 @@ class SnakeGame implements SnakeGameState {
         this.bbb = SnakeGame.MakeBars(this.board, config);
         this.accelerationBar = SnakeGame.MakeAccelerationBar(
             this.board.snake, config);
+        this.geneticCircuits = this.MakeGeneticCircuits(config);
     }
     Painter(): Painter {
         return this.board.Painter()
@@ -19,7 +20,7 @@ class SnakeGame implements SnakeGameState {
     NextState(): void {
         this.board.MoveSnake();
         this.bbb.Decrement();
-        this.accelerationBar.Decrement();
+        this.accelerationBar.decrement();
     }
     Machine(): FoodMachine {
         return this.geneticCircuits;
@@ -36,7 +37,7 @@ class SnakeGame implements SnakeGameState {
     VictoryBar(): VictoryBar {
         return this.bbb.victory;
     }
-    NextFood(c: food.Color): food.Part {
+    NextFood(c: food.Color): food.Part | null {
         return this.geneticCircuits.Next(c);
     }
     Snake(): Snake {
@@ -44,6 +45,15 @@ class SnakeGame implements SnakeGameState {
     }
     NumFoodsOnBoard(): number {
         return this.board.foods.Size();
+    }
+    AddEnergy(pos: Vector, onEaten: () => void): void {
+        this.board.AddFood(food.GetEnergy(pos, this.bbb.energy, onEaten));
+    }
+    AddPart(
+        color: food.Color, type: food.Part,
+        pos: Vector, onEaten: () => void): void {
+        this.board.AddFood(
+            food.GetPart(color, type, pos, this.geneticCircuits, onEaten));
     }
     private static MakeBoard(config: GameConfig): Board {
         const bound = new CircularRectBound(
@@ -67,7 +77,8 @@ class SnakeGame implements SnakeGameState {
             board.snake, Func.Noop)
         return new BarBarBar(energy, vision, victory);
     }
-    private static MakeGeneticCircuits(config: GameConfig) {
+    private MakeGeneticCircuits(config: GameConfig): GeneticCircuits {
+        return new GeneticCircuits(config.TargetGenerator(this));
     }
     private static MakeAccelerationBar(snake: Nematode, config: GameConfig) {
         return new AccelerationBar(

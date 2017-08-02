@@ -6,8 +6,9 @@ class AccelerationBar extends SimpleConfiguredBar {
         super(timeGain / timePerUnit, 1 / timePerUnit / param.FRAME_PER_SEC, {
             whenEmpty: () => this.snake.SlowDown()
         });
+        this.snake = snake;
     }
-    Decrement(): void {
+    decrement(): void {
         if (this.snake.accelerating) {
             super.decrement();
         }

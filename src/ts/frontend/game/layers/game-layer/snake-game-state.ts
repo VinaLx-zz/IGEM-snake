@@ -15,7 +15,13 @@ interface SnakeGameState {
     VictoryBar(): VictoryBar;
 
     // inspectors
-    NextFood(c: food.Color): food.Part;
+    NextFood(c: food.Color): food.Part | null;
     Snake(): Snake;
     NumFoodsOnBoard(): number;
+
+    // mutator
+    AddEnergy(pos: Vector, onEaten: () => void): void;
+    AddPart(
+        color: food.Color, type: food.Part,
+        pos: Vector, onEaten: () => void): void;
 }

@@ -30,11 +30,10 @@ interface GameConfig {
     TARGET_DEC_PER_FRAME: number;
     TARGET_GAIN: number;
 
-    GenerateFood(time: number, state: SnakeGameState): Food | null;
-    GenerateSequence(): food.Part[];
+    TargetGenerator(state: SnakeGameState): TargetGenerator;
 }
 
-class GameParam implements GameConfig {
+class DefaultConfig implements GameConfig {
     BOARD_WIDTH: number = 1;
     BOARD_HEIGHT: number = SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR;
 
@@ -63,21 +62,7 @@ class GameParam implements GameConfig {
     TARGET_DEC_PER_FRAME: number = 0.03;
     TARGET_GAIN: number = 30;
 
-    GenerateFood(time: number, state: SnakeGameState): Food | null {
-        return null;
-    }
-    GenerateSequence(): food.Part[] {
-        return [food.Part.PROM, food.Part.CDS, food.Part.RBS, food.Part.TERM];
-    }
-}
-
-namespace gameParam {
-    export function Default(): GameParam {
-        return new GameParam();
-    }
-    export function Custom(other: Partial<GameParam>): GameParam {
-        let result = Default();
-        Func.Assign(result, other);
-        return result;
+    TargetGenerator(state: SnakeGameState): TargetGenerator {
+        return machine.noopGenerator;
     }
 }

@@ -6,14 +6,14 @@
 
 namespace food {
     export enum Color {
-        RED = 0, // acceleration
-        GREEN = 1, // vision
-        YELLOW = 2  // score
+        RED = 0,     // acceleration
+        GREEN = 1,   // vision
+        YELLOW = 2   // score
     }
     export enum Part {
         PROM = 0,  // the angled arrow
-        RBS = 1,  // the semi-circle
-        CDS = 2,  // the polygon
+        RBS = 1,   // the semi-circle
+        CDS = 2,   // the polygon
         TERM = 3   // the T shaped
     }
     export function GetPart(
@@ -82,6 +82,11 @@ const foodTable: HTMLImageElement[][] = [
     [IMG.FOOD.prom_g, IMG.FOOD.rbs_g, IMG.FOOD.cds_g, IMG.FOOD.term_g],
     [IMG.FOOD.prom_y, IMG.FOOD.rbs_y, IMG.FOOD.cds_y, IMG.FOOD.term_y]];
 
+interface FoodMachine {
+    Consume(type: food.Part, color: food.Color): void;
+    Complete(color: food.Color): void;
+}
+
 class ColorPart extends Food {
     constructor(
         x: number, y: number, w: number, h: number,
@@ -101,78 +106,4 @@ class ColorPart extends Food {
     type: food.Part;
     color: food.Color;
     machine: FoodMachine;
-}
-
-interface TargetCompleteCallback {
-    (sequence: food.Part[]): void;
-}
-interface FoodMachine {
-    Consume(type: food.Part, color: food.Color): void;
-}
-interface SequenceGenerator {
-    Generate(color: food.Color): food.Part[];
-}
-type FoodDispatcher = {
-    [color: number]: Target;
-}
-
-class RandomPickGenerator implements SequenceGenerator {
-    constructor(sequences: food.Part[][]) {
-        this.library = sequences;
-    }
-    Generate(): food.Part[] {
-        return this.library[Math.floor(Math.random() * this.library.length)];
-    }
-    library: food.Part[][];
-}
-
-class ColorfulFoodMachine implements FoodMachine {
-    constructor(
-        seqGen: SequenceGenerator,
-        ...colorWithCompletes: [food.Color, TargetCompleteCallback][]) {
-        this.dispatcher = ColorfulFoodMachine.InitDispatcher();
-        for (const [color, complete] of colorWithCompletes) {
-            this.dispatcher[color] =
-                new Target(complete, () => seqGen.Generate(color));
-        }
-    }
-    Consume(type: food.Part, color: food.Color): void {
-        this.dispatcher[color].Consume(type);
-    }
-    private static InitDispatcher(): FoodDispatcher {
-        let dispatcher: FoodDispatcher = {};
-        for (const v of Enum.Values(food.Color)) {
-            dispatcher[v] = new Target(Func.Noop, Func.Const([]));
-        }
-        return dispatcher;
-    }
-    dispatcher: FoodDispatcher;
-}
-
-class Target {
-    constructor(
-        onComplete: TargetCompleteCallback,
-        seqGenerator: () => food.Part[]) {
-        this.onComplete = onComplete;
-        this.generate = seqGenerator;
-        this.sequence = this.generate();
-    }
-    Consume(type: food.Part) {
-        if (this.sequence[this.current] == type) {
-            if (++this.current == this.sequence.length) {
-                this.onComplete(this.sequence);
-                this.sequence = this.generate();
-                this.current = 0;
-            }
-        } else {
-            this.current = 0;
-        }
-    }
-    Current(): food.Part {
-        return this.sequence[this.current];
-    }
-    sequence: food.Part[];
-    current: number = 0;
-    onComplete: TargetCompleteCallback;
-    generate: () => food.Part[];
 }

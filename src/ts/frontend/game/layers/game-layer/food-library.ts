@@ -1,28 +1,24 @@
 /// <reference path="../../widgets/food.ts" />
+/// <reference path="./level.ts" />
 
 namespace foodLibrary {
     export const easy = [
-        "PCRTT",
-        "PCRRT",
-        "PCRCRT",
+		"PRCT",
+        "PRCTT",
+        "PRCCT",
+		"PPRCT"
     ];
     export const normal = [
-        "PCRTPCRT",
-        "PPCRTPCRT",
-        "PCRTPCRRT",
-        "PCRRTPCRT",
-        "PPCRTPCRT",
-        "PCRTPCRRT",
+		"PRCRCT",
+        "PPRCTT",
+        "PCTPRCT",
+        "PRCTPRCT"
     ];
     export const hard = [
-        "PCRTPCRCRT",
-        "PCRCRTPCRT",
-        "PCRTTPCRTT",
-        "PRTPRTPRRT",
-        "PCRTTPCRTT",
-        "TRCRRCRCRT",
-        "PCRTPCRCRT",
-        "PCRCRTPCRT",
+        "PPRCTPRCT",
+        "PRCTPRCCT",
+        "PRCPRCTPCT",
+        "PRRCTPRCTT",
     ]
     function ChrToPart(c: string): food.Part {
         switch (c) {
@@ -38,5 +34,12 @@ namespace foodLibrary {
     }
     export function StrsToPartLib(ss: string[]): food.Part[][] {
         return ss.map(StrToParts);
+    }
+    export function LevelLibrary(l: Level): food.Part[][] {
+        switch (l) {
+            case Level.Easy: return StrsToPartLib(easy);
+            case Level.Normal: return StrsToPartLib(normal);
+            case Level.Hard: return StrsToPartLib(hard);
+        }
     }
 }

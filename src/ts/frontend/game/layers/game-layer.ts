@@ -1,150 +1,32 @@
 /// <reference path="../../util/bound.ts" />
 /// <reference path="../../util/random.ts" />
 /// <reference path="../widgets/rocker.ts" />
-/// <reference path="../widgets/aceleration-orb.ts" />
 /// <reference path="../widgets/food.ts" />
 /// <reference path="./game-layer/food-library.ts" />
 /// <reference path="./game-layer/game-config.ts"  />
 /// <reference path="./game-layer/level.ts" />
 /// <reference path="./game-layer/snake-game.ts" />
 
-
-interface FoodAdder {
-    (layer: GameLayer): void;
-}
-
-namespace Adder {
-    export const None = Func.Noop;
-    export function Energy(
-        pos: Vector, callback: () => void = Func.Noop): FoodAdder {
-        return layer =>
-            layer.board.AddFood(
-                food.GetEnergy(pos, layer.bbb.energy, callback));
-    }
-    export function Part(
-        color: food.Color, type: food.Part, pos: Vector,
-        callback: () => void = Func.Noop): FoodAdder {
-        return layer =>
-            layer.board.AddFood(
-                food.GetPart(
-                    color, type, pos, layer.geneticCircuits, callback));
-    }
-}
-
-
-interface FoodGenerator {
-    Generate(time: number, layer: GameLayer): FoodAdder;
-}
-
-abstract class IntervalGenerator implements FoodGenerator {
-    constructor(interval: number) {
-        this.interval = interval;
-    }
-    Generate(time: number, layer: GameLayer): FoodAdder {
-        const tag = Math.floor(time / this.interval);
-        if (tag === this.prevTag) return Adder.None;
-        this.prevTag = tag;
-        return this.GenerateImpl(time, layer);
-    }
-    abstract GenerateImpl(time: number, layer: GameLayer): FoodAdder;
-    interval: number;
-    prevTag: number = -1;
-
-}
-
-class LeveledGenerator extends IntervalGenerator {
-    constructor(level: Level) {
-        super(3000);
-        this.partGen = Random.Nat(4);
-        this.colorGen = Random.Nat(3);
-    }
-    GenerateImpl(time: number, layer: GameLayer): FoodAdder {
-        const max_food = 50;
-        if (this.count >= max_food) {
-            return Adder.None;
-        }
-        return this.GetRandomGen(layer).gen();
-    }
-    private GetRandomGen(layer: GameLayer): RandGen<FoodAdder> {
-        const posGen = Random.Map2(
-            Random.NonNeg(layer.params.BOARD_WIDTH),
-            Random.NonNeg(layer.params.BOARD_HEIGHT),
-            (a, b) => new Vector(a, b));
-        const nextGen = this.NextGen(posGen, layer.geneticCircuits);
-        const restGen = this.PartGen(posGen);
-        const energyGen = this.EnergyGen(posGen);
-        return Random.WeightedGen(
-            [nextGen, 0.3], [restGen, 0.3], [energyGen, 0.4]);
-    }
-    private EnergyGen(posGen: RandGen<Vector>): RandGen<FoodAdder> {
-        return posGen.Map(v => Adder.Energy(v, () => --this.count));
-    }
-    private NextGen(
-        posGen: RandGen<Vector>, circuit: GeneticCircuits): RandGen<FoodAdder> {
-        return posGen.Bind(v =>
-            this.colorGen.Map(c =>
-                Adder.Part(c, circuit.Next(c), v, () => --this.count)));
-    }
-    private PartGen(posGen: RandGen<Vector>): RandGen<FoodAdder> {
-        return posGen.Bind(v =>
-            this.partGen.Bind(p =>
-                this.colorGen.Map(c =>
-                    Adder.Part(c, p, v, () => --this.count))));
-    }
-    partGen: RandGen<number>;
-    colorGen: RandGen<number>;
-    count: number = 0;
-}
-
 namespace game {
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
-        const gen = new LeveledGenerator(l);
-        const seqGen = SequenceGeneratorByLevel(l);
-        const params = GameParamsByLevel(l);
-        return new GameLayer(params, gen, seqGen, control);
+        const config = GameConfigByLevel(l);
+        const gen = new LeveledGenerator(
+            l, config.BOARD_WIDTH, config.BOARD_HEIGHT);
+        return new GameLayer(config, gen, control);
     }
-    export function SequenceGeneratorByLevel(l: Level): SequenceGenerator {
-        const lib =
-            l == Level.Easy ? foodLibrary.StrsToPartLib(foodLibrary.easy) :
-                l == Level.Normal ?
-                    foodLibrary.StrsToPartLib(foodLibrary.normal) :
-                    foodLibrary.StrsToPartLib(foodLibrary.hard);
-        return new RandomPickGenerator(lib);
-    }
-    export function GameParamsByLevel(l: Level): GameParam {
-        let result: GameParam = <GameParam>{};
+    export function GameConfigByLevel(l: Level): GameConfig {
         switch (l) {
-            case Level.Easy:
-                result = gameParam.Custom({
-                    ENERGY_TIME_GAIN: 8,
-                    TARGET_DEC_PER_FRAME: 0,
-                    TARGET_GAIN: 20
-                });
-                break;
-            case Level.Normal:
-                result = gameParam.Custom({
-                    ENERGY_TIME_GAIN: 5,
-                    TARGET_DEC_PER_FRAME: 0,
-                    TARGET_GAIN: 20
-                });
-                break;
-            case Level.Hard:
-                result = gameParam.Custom({
-                    ENERGY_TIME_GAIN: 5,
-                    TARGET_DEC_PER_FRAME: 0.001,
-                    TARGET_GAIN: 20
-                });
-                break;
+            case Level.Easy: return new EasyConfig();
+            case Level.Normal: return new NormalConfig();
+            case Level.Hard: return new HardConfig();
         }
-        return result;
     }
 }
 
 class GameLayer extends AbstractLayer {
     constructor(
-        config: GameConfig, foodgen: FoodGenerator,
-        seqGen: SequenceGenerator, control: LayerControl) {
+        config: GameConfig, foodgen: FoodGenerator, control: LayerControl) {
         super(control, {
             KeyDown: k =>
                 k === " " ? this.game.Snake().Accelerate() : undefined,
@@ -184,7 +66,7 @@ class GameLayer extends AbstractLayer {
 
     private TakeTurn(time: number): void {
         this.game.NextState();
-        this.generator.Generate(time, this)(this);
+        this.generator.Generate(time, this.game)(this.game);
     }
 
     private PaintAcceleration(): Painter {
@@ -233,9 +115,9 @@ class GameLayer extends AbstractLayer {
             this.acceleration.bound);
     }
 
+    generator: FoodGenerator;
     acceleration: HoldButton<CircleBound>;
     rocker: Rocker;
-    generator: FoodGenerator;
     go: TimeIntervalControl;
     game: SnakeGame;
 }
