@@ -42,12 +42,18 @@ namespace IMG {
         export const helpFocus = image("images/start/help-gray.png");
         export const back = image("images/help/back.png");
         export const easy = image("images/mode/easy.png");
+        export const easyFocus = image("images/mode/easy-focus.png");
         export const normal = image("images/mode/normal.png");
+        export const normalFocus = image("images/mode/normal-focus.png");
         export const hard = image("images/mode/hard.png");
+        export const hardFocus = image("images/mode/hard-focus.png");
         export const tutorial = image("images/mode/tutorial.png");
         export const tellStory = image("images/help/tell-me-story.png");
+        export const tellStoryFocus = image("images/help/tell-me-story-focus.png");
         export const how2play = image("images/help/how-to-play.png");
+        export const how2playFocus = image("images/help/how-to-play-focus.png");
         export const learnBio = image("images/help/synthetic-bio.png");
+        export const learnBioFocus = image("images/help/synthetic-bio-focus.png");
     }
     export namespace GAME {
         export const rockerBack = image("images/game/rocker-back.png");

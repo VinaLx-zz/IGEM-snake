@@ -9,24 +9,27 @@ class ModeChooseLayer extends AbstractLayer {
     Painter(): Painter {
         return Paint.Background(IMG.BG.mode)
             .Then(Paint.PositionedImage(this.back.bound, IMG.BTN.back))
-            .Then(Paint.PositionedImage(this.easy.bound, IMG.BTN.easy))
-            .Then(Paint.PositionedImage(this.normal.bound, IMG.BTN.normal))
-            .Then(Paint.PositionedImage(this.hard.bound, IMG.BTN.hard));
+            .Then(this.easy.Painter())
+            .Then(this.normal.Painter())
+            .Then(this.hard.Painter());
     }
     Buttons(): MouseEventCatcher {
         this.back = new CloseButton(
             new RectBound(
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
         const mx = SZ.MODE.MODE_X, mw = SZ.MODE.MODE_W, mh = SZ.MODE.MODE_H;
-        this.easy = new ClickButton(
-            this.NewGame(Level.Easy),
-            new RectBound(mx, SZ.MODE.EASY_Y, mw, mh));
-        this.normal = new ClickButton(
-            this.NewGame(Level.Normal),
-            new RectBound(mx, SZ.MODE.NORMAL_Y, mw, mh));
-        this.hard = new ClickButton(
-            this.NewGame(Level.Hard),
-            new RectBound(mx, SZ.MODE.HARD_Y, mw, mh));
+        this.easy = new AnimatedButton(
+            new RectBound(mx, SZ.MODE.EASY_Y, mw, mh),
+            IMG.BTN.easy, IMG.BTN.easyFocus,
+            this.NewGame(Level.Easy));
+        this.normal = new AnimatedButton(
+            new RectBound(mx, SZ.MODE.NORMAL_Y, mw, mh),
+            IMG.BTN.normal, IMG.BTN.normalFocus,
+            this.NewGame(Level.Normal));
+        this.hard = new AnimatedButton(
+            new RectBound(mx, SZ.MODE.HARD_Y, mw, mh),
+            IMG.BTN.hard, IMG.BTN.hardFocus,
+            this.NewGame(Level.Hard));
         return Button.Add(
             this.back, this.easy, this.hard, this.normal);
     }
@@ -37,7 +40,7 @@ class ModeChooseLayer extends AbstractLayer {
         }
     }
     back: CloseButton<RectBound>
-    easy: ClickButton<RectBound>
-    normal: ClickButton<RectBound>
-    hard: ClickButton<RectBound>
+    easy: AnimatedButton<RectBound>
+    normal: AnimatedButton<RectBound>
+    hard: AnimatedButton<RectBound>
 }

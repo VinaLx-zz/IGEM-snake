@@ -14,32 +14,34 @@ class HelpLayer extends AbstractLayer {
             new RectBound(
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
         const th = SZ.HELP.TEXT_H;
-        this.story = new ClickButton(
-            (): void => this.control.PushLayer(this.storyLayer),
+        this.story = new AnimatedButton(
             new RectBound(
-                SZ.HELP.STORY_X, SZ.HELP.STORY_Y, SZ.HELP.STORY_W, th))
-        this.how2play = new ClickButton(
-            // (): void => this.control.PushLayer(this.tutorialLayer),
-            Func.Noop,
+                SZ.HELP.STORY_X, SZ.HELP.STORY_Y, SZ.HELP.STORY_W, th),
+                IMG.BTN.tellStory, IMG.BTN.tellStoryFocus,
+                (): void => this.control.PushLayer(this.storyLayer))
+        this.how2play = new AnimatedButton(
             new RectBound(
-                SZ.HELP.PLAY_X, SZ.HELP.PLAY_Y, SZ.HELP.PLAY_W, th))
-        this.learn = new ClickButton(
-            (): void => this.control.PushLayer(this.biologyLayer),
+                SZ.HELP.PLAY_X, SZ.HELP.PLAY_Y, SZ.HELP.PLAY_W, th),
+                IMG.BTN.how2play, IMG.BTN.how2playFocus,
+                Func.Noop)
+        this.learn = new AnimatedButton(
             new RectBound(
-                SZ.HELP.LEARN_X, SZ.HELP.LEARN_Y, SZ.HELP.LEARN_W, th))
+                SZ.HELP.LEARN_X, SZ.HELP.LEARN_Y, SZ.HELP.LEARN_W, th),
+                IMG.BTN.learnBio, IMG.BTN.learnBioFocus,
+                (): void => this.control.PushLayer(this.biologyLayer))
         return Button.Add(this.back, this.story, this.how2play, this.learn);
     }
     Painter(): Painter {
         return Paint.Background(IMG.BG.help)
             .Then(Paint.PositionedImage(this.back.bound, IMG.BTN.back))
-            .Then(Paint.PositionedImage(this.story.bound, IMG.BTN.tellStory))
-            .Then(Paint.PositionedImage(this.how2play.bound, IMG.BTN.how2play))
-            .Then(Paint.PositionedImage(this.learn.bound, IMG.BTN.learnBio));
+            .Then(this.story.Painter())
+            .Then(this.how2play.Painter())
+            .Then(this.learn.Painter());
     }
     back: CloseButton<RectBound>;
-    story: ClickButton<RectBound>;
-    how2play: ClickButton<RectBound>;
-    learn: ClickButton<RectBound>;
+    story: AnimatedButton<RectBound>;
+    how2play: AnimatedButton<RectBound>;
+    learn: AnimatedButton<RectBound>;
 
     storyLayer: Layer;
     biologyLayer: Layer;

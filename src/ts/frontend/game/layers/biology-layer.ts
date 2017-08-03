@@ -14,10 +14,10 @@ class BiologyLayer extends AbstractLayer {
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
         this.next = new ClickButton(
             () => this.slide.Next(),
-            new CircleBound(SZ.BIOLOGY.NEXT_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_R));
+            new CircleBound(SZ.BIOLOGY.NEXT_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_W / 2));
         this.prev = new ClickButton(
             () => this.slide.Prev(),
-            new CircleBound(SZ.BIOLOGY.PREV_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_R));
+            new CircleBound(SZ.BIOLOGY.PREV_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_W / 2));
         return Button.Add(this.back, this.next, this.prev);
     }
     Painter(): Painter {

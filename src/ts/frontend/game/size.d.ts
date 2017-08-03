@@ -48,9 +48,13 @@ declare namespace SZ {
     }
     namespace BIOLOGY {
         const PREV_X: number;
+        const PREV_X2: number;
         const NEXT_X: number;
+        const NEXT_X2: number;
         const BUTTON_Y: number;
-        const BUTTON_R: number;
+        const BUTTON_Y2: number;
+        const BUTTON_W: number;
+        const BUTTON_H: number;
     }
     namespace GAME {
         const SNAKE_HEAD_R: number;
