@@ -72,7 +72,7 @@ class HardConfig extends LeveledConfig {
     constructor() {
         super(Level.Hard);
         this.ENERGY_TIME_GAIN = 6;
-        this.TARGET_DEC_PER_SEC = 0.0001;
-        this.TARGET_GAIN = 20;
+        this.TARGET_DEC_PER_SEC = 0;
+        this.TARGET_GAIN = 25;
     }
 }

@@ -67,7 +67,7 @@ class VictoryBar extends SimpleConfiguredBar {
         this.snake = snake;
     }
     AdjustBrightness(): void {
-        this.snake.bright = this.progress >= 90;
+        this.snake.bright = this.progress >= 70;
     }
     snake: Nematode;
 }
