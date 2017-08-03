@@ -31,9 +31,9 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         config: GameConfig, foodgen: FoodGenerator, control: LayerControl) {
         super(control, {
             KeyDown: k =>
-                k === " " ? this.game.Snake().Accelerate() : undefined,
+                k === " " ? this.game.AccelerationBar().Accelerate() : undefined,
             KeyUp: k =>
-                k === " " ? this.game.Snake().SlowDown() : undefined
+                k === " " ? this.game.AccelerationBar().SlowDown() : undefined
         }, true);
         this.game = new SnakeGame(config);
         this.Init();
@@ -99,8 +99,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
 
     private InitAcceleration(): HoldButton<CircleBound> {
         return new HoldButton(
-            () => this.game.Snake().Accelerate(),
-            () => this.game.Snake().SlowDown(),
+            () => this.game.AccelerationBar().Accelerate(),
+            () => this.game.AccelerationBar().SlowDown(),
             new CircleBound(
                 SZ.GAME.RIGHT_ACCELERATION_X, SZ.GAME.ACCELERATION_Y,
                 SZ.GAME.ACCELERATION_R));

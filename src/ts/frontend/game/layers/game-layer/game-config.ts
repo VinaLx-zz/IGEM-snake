@@ -55,12 +55,12 @@ class DefaultConfig implements GameConfig {
     LIFE_TIME_INIT: number = 100;
 
     ACCELERATE_TIME_INIT: number = 10;
-    ACCELERATE_TIME_GAIN: number = 4;
+    ACCELERATE_TIME_GAIN: number = 5;
     ACCELERATE_TIME_TOTAL: number = 20;
 
     BASIC_VISION: number = 0.2;
     FULL_VISION: number = 0.4;
-    VISION_DEC_PER_SEC: number = 0.002;
+    VISION_DEC_PER_SEC: number = 0.001;
     VISION_GAIN: number = 0.05;
 
     TARGET_DEC_PER_SEC: number = 0.9;

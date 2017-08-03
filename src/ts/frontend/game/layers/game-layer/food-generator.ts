@@ -24,7 +24,7 @@ abstract class IntervalGenerator implements FoodGenerator {
 
 class LeveledGenerator extends IntervalGenerator {
     constructor(level: Level, width: number, height: number) {
-        super(3000);
+        super(LeveledGenerator.RefreshRate(level));
         this.partGen = Random.Nat(4);
         this.colorGen = Random.Nat(3);
         this.posGen = Random.Map2(
@@ -32,6 +32,13 @@ class LeveledGenerator extends IntervalGenerator {
             (a, b) => new Vector(a, b));
         this.addPartGen = this.MakePartGen();
         this.addEnergyGen = this.MakeEnergyGen();
+    }
+    private static RefreshRate(l: Level): number {
+        switch (l) {
+            case Level.Easy: return 3000;
+            case Level.Normal: return 2700;
+            case Level.Hard: return 2400;
+        }
     }
     GenerateImpl(time: number, layer: SnakeGameState): FoodAdder {
         const max_food = 50;

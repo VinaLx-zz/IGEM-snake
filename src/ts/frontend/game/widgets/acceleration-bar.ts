@@ -17,5 +17,11 @@ class AccelerationBar extends SimpleConfiguredBar {
             super.decrement();
         }
     }
+    Accelerate(): void {
+        if (this.progress !== 0) this.snake.Accelerate();
+    }
+    SlowDown(): void {
+        this.snake.SlowDown();
+    }
     snake: Nematode;
 }
