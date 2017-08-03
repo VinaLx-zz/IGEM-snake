@@ -9,13 +9,10 @@ declare namespace SZ {
     const BACK_H: number;
 
     namespace START {
-        const PLAY_X: number;
-        const PLAY_Y: number;
-        const HELP_X: number;
-        const HELP_Y: number;
-        const SETTING_X: number;
-        const SETTING_Y: number;
+        const BUTTON_X: number;
         const BUTTON_R: number;
+        const PLAY_Y: number;
+        const HELP_Y: number;
     }
     namespace SETTING {
         const LAYER_X: number;

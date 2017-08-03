@@ -6,7 +6,6 @@ namespace IMG {
     }
     export namespace BG {
         export const start = image("images/start/background.png");
-        export const setting = image("images/setting/background.png");
         export const help = image("images/help/background.png");
         export const mode = image("images/mode/background.png");
     }
@@ -37,10 +36,11 @@ namespace IMG {
         export const next = image("images/biology/next.png");
     }
     export namespace BTN {
-        export const start = image("images/start/startbutton.png");
-        export const setting = image("images/start/settingbutton.png");
-        export const help = image("images/start/helpbutton.png");
-        export const back = image("images/setting/back.png");
+        export const start = image("images/start/play-white.png");
+        export const startFocus = image("images/start/play-gray.png");
+        export const help = image("images/start/help-white.png");
+        export const helpFocus = image("images/start/help-gray.png");
+        export const back = image("images/help/back.png");
         export const easy = image("images/mode/easy.png");
         export const normal = image("images/mode/normal.png");
         export const hard = image("images/mode/hard.png");
@@ -53,7 +53,6 @@ namespace IMG {
         export const rockerBack = image("images/game/rocker-back.png");
         export const rockerDot = image("images/game/rocker-dot.png");
         export const acceleration = image("images/game/acceleration.png");
-        export const setting = image("images/game/setting.png");
         export const progressBars = image("images/game/progress-bars.png");
         export const geneticCircuits = image("images/game/genetic-circuit.png");
         export const brownHead = image("images/game/brown-head.png");

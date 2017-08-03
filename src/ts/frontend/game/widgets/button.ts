@@ -35,10 +35,7 @@ class ClickButton<B extends Bound = Bound>
             this.count = 0;
         }
     }
-    MouseMove(pos: Vector): void {
-        // do nothing
-        // TODO: can optimize the click logic when there is single touch
-    }
+    MouseMove(pos: Vector): void { }
 
     Click: MouseEventCallback;
     bound: B;
@@ -56,26 +53,55 @@ class HoldButton<B extends Bound = Bound>
         this.bound = bound;
     }
     MouseDown(pos: Vector): void {
-        if (this.bound.Contains(pos)) {
-            this.Hold(pos);
-        }
+        if (this.bound.Contains(pos)) this.Hold(pos);
     }
 
     MouseUp(pos: Vector): void {
-        if (this.bound.Contains(pos)) {
-            this.Release(pos);
-        }
+        if (this.bound.Contains(pos)) this.Release(pos);
     }
 
     MouseMove(pos: Vector): void {
-        if (this.bound.Contains(pos)) {
-            this.Hold(pos);
-        }
+        if (this.bound.Contains(pos)) this.Hold(pos);
     }
 
     Hold: MouseEventCallback;
     Release: MouseEventCallback;
     bound: B;
+}
+
+class Button<B extends Bound = Bound>
+    implements Holdable, Clickable, MouseEventCatcher {
+    constructor(
+        bound: B, onClick: MouseEventCallback,
+        onHold: MouseEventCallback, onRelease: MouseEventCallback) {
+        this.bound = bound;
+        this.Click = onClick;
+        this.Hold = onHold;
+        this.Release = onRelease;
+    }
+    MouseDown(pos: Vector): void {
+        if (this.bound.Contains(pos)) {
+            ++this.count;
+            this.Hold(pos);
+        }
+    }
+    MouseUp(pos: Vector): void {
+        if (this.bound.Contains(pos)) {
+            this.Release(pos);
+            if (this.count > 0) {
+                this.Click(pos);
+                this.count = 0;
+            }
+        }
+    }
+    MouseMove(pos: Vector): void {
+        if (this.bound.Contains(pos)) this.Hold(pos);
+    }
+    Hold: MouseEventCallback;
+    Release: MouseEventCallback;
+    Click: MouseEventCallback;
+    bound: B;
+    count: number = 0;
 }
 
 namespace Button {

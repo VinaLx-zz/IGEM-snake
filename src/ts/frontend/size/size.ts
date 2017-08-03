@@ -9,14 +9,12 @@ namespace SZ {
     export const BACK_H: number = 0.02;
 
     export namespace START {
-        export const PLAY_X: number = 0.86;
-        export const PLAY_Y: number = 0.2;
-        export const HELP_X: number = 0.86;
-        export const HELP_Y: number = 0.4;
-        export const SETTING_X: number = 0.86;
-        export const SETTING_Y: number = 0.6;
-        export const BUTTON_R: number = 0.05;
+        export const BUTTON_X: number = 0.875;
+        export const BUTTON_R: number = 0.051875;
+        export const PLAY_Y: number = 0.25;
+        export const HELP_Y: number = 0.5;
     }
+
     export namespace SETTING {
         export const LAYER_X: number = 0.14;
         export const LAYER_Y: number = 0.1;
