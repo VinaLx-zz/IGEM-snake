@@ -78,10 +78,10 @@ class SnakeGame implements SnakeGameState {
             config.ENERGY_TIME_GAIN, config.SECONDS_PER_SNAKE_BODY,
             board.snake);
         const vision = new VisionBar(
-            config.VISION_GAIN, config.VISION_DEC_PER_FRAME, board);
+            config.BASIC_VISION, config.FULL_VISION, config.VISION_GAIN,
+            config.VISION_DEC_PER_SEC, board);
         const victory = new VictoryBar(
-            config.TARGET_GAIN, config.TARGET_DEC_PER_FRAME,
-            board.snake);
+            config.TARGET_GAIN, config.TARGET_DEC_PER_SEC, board.snake);
         return new BarBarBar(energy, vision, victory);
     }
     private MakeGeneticCircuits(config: GameConfig): GeneticCircuits {
@@ -89,8 +89,8 @@ class SnakeGame implements SnakeGameState {
     }
     private static MakeAccelerationBar(snake: Nematode, config: GameConfig) {
         return new AccelerationBar(
-            config.ACCELERATE_TIME_GAIN, config.ACCELERATE_TIME_PER_UNIT,
-            snake);
+            config.ACCELERATE_TIME_INIT, config.ACCELERATE_TIME_GAIN,
+            config.ACCELERATE_TIME_TOTAL, snake);
     }
     board: Board;
     bbb: BarBarBar;

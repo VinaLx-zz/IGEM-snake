@@ -45,7 +45,7 @@ class LeveledGenerator extends IntervalGenerator {
         const restGen = this.addPartGen;
         const energyGen = this.addEnergyGen;
         return Random.WeightedGen(
-            [nextGen, 0.3], [restGen, 0.3], [energyGen, 0.4]);
+            [nextGen, 0.5], [restGen, 0.2], [energyGen, 0.3]);
     }
     private NextGen(state: SnakeGameState): RandGen<FoodAdder> {
         return this.posGen.Bind(v =>

@@ -9,7 +9,6 @@ class Board {
         this.snake = snake;
         this.bound = snake.bound;
         this.foods = List.FromArray(foods);
-        this.basicVision = vision;
     }
     Painter(): Painter {
         return Paint.Delay(() =>
@@ -41,11 +40,10 @@ class Board {
             this.snake.PaintHead(this.Translate(this.snake.Head())));
     }
     private PaintMist(): Painter {
-        const vision = this.basicVision * (1 + this.visionBonus);
         return new Painter (ctx => {
             const v = ctx.createRadialGradient(
-                0.5, SZ.RELATIVE_HEIGHT / 2, vision + 0.1,
-                0.5, SZ.RELATIVE_HEIGHT / 2, vision);
+                0.5, SZ.RELATIVE_HEIGHT / 2, this.vision + 0.1,
+                0.5, SZ.RELATIVE_HEIGHT / 2, this.vision);
             v.addColorStop(0, "rgba(172, 166, 161, 1)");
             v.addColorStop(1, "rgba(172, 166, 161, 0)");
             ctx.fillStyle = v;
@@ -72,6 +70,5 @@ class Board {
     bound: AdjustableBound;
     snake: Nematode;
     foods: List<Food>;
-    basicVision: number;
-    visionBonus: number = 0;
+    vision: number = 0;
 }

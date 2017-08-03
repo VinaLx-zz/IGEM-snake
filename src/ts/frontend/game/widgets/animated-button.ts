@@ -10,7 +10,8 @@ class AnimatedButton<B extends PositionedBound> extends Button<B> {
         this.image = normal;
     }
     Painter(): Painter {
-        return Paint.Delay(() => Paint.PositionedImage(this.bound, this.image));
+        return Paint.Delay(
+            () => Paint.PositionedImage(this.bound, this.image));
     }
     image: HTMLImageElement;
 }

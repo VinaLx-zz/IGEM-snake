@@ -21,13 +21,14 @@ interface GameConfig {
 
     ACCELERATE_TIME_INIT: number;
     ACCELERATE_TIME_GAIN: number;
-    ACCELERATE_TIME_PER_UNIT: number;
+    ACCELERATE_TIME_TOTAL: number;
 
     BASIC_VISION: number;
-    VISION_DEC_PER_FRAME: number;
+    FULL_VISION: number;
+    VISION_DEC_PER_SEC: number;
     VISION_GAIN: number;
 
-    TARGET_DEC_PER_FRAME: number;
+    TARGET_DEC_PER_SEC: number;
     TARGET_GAIN: number;
 
     TargetGenerator(state: SnakeGameState): TargetGenerator;
@@ -53,15 +54,16 @@ class DefaultConfig implements GameConfig {
     LIFE_TIME_PER_UNIT: number = 1;
     LIFE_TIME_INIT: number = 100;
 
-    ACCELERATE_TIME_INIT: number = 0;
-    ACCELERATE_TIME_GAIN: number = 2;
-    ACCELERATE_TIME_PER_UNIT: number = 0.1;
+    ACCELERATE_TIME_INIT: number = 10;
+    ACCELERATE_TIME_GAIN: number = 4;
+    ACCELERATE_TIME_TOTAL: number = 20;
 
     BASIC_VISION: number = 0.2;
-    VISION_DEC_PER_FRAME: number = 0.1;
-    VISION_GAIN: number = 20;
+    FULL_VISION: number = 0.4;
+    VISION_DEC_PER_SEC: number = 0.002;
+    VISION_GAIN: number = 0.05;
 
-    TARGET_DEC_PER_FRAME: number = 0.03;
+    TARGET_DEC_PER_SEC: number = 0.9;
     TARGET_GAIN: number = 30;
 
     TargetGenerator(state: SnakeGameState): TargetGenerator {

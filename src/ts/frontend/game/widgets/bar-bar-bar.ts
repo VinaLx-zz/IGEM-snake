@@ -32,24 +32,38 @@ class EnergyBar extends SimpleConfiguredBar {
 }
 
 class VisionBar extends SimpleConfiguredBar {
-    constructor(incRate: number, decRate: number, board: Board) {
-        super(incRate, decRate, {
-            whenChange: (now, change) => {
-                this.board.visionBonus = now / 100;
-            }
+    constructor(
+        basicVision: number, fullVision: number,
+        visionGain: number, visionDecPerSec: number, board: Board) {
+        super(0, 0, {
+            whenChange: now =>
+                this.board.vision = this.basicVision + now * this.visionPerUnit
         });
         this.board = board;
+        this.board.vision = basicVision;
+        this.visionPerUnit = (fullVision - basicVision) / 100
+        this.basicVision = basicVision;
+        this.fullVision = fullVision;
+        this.incRate = visionGain / this.visionPerUnit;
+        this.decRate =
+            visionDecPerSec / this.visionPerUnit / param.FRAME_PER_SEC;
     }
+    Progress(): number {
+        return (this.visionPerUnit * this.progress + this.basicVision)
+            / this.fullVision * 100;
+    }
+    visionPerUnit: number;
+    basicVision: number;
+    fullVision: number;
     board: Board;
 }
 
 class VictoryBar extends SimpleConfiguredBar {
     constructor(
-        incRate: number, decRate: number, snake: Nematode) {
-        super(incRate, decRate, {
+        victoryGain: number, victoryDecPerSec: number, snake: Nematode) {
+        super(victoryGain, victoryDecPerSec / param.FRAME_PER_SEC, {
             whenChange: () => this.AdjustBrightness()
         });
-        this.progress = 0;
         this.snake = snake;
     }
     AdjustBrightness(): void {
@@ -75,7 +89,7 @@ class BarBarBar {
                 BarBarBar.PaintProgress(
                     "#E9CA33", SZ.GAME.YELLOW_X, y, this.victory.progress)
                     .Then(BarBarBar.PaintProgress(
-                        "#0E874E", SZ.GAME.GREEN_X, y, this.vision.progress)
+                        "#0E874E", SZ.GAME.GREEN_X, y, this.vision.Progress())
                         .Then(BarBarBar.PaintProgress(
                             "#1F80AA", SZ.GAME.BLUE_X, y, this.energy.progress)))));
     }
