@@ -6,7 +6,8 @@ interface RectangleLike extends Positioned, Sized { }
 class Rectangle implements RectangleLike {
     constructor(x: number, y: number, w: number, h: number) {
         this.topLeft = new Vector(x, y);
-        this.botRight = new Vector(x + w, y + h);
+        this.width = w;
+        this.height = h;
     }
     X(): number { return this.minX; }
     Y(): number { return this.minY; }
@@ -22,16 +23,17 @@ class Rectangle implements RectangleLike {
         return this.topLeft.X;
     }
     get maxX(): number {
-        return this.botRight.X;
+        return this.minX + this.width;
     }
     get minY(): number {
         return this.topLeft.Y;
     }
     get maxY(): number {
-        return this.botRight.Y;
+        return this.minY + this.height;
     }
     topLeft: Vector;
-    botRight: Vector;
+    width: number;
+    height: number;
 }
 
 interface CircleLike extends Positioned, Sized {

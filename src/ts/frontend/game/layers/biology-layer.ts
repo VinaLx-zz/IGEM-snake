@@ -12,12 +12,24 @@ class BiologyLayer extends AbstractLayer {
         this.back = new CloseButton(
             new RectBound(
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
-        this.next = new ClickButton(
-            () => this.slide.Next(),
-            new CircleBound(SZ.BIOLOGY.NEXT_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_W / 2));
-        this.prev = new ClickButton(
-            () => this.slide.Prev(),
-            new CircleBound(SZ.BIOLOGY.PREV_X, SZ.BIOLOGY.BUTTON_Y, SZ.BIOLOGY.BUTTON_W / 2));
+        this.next = new AnimatedButton(
+            new RectBound(
+                SZ.BIOLOGY.NEXT_X, SZ.BIOLOGY.BUTTON_Y,
+                SZ.BIOLOGY.BUTTON_W, SZ.BIOLOGY.BUTTON_H),
+            IMG.BIOLOGY.next, IMG.BIOLOGY.nextFocus,
+            () => {
+                this.slide.Next();
+                this.AdjustButtonPosition();
+            });
+        this.prev = new AnimatedButton(
+            new RectBound(
+                SZ.BIOLOGY.PREV_X, SZ.BIOLOGY.BUTTON_Y,
+                SZ.BIOLOGY.BUTTON_W, SZ.BIOLOGY.BUTTON_W),
+            IMG.BIOLOGY.prev, IMG.BIOLOGY.prevFocus,
+            () => {
+                this.slide.Prev();
+                this.AdjustButtonPosition();
+            });
         return Button.Add(this.back, this.next, this.prev);
     }
     Painter(): Painter {
@@ -26,18 +38,34 @@ class BiologyLayer extends AbstractLayer {
             .Then(this.PaintNextButton())
             .Then(this.PaintPrevButton());
     }
+    private AdjustButtonPosition(): void {
+        const current = this.slide.current, max = this.slide.images.length - 1;
+        const pb = this.prev.bound, nb = this.next.bound;
+        if (current === 0) {
+            nb.topLeft = new Vector(SZ.BIOLOGY.NEXT_X2, SZ.BIOLOGY.BUTTON_Y2);
+        } else if (current === max) {
+            pb.topLeft = new Vector(SZ.BIOLOGY.PREV_X2, SZ.BIOLOGY.PREV_X2);
+        } else {
+            nb.topLeft = new Vector(SZ.BIOLOGY.NEXT_X, SZ.BIOLOGY.BUTTON_Y);
+            pb.topLeft = new Vector(SZ.BIOLOGY.PREV_X, SZ.BIOLOGY.BUTTON_Y2);
+        }
+    }
 
     PaintNextButton(): Painter {
-        return Paint.PositionedImage(this.next.bound, IMG.BIOLOGY.next);
+        return Paint.If(
+            () => this.slide.current === this.slide.images.length - 1,
+            Paint.Noop(), this.next.Painter())
     }
 
     PaintPrevButton(): Painter {
-        return Paint.PositionedImage(this.prev.bound, IMG.BIOLOGY.prev);
+        return Paint.If(
+            () => this.slide.current === 0,
+            Paint.Noop(), this.prev.Painter());
     }
 
     back: CloseButton<RectBound>;
-    next: ClickButton<CircleBound>;
-    prev: ClickButton<CircleBound>;
+    next: AnimatedButton<RectBound>;
+    prev: AnimatedButton<RectBound>;
 
     slide: Slides;
 }

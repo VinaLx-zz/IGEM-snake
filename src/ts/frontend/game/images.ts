@@ -33,7 +33,9 @@ namespace IMG {
             image("images/biology/8.png")
         ];
         export const prev = image("images/biology/prev.png");
+        export const prevFocus = image("images/biology/prev-focus.png");
         export const next = image("images/biology/next.png");
+        export const nextFocus = image("images/biology/next-focus.png");
     }
     export namespace BTN {
         export const start = image("images/start/play-white.png");
