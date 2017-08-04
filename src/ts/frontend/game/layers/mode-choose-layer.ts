@@ -36,7 +36,9 @@ class ModeChooseLayer extends AbstractLayer {
     NewGame(level: Level): () => void {
         return () => {
             this.control.PopLayer();
-            this.control.PushLayer(game.NewGameByLevel(level, this.control));
+            const gameLayer = game.NewGameByLevel(level, this.control);
+            this.control.PushLayer(gameLayer);
+            gameLayer.Start();
         }
     }
     back: CloseButton<RectBound>

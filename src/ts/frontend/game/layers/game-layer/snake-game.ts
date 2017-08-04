@@ -12,6 +12,7 @@ class SnakeGame implements SnakeGameState {
             this.board.snake, config);
         this.geneticCircuits = this.MakeGeneticCircuits(config);
         this.config = config;
+        for (const adder of config.INIT_FOODS) adder(this);
     }
     Painter(): Painter {
         return this.board.Painter()

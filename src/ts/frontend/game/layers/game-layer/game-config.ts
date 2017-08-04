@@ -65,7 +65,7 @@ class DefaultConfig implements GameConfig {
     VISION_DEC_PER_SEC: number = 0.001;
     VISION_GAIN: number = 0.05;
 
-    TARGET_DEC_PER_SEC: number = 0.9;
+    TARGET_DEC_PER_SEC: number = 0;
     TARGET_GAIN: number = 30;
 
     INIT_FOODS: FoodAdder[] = [];

@@ -40,7 +40,6 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         this.generator = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
-        this.Start();
     }
     Painter(): Painter {
         return this.PaintBackground()
