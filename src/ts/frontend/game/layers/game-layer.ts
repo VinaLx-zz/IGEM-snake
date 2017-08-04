@@ -28,7 +28,9 @@ namespace game {
 
 class GameLayerImpl extends AbstractLayer implements GameLayer {
     constructor(
-        config: GameConfig, foodgen: FoodGenerator, control: LayerControl) {
+        config: GameConfig, foodgen: FoodGenerator, control: LayerControl,
+        win: GameFinishCallback = g => g.Pause(),
+        lose: GameFinishCallback = g => g.Pause()) {
         super(control, {
             KeyDown: k =>
                 k === " " ? this.game.AccelerationBar().Accelerate() : undefined,
@@ -39,7 +41,9 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         this.Init();
         this.generator = foodgen;
         this.go = new TimeIntervalControl(
-            t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC)
+            t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC);
+        this.win = win;
+        this.lose = lose;
     }
     Painter(): Painter {
         return this.PaintBackground()
@@ -67,11 +71,14 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
 
     private TakeTurn(time: number): void {
         this.game.NextState();
-        this.generator.Generate(time, this.game)(this.game);
-        if (this.game.Win() || this.game.Lose()) {
-            // TODO
-            this.Pause();
+        if (this.game.Win()) {
+            this.win(this, this.control);
+            return;
+        } else if (this.game.Lose()) {
+            this.lose(this, this.control);
+            return;
         }
+        this.generator.Generate(time, this.game)(this.game);
     }
 
     private PaintAcceleration(): Painter {
@@ -125,4 +132,7 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     rocker: Rocker;
     go: TimeIntervalControl;
     game: SnakeGame;
+
+    win: GameFinishCallback;
+    lose: GameFinishCallback;
 }

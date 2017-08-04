@@ -5,3 +5,7 @@ interface GameLayer extends Layer {
     Start(): void;
     State(): SnakeGameState;
 }
+
+interface GameFinishCallback {
+    (g: GameLayer, c: LayerControl): void;
+}
