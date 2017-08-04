@@ -28,11 +28,17 @@ class StoryLayer extends AbstractLayer {
     }
 
     PaintNextButton(): Painter {
-        return Paint.PositionedImage(this.next.bound, IMG.STORY.next);
+        return Paint.If(
+            () => this.slide.current === this.slide.images.length - 1,
+            Paint.Noop(),
+            Paint.PositionedImage(this.next.bound, IMG.STORY.next));
     }
 
     PaintPrevButton(): Painter {
-        return Paint.PositionedImage(this.prev.bound, IMG.STORY.prev);
+        return Paint.If(
+            () => this.slide.current === 0,
+            Paint.Noop(),
+            Paint.PositionedImage(this.prev.bound, IMG.STORY.prev));
     }
 
     back: CloseButton<RectBound>;

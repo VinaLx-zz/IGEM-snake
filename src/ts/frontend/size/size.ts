@@ -32,13 +32,13 @@ namespace SZ {
     export namespace HELP {
         export const TEXT_H: number = 0.0225;
         export const STORY_X: number = 0.39;
-        export const STORY_Y: number = 0.326;
+        export const STORY_Y: number = 0.306;
         export const STORY_W: number = 0.22;
         export const PLAY_X: number = 0.38;
         export const PLAY_Y: number = 0.376;
         export const PLAY_W: number = 0.2475;
         export const LEARN_X: number = 0.25;
-        export const LEARN_Y: number = 0.426;
+        export const LEARN_Y: number = 0.446;
         export const LEARN_W: number = 0.5;
     }
     export namespace STORY {

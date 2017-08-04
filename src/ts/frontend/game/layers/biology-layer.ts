@@ -7,6 +7,7 @@ class BiologyLayer extends AbstractLayer {
         super(control, {}, true);
         this.slide = new Slides(IMG.BIOLOGY.page);
         this.Init(); // Init from super
+        this.AdjustButtonPosition();
     }
     Buttons(): MouseEventCatcher {
         this.back = new CloseButton(
