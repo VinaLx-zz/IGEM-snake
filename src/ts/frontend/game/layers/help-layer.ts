@@ -2,6 +2,7 @@
 /// <reference path="./story-layer.ts" />
 /// <reference path="./biology-layer.ts" />
 /// <reference path="../widgets/close-button.ts" />
+/// <reference path="./tutorial-layer.ts" />
 
 class HelpLayer extends AbstractLayer {
     constructor(control: LayerControl) {
@@ -23,7 +24,7 @@ class HelpLayer extends AbstractLayer {
             new RectBound(
                 SZ.HELP.PLAY_X, SZ.HELP.PLAY_Y, SZ.HELP.PLAY_W, th),
                 IMG.BTN.how2play, IMG.BTN.how2playFocus,
-                Func.Noop)
+                () => Tutorial.Start(this.control));
         this.learn = new AnimatedButton(
             new RectBound(
                 SZ.HELP.LEARN_X, SZ.HELP.LEARN_Y, SZ.HELP.LEARN_W, th),

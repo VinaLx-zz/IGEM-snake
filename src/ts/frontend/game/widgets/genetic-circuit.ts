@@ -4,8 +4,10 @@
 /// <reference path="../layers/game-layer/food-machine.ts" />
 
 class GeneticCircuits extends ColorFoodMachine {
-    constructor(targetGen: TargetGenerator) {
-        super(machine.InitAllColor(targetGen), targetGen);
+    constructor(targetGen: TargetGenerator, emptyStart: Boolean = false) {
+        super(emptyStart ?
+            machine.EmptyDispatcher() :
+            machine.InitAllColor(targetGen), targetGen);
     }
     Painter(): Painter {
         const x = SZ.GAME.TARGET_BEG_X;
@@ -23,12 +25,14 @@ class GeneticCircuits extends ColorFoodMachine {
     Next(color: food.Color): food.Part | null {
         return this.dispatcher[color].Next();
     }
+    Rest(color: food.Color): food.Part[] {
+        return this.dispatcher[color].Rest();
+    }
     private PaintCandidates(
         color: food.Color, begX: number, begY: number): Painter {
         let result = Paint.Noop();
         let x = begX + SZ.GAME.TARGET_X, y = begY + SZ.GAME.TARGET_Y;
-        const target = this.dispatcher[color];
-        const seq = target.Rest();
+        const seq = this.Rest(color);
         for (let i = 0; i < 5 && i < seq.length; ++i) {
             result = result.Then(Paint.Picture(
                 foodTable[color][seq[i]], x, y,

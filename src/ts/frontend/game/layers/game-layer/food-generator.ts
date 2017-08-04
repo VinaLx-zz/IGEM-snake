@@ -1,7 +1,30 @@
 /// <reference path="./food-adder.ts" />
 /// <reference path="./level.ts" />
 /// <reference path="./snake-game-state.ts" />
+/// <reference path="../../../util/random.ts" />
 
+
+namespace FoodGen {
+    export function PositionGen(
+        width: number, height: number): RandGen<Vector> {
+        return Random.Map2(
+            Random.NonNeg(width), Random.NonNeg(height),
+            (a, b) => new Vector(a, b));
+    }
+    export function EnergyGen(
+        posGen: RandGen<Vector>,
+        onEaten: () => void = Func.Noop): RandGen<FoodAdder> {
+        return posGen.Map(v => Adder.Energy(v, onEaten));
+    }
+    export function PartGen(
+        posGen: RandGen<Vector>, colorGen: RandGen<food.Color>,
+        typeGen: RandGen<food.Part>,
+        onEaten: () => void = Func.Noop): RandGen<FoodAdder> {
+        return posGen.Bind(v =>
+            colorGen.Bind(c =>
+                typeGen.Map(t => Adder.Part(c, t, v, onEaten))));
+    }
+}
 
 interface FoodGenerator {
     Generate(time: number, layer: SnakeGameState): FoodAdder;
@@ -27,9 +50,7 @@ class LeveledGenerator extends IntervalGenerator {
         super(LeveledGenerator.RefreshRate(level));
         this.partGen = Random.Nat(4);
         this.colorGen = Random.Nat(3);
-        this.posGen = Random.Map2(
-            Random.NonNeg(width), Random.NonNeg(height),
-            (a, b) => new Vector(a, b));
+        this.posGen = FoodGen.PositionGen(width, height);
         this.addPartGen = this.MakePartGen();
         this.addEnergyGen = this.MakeEnergyGen();
     }
@@ -64,13 +85,11 @@ class LeveledGenerator extends IntervalGenerator {
             }));
     }
     private MakeEnergyGen(): RandGen<FoodAdder> {
-        return this.posGen.Map(v => Adder.Energy(v, () => --this.count));
+        return FoodGen.EnergyGen(this.posGen, () => --this.count);
     }
     private MakePartGen(): RandGen<FoodAdder> {
-        return this.posGen.Bind(v =>
-            this.partGen.Bind(p =>
-                this.colorGen.Map(c =>
-                    Adder.Part(c, p, v, () => --this.count))));
+        return FoodGen.PartGen(
+            this.posGen, this.colorGen, this.partGen, () => --this.count);
     }
     partGen: RandGen<number>;
     colorGen: RandGen<number>;

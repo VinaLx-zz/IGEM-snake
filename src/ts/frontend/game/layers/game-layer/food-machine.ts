@@ -18,9 +18,12 @@ abstract class ColorFoodMachine implements FoodMachine {
     }
     Consume(type: food.Part, color: food.Color): void {
         if (this.dispatcher[color].Consume(type))
-            this.Complete(color);
+            this.Generate(color);
     }
     Complete(color: food.Color): void {
+        this.Generate(color);
+    }
+    Generate(color: food.Color): void {
         const next = this.generator.Generate(color);
         const nextColor = next.Color();
         if (nextColor === color) {
@@ -29,6 +32,11 @@ abstract class ColorFoodMachine implements FoodMachine {
             this.dispatcher[color] = machine.noopTarget;
             if (nextColor !== null) this.dispatcher[nextColor] = next;
         }
+    }
+    SetTarget(target: TargetSequence) {
+        const color = target.Color();
+        if (color === null) return;
+        this.dispatcher[color] = target;
     }
     generator: TargetGenerator;
     dispatcher: TargetDispatcher;

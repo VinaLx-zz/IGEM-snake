@@ -42,6 +42,9 @@ class SnakeGame implements SnakeGameState {
     NextFood(c: food.Color): food.Part | null {
         return this.geneticCircuits.Next(c);
     }
+    RestFood(c: food.Color): food.Part[] {
+        return this.geneticCircuits.Rest(c);
+    }
     Snake(): Snake {
         return this.board.snake;
     }
@@ -62,6 +65,9 @@ class SnakeGame implements SnakeGameState {
         pos: Vector, onEaten: () => void): void {
         this.board.AddFood(
             food.GetPart(color, type, pos, this.geneticCircuits, onEaten));
+    }
+    GenerateTarget(color: food.Color): void {
+        this.geneticCircuits.Generate(color);
     }
     private static MakeBoard(config: GameConfig): Board {
         const bound = new CircularRectBound(
@@ -86,7 +92,8 @@ class SnakeGame implements SnakeGameState {
         return new BarBarBar(energy, vision, victory);
     }
     private MakeGeneticCircuits(config: GameConfig): GeneticCircuits {
-        return new GeneticCircuits(config.TargetGenerator(this));
+        return new GeneticCircuits(
+            config.TargetGenerator(this), config.EMPTY_CIRCUIT_START);
     }
     private static MakeAccelerationBar(snake: Nematode, config: GameConfig) {
         return new AccelerationBar(

@@ -2,20 +2,21 @@
 
 namespace Tutorial {
     export function MakeTutorialPage(
-        control: LayerControl, ...ps: Painter[]): TutorialPage {
+        control: LayerControl, atLast: () => void, ...ps: Painter[]): TutorialPage {
         console.assert(ps.length > 0, "tutorial pages need at least 1 painter");
-        if (ps.length === 1) return new TutorialPage(ps[0], Func.Noop, control);
+        if (ps.length === 1) return new TutorialPage(ps[0], atLast, control);
         return new TutorialPage(ps[0], () => {
-            control.PushLayer(MakeTutorialPage(control, ...ps.slice(1)));
+            control.PushLayer(MakeTutorialPage(control, atLast, ...ps.slice(1)));
         }, control);
     }
 }
 
 class TutorialPage extends AbstractLayer {
     constructor(painter: Painter, cont: () => void, control: LayerControl) {
-        super(control, {});
+        super(control, {}, true);
         this.content = painter;
         this.cont = cont;
+        this.Init();
     }
     Buttons(): MouseEventCatcher {
         return new ClickButton(() => {

@@ -16,6 +16,7 @@ interface SnakeGameState {
 
     // inspectors
     NextFood(c: food.Color): food.Part | null;
+    RestFood(c: food.Color): food.Part[];
     Snake(): Snake;
     NumFoodsOnBoard(): number;
     Win(): Boolean;
@@ -26,4 +27,5 @@ interface SnakeGameState {
     AddPart(
         color: food.Color, type: food.Part,
         pos: Vector, onEaten: () => void): void;
+    GenerateTarget(color: food.Color): void;
 }

@@ -4,6 +4,7 @@
 interface LayerControl {
     PushLayer(layer: Layer): void;
     PopLayer(): void;
+    TopLayer(): Layer;
     gs: GameStatus;
 }
 
@@ -17,6 +18,9 @@ class LayerControlImpl implements LayerControl {
     }
     PopLayer(): void {
         this.layers.pop();
+    }
+    TopLayer(): Layer {
+        return this.layers[this.layers.length - 1];
     }
     layers: Layer[];
     gs: GameStatus;

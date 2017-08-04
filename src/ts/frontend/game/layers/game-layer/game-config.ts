@@ -31,6 +31,8 @@ interface GameConfig {
     TARGET_DEC_PER_SEC: number;
     TARGET_GAIN: number;
 
+    EMPTY_CIRCUIT_START: Boolean;
+
     INIT_FOODS: FoodAdder[];
 
     TargetGenerator(state: SnakeGameState): TargetGenerator;
@@ -68,11 +70,17 @@ class DefaultConfig implements GameConfig {
     TARGET_DEC_PER_SEC: number = 0;
     TARGET_GAIN: number = 30;
 
+    EMPTY_CIRCUIT_START: Boolean = false;
+
     INIT_FOODS: FoodAdder[] = [];
 
     TargetGenerator(state: SnakeGameState): TargetGenerator {
         return machine.noopGenerator;
     }
-    Win(state: SnakeGameState): Boolean { return false; }
-    Lose(state: SnakeGameState): Boolean { return false; }
+    Win(state: SnakeGameState): Boolean {
+        return state.VictoryBar().progress === 100;
+    }
+    Lose(state: SnakeGameState): Boolean {
+        return state.EnergyBar().progress === 0;
+    }
 }
