@@ -37,7 +37,9 @@ namespace Tutorial {
     export function Start(control: LayerControl): void {
         const foodgen = new TutorialFoodGenerator();
         const config = new TutorialConfigs(control, foodgen);
-        const tutorial = new GameLayerImpl(config, foodgen, control);
+        const tutorial = new GameLayerImpl(
+            config, foodgen, control,
+            g => g.Pause(), g => g.Pause(), () => Start(control));
         control.PushLayer(tutorial);
         control.PushLayer(StartIntro(control, tutorial));
     }

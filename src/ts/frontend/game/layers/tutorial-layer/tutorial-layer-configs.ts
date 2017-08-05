@@ -9,7 +9,8 @@ class TutorialConfigs extends DefaultConfig {
         this.VISION_GAIN = 0.05;
         this.EMPTY_CIRCUIT_START = true;
         this.ACCELERATE_TIME_INIT = 0;
-        this.BASIC_VISION = 0.3;
+        this.ACCELERATE_TIME_GAIN = 10;
+        this.BASIC_VISION = 0.3
         this.control = control;
         this.foodGen = foodGen;
     }

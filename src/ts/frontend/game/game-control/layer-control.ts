@@ -5,6 +5,7 @@ interface LayerControl {
     PushLayer(layer: Layer): void;
     PopLayer(): void;
     TopLayer(): Layer;
+    LayerSize(): number;
     gs: GameStatus;
 }
 
@@ -21,6 +22,9 @@ class LayerControlImpl implements LayerControl {
     }
     TopLayer(): Layer {
         return this.layers[this.layers.length - 1];
+    }
+    LayerSize(): number {
+        return this.layers.length;
     }
     layers: Layer[];
     gs: GameStatus;
