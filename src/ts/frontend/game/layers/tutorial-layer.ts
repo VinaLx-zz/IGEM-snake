@@ -24,11 +24,13 @@ namespace Tutorial {
             tutorial.Start();
         }, Paint.BackgroundColor("blue"));
     }
+    let timeOutFlag: NodeJS.Timer | null = null;
     function StartIntro(
         control: LayerControl, tutorial: GameLayer): TutorialPage {
         return MakeTutorialPage(control, () => {
             tutorial.Start();
-            setTimeout(() => {
+            timeOutFlag = setTimeout(() => {
+                timeOutFlag = null;
                 tutorial.Pause();
                 control.PushLayer(EnergyIntro(control, tutorial));
             }, 5000);
@@ -39,7 +41,10 @@ namespace Tutorial {
         const config = new TutorialConfigs(control, foodgen);
         const tutorial = new GameLayerImpl(
             config, foodgen, control,
-            g => g.Pause(), g => g.Pause(), () => Start(control));
+            g => g.Pause(), g => g.Pause(), () => {
+                if (timeOutFlag !== null) clearTimeout(timeOutFlag);
+                Start(control);
+            });
         control.PushLayer(tutorial);
         control.PushLayer(StartIntro(control, tutorial));
     }

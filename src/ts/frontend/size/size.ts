@@ -106,4 +106,16 @@ namespace SZ {
         export const RED_BEG_Y: number = 0.1496875;
         export const TARGET_CAND_OFFSET: number = 0.00625 + TARGET_CAND_W;
     }
+    export namespace PAUSE {
+        export const BACKGROUND_W: number = 0.35625;
+        export const BACKGROUND_H: number = 0.3725;
+        export const BACKGROUND_X: number = 0.5 - BACKGROUND_W / 2;
+        export const BACKGROUND_Y: number = (RELATIVE_HEIGHT - BACKGROUND_H) / 2;
+        export const BUTTON_W: number = 0.193125;
+        export const BUTTON_H: number = 0.09375;
+        export const BUTTON_X: number = 0.5 - BUTTON_W / 2;
+        export const RESTART_Y: number = (RELATIVE_HEIGHT - BUTTON_H) / 2;
+        export const RESUME_Y: number = RESTART_Y - 0.1;
+        export const MAINMENU_Y: number = RESTART_Y + 0.1;
+    }
 }

@@ -104,4 +104,16 @@ declare namespace SZ {
         const RED_BEG_Y: number;
         const TARGET_CAND_OFFSET: number;
     }
+    namespace PAUSE {
+        const BACKGROUND_W: number;
+        const BACKGROUND_H: number;
+        const BACKGROUND_X: number;
+        const BACKGROUND_Y: number;
+        const BUTTON_W: number;
+        const BUTTON_H: number;
+        const BUTTON_X: number;
+        const RESUME_Y: number;
+        const RESTART_Y: number;
+        const MAINMENU_Y: number;
+    }
 }

@@ -76,7 +76,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     Pause(): void { this.go.Stop(); }
     State(): SnakeGameState { return this.game; }
 
-    PopPauseLayer(): void {
+    PushPauseLayer(): void {
+        this.Pause();
         this.control.PushLayer(this.pauseLayer);
     }
 
@@ -143,7 +144,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
             new RectBound(
                 SZ.GAME.PAUSE_X, SZ.GAME.PAUSE_Y,
                 SZ.GAME.PAUSE_W, SZ.GAME.PAUSE_H),
-            IMG.BTN.pause, IMG.BTN.pauseFocus, Func.Noop);
+            IMG.BTN.pause, IMG.BTN.pauseFocus,
+            () => this.PushPauseLayer());
     }
 
     generator: FoodGenerator;

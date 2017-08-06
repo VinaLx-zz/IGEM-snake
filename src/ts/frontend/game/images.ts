@@ -85,4 +85,13 @@ namespace IMG {
         export const term_y = image("images/food/term-y.png");
         export const energy = image("images/food/energy.png");
     }
+    export namespace PAUSE {
+        export const background = image("images/pause/back.png");
+        export const resume = image("images/pause/resume.png");
+        export const resumeFocus = image("images/pause/resume-focus.png");
+        export const restart = image("images/pause/restart.png");
+        export const restartFocus = image("images/pause/restart-focus.png");
+        export const mainMenu = image("images/pause/main-menu.png");
+        export const mainMenuFocus = image("images/pause/main-menu-focus.png");
+    }
 }
