@@ -116,4 +116,24 @@ declare namespace SZ {
         const RESTART_Y: number;
         const MAINMENU_Y: number;
     }
+    namespace GAMEOVER {
+        const BACKGROUND_W: number;
+        const BACKGROUND_H: number;
+        const BACKGROUND_X: number;
+        const BACKGROUND_Y: number;
+        const BUTTON_W: number;
+        const BUTTON_H: number;
+        const BUTTON_Y: number;
+        const RESTART_X: number;
+        const MAINMENU_X: number;
+        const LEARN_X: number;
+        const LEARN_Y: number;
+        const LEARN_W: number;
+        const LEARN_H: number;
+        const FONT_SIZE: number;
+        const TIME_X: number;
+        const TIME_Y: number;
+        const PART_X: number;
+        const PART_Y: number;
+    }
 }

@@ -1,9 +1,10 @@
 /// <reference path="./abstract-layer.ts" />
 
 class PauseLayer extends AbstractLayer {
-    constructor(restart: () => void, game: GameLayer, control: LayerControl) {
+    constructor(
+        gameRestart: () => void, game: GameLayer, control: LayerControl) {
         super(control, {}, true);
-        this.restartCallback = restart;
+        this.restartCallback = gameRestart;
         this.Init();
         this.game = game;
         this.control = control;
@@ -26,12 +27,12 @@ class PauseLayer extends AbstractLayer {
             new RectBound(
                 SZ.PAUSE.BUTTON_X, SZ.PAUSE.RESTART_Y,
                 SZ.PAUSE.BUTTON_W, SZ.PAUSE.BUTTON_H),
-            IMG.PAUSE.restart, IMG.PAUSE.restartFocus, () => this.Restart());
+            IMG.BTN.restart, IMG.BTN.restartFocus, () => this.Restart());
         this.mainMenu = new AnimatedButton(
             new RectBound(
                 SZ.PAUSE.BUTTON_X, SZ.PAUSE.MAINMENU_Y,
                 SZ.PAUSE.BUTTON_W, SZ.PAUSE.BUTTON_H),
-            IMG.PAUSE.mainMenu, IMG.PAUSE.mainMenuFocus, () => this.MainMenu());
+            IMG.BTN.mainMenu, IMG.BTN.mainMenuFocus, () => this.MainMenu());
         return Button.Add(this.resume, this.restart, this.mainMenu);
     }
     Resume(): void {
@@ -39,8 +40,7 @@ class PauseLayer extends AbstractLayer {
         this.game.Start();
     }
     Restart(): void {
-        this.control.PopLayer(); // itself
-        this.control.PopLayer(); // the game
+        this.control.PopLayer();
         this.restartCallback();
     }
     MainMenu(): void {

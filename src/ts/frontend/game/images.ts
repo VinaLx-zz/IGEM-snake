@@ -58,6 +58,10 @@ namespace IMG {
         export const learnBioFocus = image("images/help/synthetic-bio-focus.png");
         export const pause = image("images/game/pause.png");
         export const pauseFocus = image("images/game/pause-focus.png");
+        export const restart = image("images/pause/restart.png");
+        export const restartFocus = image("images/pause/restart-focus.png");
+        export const mainMenu = image("images/pause/main-menu.png");
+        export const mainMenuFocus = image("images/pause/main-menu-focus.png");
     }
     export namespace GAME {
         export const rockerBack = image("images/game/rocker-back.png");
@@ -89,9 +93,11 @@ namespace IMG {
         export const background = image("images/pause/back.png");
         export const resume = image("images/pause/resume.png");
         export const resumeFocus = image("images/pause/resume-focus.png");
-        export const restart = image("images/pause/restart.png");
-        export const restartFocus = image("images/pause/restart-focus.png");
-        export const mainMenu = image("images/pause/main-menu.png");
-        export const mainMenuFocus = image("images/pause/main-menu-focus.png");
+    }
+    export namespace GAMEOVER {
+        export const fail = image("images/gameover/fail.png");
+        export const success = image("images/gameover/success.png");
+        export const learn = image("images/gameover/learn.png");
+        export const learnFocus = image("images/gameover/learn-focus.png");
     }
 }

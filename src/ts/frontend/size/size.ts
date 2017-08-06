@@ -118,4 +118,24 @@ namespace SZ {
         export const RESUME_Y: number = RESTART_Y - 0.1;
         export const MAINMENU_Y: number = RESTART_Y + 0.1;
     }
+    export namespace GAMEOVER {
+        export const BACKGROUND_W: number = 0.606875;
+        export const BACKGROUND_H: number = 0.43625;
+        export const BACKGROUND_X: number = (1 - BACKGROUND_W) / 2;
+        export const BACKGROUND_Y: number = (RELATIVE_HEIGHT - BACKGROUND_H) / 2;
+        export const BUTTON_W: number = PAUSE.BUTTON_W;
+        export const BUTTON_H: number = PAUSE.BUTTON_H;
+        export const BUTTON_Y: number = BACKGROUND_Y + 0.3;
+        export const RESTART_X: number = 0.46 - BUTTON_W;
+        export const MAINMENU_X: number = 0.54;
+        export const LEARN_W: number = 0.281875;
+        export const LEARN_H: number = 0.016875;
+        export const LEARN_X: number = (1 - LEARN_W) / 2;
+        export const LEARN_Y: number = BACKGROUND_Y + BACKGROUND_H + 0.019;
+        export const FONT_SIZE: number = 0.03;
+        export const TIME_X: number = 0.35 + BACKGROUND_X;
+        export const TIME_Y: number = 0.1625 + BACKGROUND_Y;
+        export const PART_X: number = TIME_X;
+        export const PART_Y: number = 0.21875 + BACKGROUND_Y;
+    }
 }

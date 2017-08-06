@@ -3,6 +3,7 @@
 /// <reference path="../widgets/rocker.ts" />
 /// <reference path="../widgets/food.ts" />
 /// <reference path="./pause-layer.ts" />
+/// <reference path="./gameover-layer.ts" />
 /// <reference path="./game-layer/food-library.ts" />
 /// <reference path="./game-layer/game-config.ts"  />
 /// <reference path="./game-layer/level.ts" />
@@ -11,7 +12,16 @@
 
 
 
+
 namespace game {
+    function PushGameOverLayer(layer: GameLayer, control: LayerControl, win: Boolean) {
+        layer.Pause();
+        control.PushLayer(new GameOverLayer({
+            win: win,
+            time: layer.GameTime(),
+            foodEaten: layer.State().FoodEaten()
+        }, () => layer.Restart(), control));
+    }
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
         const config = GameConfigByLevel(l);
@@ -19,8 +29,12 @@ namespace game {
             l, config.BOARD_WIDTH, config.BOARD_HEIGHT);
         return new GameLayerImpl(
             config, gen, control,
-            g => g.Pause(), g => g.Pause(),
-            () => control.PushLayer(NewGameByLevel(l, control)));
+            PushGameOverLayer, PushGameOverLayer,
+            () => {
+                const game = NewGameByLevel(l, control);
+                control.PushLayer(game);
+                game.Start();
+            });
     }
     export function GameConfigByLevel(l: Level): GameConfig {
         switch (l) {
@@ -49,7 +63,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC);
         this.win = win;
         this.lose = lose;
-        this.pauseLayer = new PauseLayer(restart, this, control);
+        this.restartCallback = restart;
+        this.pauseLayer = new PauseLayer(() => this.Restart(), this, control);
     }
     Painter(): Painter {
         return this.PaintBackground()
@@ -83,15 +98,19 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     GameTime(): number {
         return this.time;
     }
+    Restart(): void {
+        this.control.PopLayer();
+        this.restartCallback();
+    }
 
     private TakeTurn(time: number): void {
         this.game.NextState();
         this.time += 1 / param.FRAME_PER_SEC;
         if (this.game.Win()) {
-            this.win(this, this.control);
+            this.win(this, this.control, true);
             return;
         } else if (this.game.Lose()) {
-            this.lose(this, this.control);
+            this.lose(this, this.control, false);
             return;
         }
         this.generator.Generate(time, this.game)(this.game);
@@ -164,5 +183,6 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     pause: AnimatedButton<RectBound>;
     pauseLayer: PauseLayer;
 
+    restartCallback: () => void;
     time: number = 0;
 }
