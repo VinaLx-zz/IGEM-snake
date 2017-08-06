@@ -41,12 +41,6 @@ namespace SZ {
         export const LEARN_Y: number = 0.446;
         export const LEARN_W: number = 0.5;
     }
-    export namespace STORY {
-        export const PREV_X: number = 0.181818182;
-        export const NEXT_X: number = 0.85;
-        export const BUTTON_Y: number = 0.6;
-        export const BUTTON_R: number = 0.022172949;
-    }
     export namespace BIOLOGY {
         export const PREV_X: number = 0.2275;
         export const PREV_X2: number = 0.2025;
@@ -56,6 +50,13 @@ namespace SZ {
         export const BUTTON_Y2: number = 0.36;
         export const BUTTON_W: number = 0.026875;
         export const BUTTON_H: number = 0.03;
+    }
+    export namespace STORY {
+        export const PREV_X: number = 0.181818182;
+        export const NEXT_X: number = 0.85;
+        export const BUTTON_Y: number = 0.6;
+        export const BUTTON_W: number = BIOLOGY.BUTTON_W;
+        export const BUTTON_H: number = BIOLOGY.BUTTON_H;
     }
     export namespace GAME {
         export const SNAKE_HEAD_R: number = 0.02125;
@@ -74,10 +75,10 @@ namespace SZ {
         export const ACCELERATION_Y: number = 0.65;
         export const RIGHT_ACCELERATION_X: number = 0.90625;
         export const LEFT_ACCELERATION_X: number = 1 - RIGHT_ACCELERATION_X;
-        export const SETTING_R: number = 0.03125;
-        export const SETTING_Y: number = 0.53125;
-        export const RIGHT_SETTING_X: number = 0.90625;
-        export const LEFT_SETTING_X: number = 1 - RIGHT_SETTING_X;
+        export const PAUSE_X: number = 0.88625;
+        export const PAUSE_Y: number = 0.51;
+        export const PAUSE_W: number = 0.04
+        export const PAUSE_H: number = 0.0425;
 
         export const TARGET_X: number = 0.7625;
         export const TARGET_Y: number = 0.0325;

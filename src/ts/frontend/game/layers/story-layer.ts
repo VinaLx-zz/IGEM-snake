@@ -12,12 +12,18 @@ class StoryLayer extends AbstractLayer {
         this.back = new CloseButton(
             new RectBound(
                 SZ.BACK_X, SZ.BACK_Y, SZ.BACK_W, SZ.BACK_H), this.control);
-        this.next = new ClickButton(
-            () => this.slide.Next(),
-            new CircleBound(SZ.STORY.NEXT_X, SZ.STORY.BUTTON_Y, SZ.STORY.BUTTON_R));
-        this.prev = new ClickButton(
-            () => this.slide.Prev(),
-            new CircleBound(SZ.STORY.PREV_X, SZ.STORY.BUTTON_Y, SZ.STORY.BUTTON_R));
+        this.next = new AnimatedButton(
+            new RectBound(
+                SZ.STORY.NEXT_X, SZ.STORY.BUTTON_Y,
+                SZ.STORY.BUTTON_W, SZ.STORY.BUTTON_H),
+            IMG.BIOLOGY.next, IMG.BIOLOGY.nextFocus,
+            () => this.slide.Next());
+        this.prev = new AnimatedButton(
+            new RectBound(
+                SZ.STORY.PREV_X, SZ.STORY.BUTTON_Y,
+                SZ.STORY.BUTTON_W, SZ.STORY.BUTTON_H),
+            IMG.BIOLOGY.prev, IMG.BIOLOGY.prevFocus,
+            () => this.slide.Prev());
         return Button.Add(this.back, this.next, this.prev);
     }
     Painter(): Painter {
@@ -30,20 +36,18 @@ class StoryLayer extends AbstractLayer {
     PaintNextButton(): Painter {
         return Paint.If(
             () => this.slide.current === this.slide.images.length - 1,
-            Paint.Noop(),
-            Paint.PositionedImage(this.next.bound, IMG.STORY.next));
+            Paint.Noop(), this.next.Painter());
     }
 
     PaintPrevButton(): Painter {
         return Paint.If(
             () => this.slide.current === 0,
-            Paint.Noop(),
-            Paint.PositionedImage(this.prev.bound, IMG.STORY.prev));
+            Paint.Noop(), this.prev.Painter());
     }
 
     back: CloseButton<RectBound>;
-    next: ClickButton<CircleBound>;
-    prev: ClickButton<CircleBound>;
+    next: AnimatedButton<RectBound>;
+    prev: AnimatedButton<RectBound>;
 
     slide: Slides;
 }

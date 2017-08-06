@@ -56,6 +56,8 @@ namespace IMG {
         export const how2playFocus = image("images/help/how-to-play-focus.png");
         export const learnBio = image("images/help/synthetic-bio.png");
         export const learnBioFocus = image("images/help/synthetic-bio-focus.png");
+        export const pause = image("images/game/pause.png");
+        export const pauseFocus = image("images/game/pause-focus.png");
     }
     export namespace GAME {
         export const rockerBack = image("images/game/rocker-back.png");

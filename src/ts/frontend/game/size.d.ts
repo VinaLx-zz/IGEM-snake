@@ -44,7 +44,8 @@ declare namespace SZ {
         const PREV_X: number;
         const NEXT_X: number;
         const BUTTON_Y: number;
-        const BUTTON_R: number;
+        const BUTTON_W: number;
+        const BUTTON_H: number;
     }
     namespace BIOLOGY {
         const PREV_X: number;
@@ -73,10 +74,10 @@ declare namespace SZ {
         const ACCELERATION_Y: number;
         const LEFT_ACCELERATION_X: number;
         const RIGHT_ACCELERATION_X: number;
-        const SETTING_R: number;
-        const SETTING_Y: number;
-        const LEFT_SETTING_X: number;
-        const RIGHT_SETTING_X: number;
+        const PAUSE_X: number;
+        const PAUSE_Y: number;
+        const PAUSE_W: number;
+        const PAUSE_H: number;
 
         const TARGET_X: number;
         const TARGET_Y: number;

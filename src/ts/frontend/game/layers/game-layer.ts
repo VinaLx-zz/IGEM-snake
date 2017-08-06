@@ -34,8 +34,7 @@ namespace game {
 class GameLayerImpl extends AbstractLayer implements GameLayer {
     constructor(
         config: GameConfig, foodgen: FoodGenerator, control: LayerControl,
-        win: GameFinishCallback = g => g.Pause(),
-        lose: GameFinishCallback = g => g.Pause(),
+        win: GameFinishCallback, lose: GameFinishCallback,
         restart: () => void) {
         super(control, {
             KeyDown: k =>
@@ -57,6 +56,7 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
             .Then(this.game.Painter())
             .Then(this.PaintRocker())
             .Then(this.PaintAcceleration())
+            .Then(this.pause.Painter());
     }
     private PaintBackground(): Painter {
         return Paint.BackgroundColor("#fffaf0");
@@ -110,8 +110,9 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
 
     Buttons(): MouseEventCatcher {
         this.acceleration = this.InitAcceleration();
+        this.pause = this.InitPauseButton();
         this.rocker = this.InitRocker();
-        return Button.Add(this.acceleration, this.rocker);
+        return Button.Add(this.acceleration, this.rocker, this.pause);
     }
 
     private InitAcceleration(): HoldButton<CircleBound> {
@@ -135,7 +136,14 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     private RockerBound(): Bound {
         return Bound.Sub(
             new RectBound(0, 0, 1, SZ.RELATIVE_HEIGHT),
-            this.acceleration.bound);
+            Bound.Add(this.acceleration.bound, this.pause.bound));
+    }
+    private InitPauseButton(): AnimatedButton<RectBound> {
+        return new AnimatedButton(
+            new RectBound(
+                SZ.GAME.PAUSE_X, SZ.GAME.PAUSE_Y,
+                SZ.GAME.PAUSE_W, SZ.GAME.PAUSE_H),
+            IMG.BTN.pause, IMG.BTN.pauseFocus, Func.Noop);
     }
 
     generator: FoodGenerator;
@@ -147,5 +155,6 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     win: GameFinishCallback;
     lose: GameFinishCallback;
 
+    pause: AnimatedButton<RectBound>;
     pauseLayer: PauseLayer;
 }
