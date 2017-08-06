@@ -80,9 +80,13 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         this.Pause();
         this.control.PushLayer(this.pauseLayer);
     }
+    GameTime(): number {
+        return this.time;
+    }
 
     private TakeTurn(time: number): void {
         this.game.NextState();
+        this.time += 1 / param.FRAME_PER_SEC;
         if (this.game.Win()) {
             this.win(this, this.control);
             return;
@@ -159,4 +163,6 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
 
     pause: AnimatedButton<RectBound>;
     pauseLayer: PauseLayer;
+
+    time: number = 0;
 }

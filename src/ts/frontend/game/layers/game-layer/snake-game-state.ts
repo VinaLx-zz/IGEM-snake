@@ -19,6 +19,7 @@ interface SnakeGameState {
     RestFood(c: food.Color): food.Part[];
     Snake(): Snake;
     NumFoodsOnBoard(): number;
+    FoodEaten(): number;
     Win(): Boolean;
     Lose(): Boolean;
 

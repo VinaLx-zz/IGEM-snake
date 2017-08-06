@@ -66,9 +66,11 @@ class Board {
     private TryEatFood(): void {
         const foods = this.foods.RemoveIf(f => f.Reachable(this.snake.Head()));
         foods.forEach(f => f.Eat());
+        this.foodEaten = foods.length;
     }
     bound: AdjustableBound;
     snake: Nematode;
     foods: List<Food>;
+    foodEaten: number = 0;
     vision: number = 0;
 }

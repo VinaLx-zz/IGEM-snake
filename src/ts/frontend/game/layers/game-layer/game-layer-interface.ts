@@ -4,6 +4,7 @@ interface GameLayer extends Layer {
     Pause(): void;
     Start(): void;
     State(): SnakeGameState;
+    GameTime(): number;
 }
 
 interface GameFinishCallback {
