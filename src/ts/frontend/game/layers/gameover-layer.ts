@@ -34,13 +34,13 @@ class GameOverLayer extends AbstractLayer {
         let min = Math.floor(sec / 60);
         sec = sec % 60;
         return Paint.Text(
-            `${SZ.GAMEOVER.FONT_SIZE}px sans-serif`,
+            `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
             `${min}: ${sec}`,
             SZ.GAMEOVER.TIME_X, SZ.GAMEOVER.TIME_Y, "rgb(93,93,93)");
     }
     private PaintParts(): Painter {
         return Paint.Text(
-            `${SZ.GAMEOVER.FONT_SIZE}px sans-serif`,
+            `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
             `${Math.round(this.gameResult.foodEaten)}`,
             SZ.GAMEOVER.PART_X, SZ.GAMEOVER.PART_Y, "rgb(93,93,93)");
     }

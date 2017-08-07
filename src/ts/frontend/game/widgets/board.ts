@@ -44,8 +44,8 @@ class Board {
             const v = ctx.createRadialGradient(
                 0.5, SZ.RELATIVE_HEIGHT / 2, this.vision + 0.1,
                 0.5, SZ.RELATIVE_HEIGHT / 2, this.vision);
-            v.addColorStop(0, "rgba(172, 166, 161, 1)");
-            v.addColorStop(1, "rgba(172, 166, 161, 0)");
+            v.addColorStop(0, "rgba(245, 245, 245, 1)");
+            v.addColorStop(1, "rgba(255, 255, 255, 0.2)");
             ctx.fillStyle = v;
             ctx.fillRect(0, 0, 1, SZ.RELATIVE_HEIGHT);
         })
