@@ -14,7 +14,8 @@
 
 
 namespace game {
-    function PushGameOverLayer(layer: GameLayer, control: LayerControl, win: Boolean) {
+    export function PushGameOverLayer(
+        layer: GameLayer, control: LayerControl, win: Boolean) {
         layer.Pause();
         control.PushLayer(new GameOverLayer({
             win: win,

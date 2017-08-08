@@ -28,7 +28,10 @@ class TutorialPage extends AbstractLayer {
         return this.content.Then(this.PaintContinuePrompt());
     }
     private PaintContinuePrompt(): Painter {
-        return Paint.Noop();
+        return Paint.Picture(
+            IMG.TUTORIAL.tap,
+            SZ.TUTORIAL.CONTINUE_X, SZ.TUTORIAL.CONTINUE_Y,
+            SZ.TUTORIAL.CONTINUE_W, SZ.TUTORIAL.CONTINUE_H);
     }
     content: Painter;
     cont: () => void;

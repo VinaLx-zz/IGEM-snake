@@ -100,4 +100,21 @@ namespace IMG {
         export const learn = image("images/gameover/learn.png");
         export const learnFocus = image("images/gameover/learn-focus.png");
     }
+    export namespace TUTORIAL {
+        export const start = image("images/tutorial/start.png");
+        export const move = image("images/tutorial/move.png");
+        export const energy = image("images/tutorial/energy.png");
+        export const energyPost = image("images/tutorial/energy-post.png");
+        export const energyPost2 = image("images/tutorial/energy-post-2.png");
+        export const geneticCircuits = image("images/tutorial/genetic-circuits.png");
+        export const geneticCircuits2 = image("images/tutorial/genetic-circuits-2.png");
+        export const red = image("images/tutorial/red.png");
+        export const redPost = image("images/tutorial/red-post.png");
+        export const green = image("images/tutorial/green.png");
+        export const greenPost = image("images/tutorial/green-post.png");
+        export const yellow = image("images/tutorial/yellow.png");
+        export const yellowPost = image("images/tutorial/yellow-post.png");
+        export const end = image("images/tutorial/end.png");
+        export const tap = image("images/tutorial/tap.png");
+    }
 }

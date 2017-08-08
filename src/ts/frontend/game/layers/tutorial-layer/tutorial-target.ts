@@ -42,14 +42,36 @@ class TutorialTargetGenerator extends GameSequenceGenerator {
     }
     private RedAndGreen(): TutorialPage {
         return this.MakeTutorialPage(
-            Paint.BackgroundColor("red"), Paint.BackgroundColor("green"));
+            Paint.Picture(
+                IMG.TUTORIAL.redPost,
+                SZ.TUTORIAL.RED_POST_X, SZ.TUTORIAL.RED_POST_Y,
+                SZ.TUTORIAL.RED_POST_W, SZ.TUTORIAL.RED_POST_H),
+            Paint.Picture(
+                IMG.TUTORIAL.green,
+                SZ.TUTORIAL.GREEN_X, SZ.TUTORIAL.GREEN_Y,
+                SZ.TUTORIAL.GREEN_W, SZ.TUTORIAL.GREEN_H));
     }
     private GreenAndYellow(): TutorialPage {
         return this.MakeTutorialPage(
-            Paint.BackgroundColor("green"), Paint.BackgroundColor("yellow"));
+            Paint.Picture(
+                IMG.TUTORIAL.greenPost,
+                SZ.TUTORIAL.GREEN_POST_X, SZ.TUTORIAL.GREEN_POST_Y,
+                SZ.TUTORIAL.GREEN_POST_W, SZ.TUTORIAL.GREEN_POST_H),
+            Paint.Picture(
+                IMG.TUTORIAL.yellow,
+                SZ.TUTORIAL.YELLOW_X, SZ.TUTORIAL.YELLOW_Y,
+                SZ.TUTORIAL.YELLOW_W, SZ.TUTORIAL.YELLOW_H));
     }
     private AfterYellow(): TutorialPage {
-        return this.MakeTutorialPage(Paint.BackgroundColor("yellow"));
+        return this.MakeTutorialPage(
+            Paint.Picture(
+                IMG.TUTORIAL.yellowPost,
+                SZ.TUTORIAL.YELLOW_POST_X, SZ.TUTORIAL.YELLOW_POST_Y,
+                SZ.TUTORIAL.YELLOW_POST_W, SZ.TUTORIAL.YELLOW_POST_H),
+            Paint.Picture(
+                IMG.TUTORIAL.end,
+                SZ.TUTORIAL.END_X, SZ.TUTORIAL.END_Y,
+                SZ.TUTORIAL.END_W, SZ.TUTORIAL.END_H));
     }
     private GameLayer(): GameLayer {
         return <GameLayer>this.control.TopLayer();
