@@ -1,11 +1,13 @@
 # IGEM-snake
+
 SYSU-Software IGEM human practice subproject, a snake game.
 
-## Build
+## Build and Serve
 
 ```sh
-npm install -g typescript # or add typescript in dependency
+npm install typescript
 npm run build
 npm start
 # open http://localhost:8080 in browser
 ```
+
