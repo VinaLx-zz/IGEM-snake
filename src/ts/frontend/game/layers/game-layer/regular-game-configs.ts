@@ -35,6 +35,7 @@ class LeveledConfig extends DefaultConfig {
     constructor(level: Level) {
         super();
         this.level = level;
+        this.INIT_FOODS = this.GenerateInitialFood();
     }
     TargetGenerator(state: SnakeGameState): TargetGenerator {
         return new RegularTargetGenerator(
@@ -46,6 +47,25 @@ class LeveledConfig extends DefaultConfig {
     }
     Lose(state: SnakeGameState): Boolean {
         return state.EnergyBar().progress <= 0;
+    }
+    GenerateInitialFood(): FoodAdder[] {
+        const posGen = FoodGen.PositionGen(this.BOARD_WIDTH, this.BOARD_HEIGHT);
+        const energyGen = FoodGen.EnergyGen(posGen);
+        const typeGen = Random.Nat(4);
+        const redGen = FoodGen.PartGen(
+            posGen, Random.Const(food.Color.RED), typeGen);
+        const yellowGen = FoodGen.PartGen(
+            posGen, Random.Const(food.Color.YELLOW), typeGen);
+        const greenGen = FoodGen.PartGen(
+            posGen, Random.Const(food.Color.GREEN), typeGen);
+        let result = [];
+        for (let i = 0; i < 3; ++i) {
+            result.push(redGen.gen());
+            result.push(greenGen.gen());
+            result.push(yellowGen.gen());
+        }
+        result.push(energyGen.gen());
+        return result;
     }
     level: Level;
 }

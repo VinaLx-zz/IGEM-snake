@@ -10,9 +10,6 @@
 /// <reference path="./game-layer/snake-game.ts" />
 /// <reference path="./game-layer/game-layer-interface.ts" />
 
-
-
-
 namespace game {
     export function PushGameOverLayer(
         layer: GameLayer, control: LayerControl, win: Boolean) {
@@ -26,10 +23,10 @@ namespace game {
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
         const config = GameConfigByLevel(l);
-        const gen = new LeveledGenerator(
+        const foodgen = new LeveledGenerator(
             l, config.BOARD_WIDTH, config.BOARD_HEIGHT);
         return new GameLayerImpl(
-            config, gen, control,
+            config, foodgen, control,
             PushGameOverLayer, PushGameOverLayer,
             () => {
                 const game = NewGameByLevel(l, control);
