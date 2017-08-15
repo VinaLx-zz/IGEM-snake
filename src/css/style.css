@@ -13,7 +13,7 @@ canvas {
 	src: url('/fonts/Microsoft YaHei UI.eot?#iefix') format('embedded-opentype'),
 		url('/fonts/Microsoft YaHei UI.woff2') format('woff2'),
         url('/fonts/Microsoft YaHei UI.woff') format('woff'),
-        url('/fonts/MicrosoftYaHeiUI.tff') format('truetype'),
+        url('/fonts/Microsoft YaHei UI.tff') format('truetype'),
 		url('/fonts/Microsoft YaHei UI.svg#Microsoft YaHei UI') format('svg');
     font-weight: 400;
     font-style: normal;
