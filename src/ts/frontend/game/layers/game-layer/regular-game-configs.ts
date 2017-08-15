@@ -35,6 +35,8 @@ class LeveledConfig extends DefaultConfig {
     constructor(level: Level) {
         super();
         this.level = level;
+        this.VISION_GAIN = 0.1;
+        this.VISION_DEC_PER_SEC = 0.002;
         this.INIT_FOODS = this.GenerateInitialFood();
     }
     TargetGenerator(state: SnakeGameState): TargetGenerator {
