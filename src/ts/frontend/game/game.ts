@@ -26,21 +26,28 @@ class Game {
     }
     static OrientCanvasSize(canvas: HTMLCanvasElement): HTMLCanvasElement {
         const wh = window.innerHeight, ww = window.innerWidth, wh_ww = wh / ww;
-        canvas.height = wh;
-        canvas.width = ww;
+        let h = wh, w = ww;
+        // canvas.height = wh * 2;
+        // canvas.width = ww * 2;
         const h_w = SZ.HEIGHT_FACTOR / SZ.WIDTH_FACTOR;
         if (h_w > wh_ww) {
-            canvas.width = wh / h_w;
+            w = wh / h_w
+            // canvas.width = wh / h_w;
         } else {
-            canvas.height = ww * h_w;
+            h = ww * h_w
+            // canvas.height = ww * h_w;
         }
+        canvas.style.width = `${w}px`
+        canvas.style.height = `${h}px`
+        canvas.width = w * 2;
+        canvas.height = h * 2;
         return canvas;
     }
 
     private Translate(x: number, y: number): Vector {
         const result = new Vector(
-            (x - this.canvas.offsetLeft) / this.canvas.width,
-            (y - this.canvas.offsetTop) / this.canvas.width);
+            (x - this.canvas.offsetLeft) / this.canvas.width * 2,
+            (y - this.canvas.offsetTop) / this.canvas.width * 2);
         return result;
     }
 

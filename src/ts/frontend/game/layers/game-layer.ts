@@ -47,7 +47,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     constructor(
         config: GameConfig, foodgen: FoodGenerator, control: LayerControl,
         win: GameFinishCallback, lose: GameFinishCallback,
-        restart: () => void) {
+        restart: () => void,
+        onQuit: () => void = Func.Noop) {
         super(control, {
             KeyDown: k =>
                 k === " " ? this.game.AccelerationBar().Accelerate() : undefined,
@@ -62,7 +63,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         this.win = win;
         this.lose = lose;
         this.restartCallback = restart;
-        this.pauseLayer = new PauseLayer(() => this.Restart(), this, control);
+        this.pauseLayer = new PauseLayer(
+            () => this.Restart(), onQuit, this, control);
     }
     Painter(): Painter {
         return this.PaintBackground()

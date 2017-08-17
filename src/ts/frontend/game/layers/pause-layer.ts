@@ -2,12 +2,15 @@
 
 class PauseLayer extends AbstractLayer {
     constructor(
-        gameRestart: () => void, game: GameLayer, control: LayerControl) {
+        gameRestart: () => void,
+        onQuit: () => void,
+        game: GameLayer, control: LayerControl) {
         super(control, {}, true);
         this.restartCallback = gameRestart;
         this.Init();
         this.game = game;
         this.control = control;
+        this.onQuit = onQuit;
     }
     Painter(): Painter {
         return Paint.Picture(
@@ -41,9 +44,11 @@ class PauseLayer extends AbstractLayer {
     }
     Restart(): void {
         this.control.PopLayer();
+        this.onQuit();
         this.restartCallback();
     }
     MainMenu(): void {
+        this.onQuit();
         for (; this.control.LayerSize() !== 1;) {
             this.control.PopLayer();
         }
@@ -52,5 +57,6 @@ class PauseLayer extends AbstractLayer {
     resume: AnimatedButton<RectBound>;
     restart: AnimatedButton<RectBound>;
     mainMenu: AnimatedButton<RectBound>;
+    onQuit: () => void;
     restartCallback: () => void;
 }

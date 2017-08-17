@@ -89,9 +89,8 @@ namespace Tutorial {
         const tutorial = new GameLayerImpl(
             config, foodgen, control,
             game.PushGameOverLayer, game.PushGameOverLayer,
-            () => {
+            () => Start(control), () => {
                 if (timeOutFlag !== null) clearTimeout(timeOutFlag);
-                Start(control);
             });
         control.PushLayer(tutorial);
         control.PushLayer(StartIntro(control, tutorial));

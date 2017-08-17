@@ -7,8 +7,6 @@
 class HelpLayer extends AbstractLayer {
     constructor(control: LayerControl) {
         super(control, {});
-        this.storyLayer = new StoryLayer(control);
-        this.biologyLayer = new BiologyLayer(control);
     }
     Buttons(): MouseEventCatcher {
         this.back = new CloseButton(
@@ -19,7 +17,8 @@ class HelpLayer extends AbstractLayer {
             new RectBound(
                 SZ.HELP.STORY_X, SZ.HELP.STORY_Y, SZ.HELP.STORY_W, th),
                 IMG.BTN.tellStory, IMG.BTN.tellStoryFocus,
-                (): void => this.control.PushLayer(this.storyLayer))
+                (): void => this.control.PushLayer(
+                    new StoryLayer(this.control)))
         this.how2play = new AnimatedButton(
             new RectBound(
                 SZ.HELP.PLAY_X, SZ.HELP.PLAY_Y, SZ.HELP.PLAY_W, th),
@@ -29,7 +28,8 @@ class HelpLayer extends AbstractLayer {
             new RectBound(
                 SZ.HELP.LEARN_X, SZ.HELP.LEARN_Y, SZ.HELP.LEARN_W, th),
                 IMG.BTN.learnBio, IMG.BTN.learnBioFocus,
-                (): void => this.control.PushLayer(this.biologyLayer))
+                (): void => this.control.PushLayer(
+                    new BiologyLayer(this.control)))
         return Button.Add(this.back, this.story, this.how2play, this.learn);
     }
     Painter(): Painter {
@@ -43,7 +43,4 @@ class HelpLayer extends AbstractLayer {
     story: AnimatedButton<RectBound>;
     how2play: AnimatedButton<RectBound>;
     learn: AnimatedButton<RectBound>;
-
-    storyLayer: Layer;
-    biologyLayer: Layer;
 }
