@@ -135,6 +135,8 @@ declare namespace SZ {
         const TIME_Y: number;
         const PART_X: number;
         const PART_Y: number;
+        const TARGET_X: number;
+        const TARGET_Y: number;
     }
     namespace TUTORIAL {
         const START_W: number;

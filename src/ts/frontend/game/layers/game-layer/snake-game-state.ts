@@ -20,6 +20,7 @@ interface SnakeGameState {
     Snake(): Snake;
     NumFoodsOnBoard(): number;
     FoodEaten(): number;
+    TargetCompleted(): number;
     Win(): Boolean;
     Lose(): Boolean;
 

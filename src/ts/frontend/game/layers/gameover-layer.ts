@@ -5,6 +5,7 @@ interface GameResult {
     win: Boolean;
     time: number;
     foodEaten: number;
+    targetCompleted: number;
 }
 
 class GameOverLayer extends AbstractLayer {
@@ -43,6 +44,12 @@ class GameOverLayer extends AbstractLayer {
             `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
             `${Math.round(this.gameResult.foodEaten)}`,
             SZ.GAMEOVER.PART_X, SZ.GAMEOVER.PART_Y, "rgb(93,93,93)");
+    }
+    private PaintTargetComplete(): Painter {
+        return Paint.Text(
+            `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
+            `${this.gameResult.targetCompleted}`,
+            SZ.GAMEOVER.TARGET_X, SZ.GAMEOVER.TARGET_Y, "rgb(93,93,93)");
     }
     Buttons(): MouseEventDispatcher {
         this.learn = this.MakeLearnButton();

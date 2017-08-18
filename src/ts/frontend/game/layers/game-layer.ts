@@ -107,7 +107,8 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         this.control.PushLayer(new GameOverLayer({
             win: win,
             time: this.GameTime(),
-            foodEaten: this.State().FoodEaten()
+            foodEaten: this.State().FoodEaten(),
+            targetCompleted: this.State().TargetCompleted()
         }, () => this.Restart(), this.control))
     }
     GameTime(): number {

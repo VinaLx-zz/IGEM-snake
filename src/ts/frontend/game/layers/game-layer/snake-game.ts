@@ -54,6 +54,9 @@ class SnakeGame implements SnakeGameState {
     FoodEaten(): number {
         return this.board.foodEaten;
     }
+    TargetCompleted(): number {
+        return this.geneticCircuits.CompleteCount();
+    }
     Win(): Boolean {
         return this.config.Win(this);
     }

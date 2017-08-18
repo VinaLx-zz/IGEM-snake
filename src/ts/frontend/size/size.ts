@@ -137,6 +137,8 @@ namespace SZ {
         export const TIME_Y: number = 0.1625 + BACKGROUND_Y;
         export const PART_X: number = TIME_X;
         export const PART_Y: number = 0.21875 + BACKGROUND_Y;
+        export const TARGET_X: number = 0;
+        export const TARGET_Y: number = 0;
     }
     export namespace TUTORIAL {
         export const START_W: number = 0.57;

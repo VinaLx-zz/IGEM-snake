@@ -21,7 +21,11 @@ abstract class ColorFoodMachine implements FoodMachine {
             this.Generate(color);
     }
     Complete(color: food.Color): void {
+        ++this.completeCount;
         this.Generate(color);
+    }
+    CompleteCount(): number {
+        return this.completeCount;
     }
     Generate(color: food.Color): void {
         const next = this.generator.Generate(color);
@@ -40,6 +44,7 @@ abstract class ColorFoodMachine implements FoodMachine {
     }
     generator: TargetGenerator;
     dispatcher: TargetDispatcher;
+    completeCount: number = 0;
 }
 
 interface TargetSequence {
