@@ -3,10 +3,10 @@ namespace SZ {
     export const HEIGHT_FACTOR: number = 3;
     export const RELATIVE_HEIGHT: number = HEIGHT_FACTOR / WIDTH_FACTOR;
 
-    export const BACK_X: number = 0.90;
-    export const BACK_Y: number = 0.71;
-    export const BACK_W: number = 0.075;
-    export const BACK_H: number = 0.02;
+    export const BACK_X: number = 0.875;
+    export const BACK_Y: number = 0.7;
+    export const BACK_W: number = 0.1;
+    export const BACK_H: number = 0.0275;
 
     export namespace START {
         export const BUTTON_X: number = 0.875;
@@ -125,20 +125,19 @@ namespace SZ {
         export const BACKGROUND_Y: number = (RELATIVE_HEIGHT - BACKGROUND_H) / 2;
         export const BUTTON_W: number = PAUSE.BUTTON_W;
         export const BUTTON_H: number = PAUSE.BUTTON_H;
-        export const BUTTON_Y: number = BACKGROUND_Y + 0.3;
-        export const RESTART_X: number = 0.46 - BUTTON_W;
-        export const MAINMENU_X: number = 0.54;
+        export const BUTTON_X: number = 0.5 - BUTTON_W / 2;
+        export const RESTART_Y: number = 0.28;
+        export const MAINMENU_Y: number = 0.37;
+        export const SHARE_Y: number = 0.46;
         export const LEARN_W: number = 0.281875;
         export const LEARN_H: number = 0.016875;
         export const LEARN_X: number = (1 - LEARN_W) / 2;
-        export const LEARN_Y: number = BACKGROUND_Y + BACKGROUND_H + 0.019;
-        export const FONT_SIZE: number = 0.03;
-        export const TIME_X: number = 0.35 + BACKGROUND_X;
-        export const TIME_Y: number = 0.1625 + BACKGROUND_Y;
-        export const PART_X: number = TIME_X;
-        export const PART_Y: number = 0.21875 + BACKGROUND_Y;
-        export const TARGET_X: number = 0;
-        export const TARGET_Y: number = 0;
+        export const LEARN_Y: number = 0.6;
+        // export const FONT_SIZE: number = 0.03;
+        // export const TIME_X: number = 0.35 + BACKGROUND_X;
+        // export const TIME_Y: number = 0.1625 + BACKGROUND_Y;
+        // export const PART_X: number = TIME_X;
+        // export const PART_Y: number = 0.21875 + BACKGROUND_Y;
     }
     export namespace TUTORIAL {
         export const START_W: number = 0.57;

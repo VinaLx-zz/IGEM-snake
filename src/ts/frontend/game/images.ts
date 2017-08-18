@@ -99,6 +99,8 @@ namespace IMG {
         export const success = image("images/gameover/success.png");
         export const learn = image("images/gameover/learn.png");
         export const learnFocus = image("images/gameover/learn-focus.png");
+        export const share = image("images/gameover/share.png");
+        export const shareFocus = image("images/gameover/share-focus.png")
     }
     export namespace TUTORIAL {
         export const start = image("images/tutorial/start.png");

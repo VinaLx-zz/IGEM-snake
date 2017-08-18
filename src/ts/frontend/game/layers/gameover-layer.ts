@@ -26,37 +26,36 @@ class GameOverLayer extends AbstractLayer {
             SZ.GAMEOVER.BACKGROUND_W, SZ.GAMEOVER.BACKGROUND_H)
             .Then(this.restart.Painter())
             .Then(this.mainMenu.Painter())
-            .Then(this.learn.Painter())
-            .Then(this.PaintTime())
-            .Then(this.PaintParts());
+            .Then(this.share.Painter())
+            .Then(this.learn.Painter());
     }
-    private PaintTime(): Painter {
-        let sec = Math.round(this.gameResult.time);
-        let min = Math.floor(sec / 60);
-        sec = sec % 60;
-        return Paint.Text(
-            `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
-            `${min}: ${sec}`,
-            SZ.GAMEOVER.TIME_X, SZ.GAMEOVER.TIME_Y, "rgb(93,93,93)");
-    }
-    private PaintParts(): Painter {
-        return Paint.Text(
-            `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
-            `${Math.round(this.gameResult.foodEaten)}`,
-            SZ.GAMEOVER.PART_X, SZ.GAMEOVER.PART_Y, "rgb(93,93,93)");
-    }
-    private PaintTargetComplete(): Painter {
-        return Paint.Text(
-            `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
-            `${this.gameResult.targetCompleted}`,
-            SZ.GAMEOVER.TARGET_X, SZ.GAMEOVER.TARGET_Y, "rgb(93,93,93)");
-    }
+    // private PaintTime(): Painter {
+    //     let sec = Math.round(this.gameResult.time);
+    //     let min = Math.floor(sec / 60);
+    //     sec = sec % 60;
+    //     return Paint.Text(
+    //         `0.025px sans-serif`,
+    //         `${min}: ${sec}`,
+    //         SZ.GAMEOVER.TIME_X, SZ.GAMEOVER.TIME_Y, "rgb(93,93,93)");
+    // }
+    // private PaintParts(): Painter {
+    //     return Paint.Text(
+    //         `0.025px MSYaHei`,
+    //         `${Math.round(this.gameResult.foodEaten)}`,
+    //         SZ.GAMEOVER.PART_X, SZ.GAMEOVER.PART_Y, "rgb(93,93,93)");
+    // }
+    // private PaintTargetComplete(): Painter {
+    //     return Paint.Text(
+    //         `${SZ.GAMEOVER.FONT_SIZE}px MSYaHei`,
+    //         `${this.gameResult.targetCompleted}`,
+    //         SZ.GAMEOVER.TARGET_X, SZ.GAMEOVER.TARGET_Y, "rgb(93,93,93)");
+    // }
     Buttons(): MouseEventDispatcher {
         this.learn = this.MakeLearnButton();
         this.restart = this.MakeRestartButton();
         this.mainMenu = this.MakeMainMenuButton();
-        const share = this.MakeShareButton();
-        return Button.Add(share, this.learn, this.restart, this.mainMenu);
+        this.share = this.MakeShareButton();
+        return Button.Add(this.share, this.learn, this.restart, this.mainMenu);
     }
     private MakeLearnButton() {
         return new AnimatedButton(
@@ -71,23 +70,23 @@ class GameOverLayer extends AbstractLayer {
     private MakeRestartButton() {
         return new AnimatedButton(
             new RectBound(
-                SZ.GAMEOVER.RESTART_X, SZ.GAMEOVER.BUTTON_Y,
+                SZ.GAMEOVER.BUTTON_X, SZ.GAMEOVER.RESTART_Y,
                 SZ.GAMEOVER.BUTTON_W, SZ.GAMEOVER.BUTTON_H),
             IMG.BTN.restart, IMG.BTN.restartFocus, () => this.Restart());
     }
     private MakeMainMenuButton() {
         return new AnimatedButton(
             new RectBound(
-                SZ.GAMEOVER.MAINMENU_X, SZ.GAMEOVER.BUTTON_Y,
+                SZ.GAMEOVER.BUTTON_X, SZ.GAMEOVER.MAINMENU_Y,
                 SZ.GAMEOVER.BUTTON_W, SZ.GAMEOVER.BUTTON_H),
             IMG.BTN.mainMenu, IMG.BTN.mainMenuFocus, () => this.MainMenu());
     }
     private MakeShareButton() {
-        const b = Bound.Sub(
-            new RectBound(0, 0, 1, 0.75),
-            Bound.Add(
-                this.learn.bound, this.restart.bound, this.mainMenu.bound));
-        return new ClickButton(() => share.Show(), b);
+        return new AnimatedButton(
+            new RectBound(
+                SZ.GAMEOVER.BUTTON_X, SZ.GAMEOVER.SHARE_Y,
+                SZ.GAMEOVER.BUTTON_W, SZ.GAMEOVER.BUTTON_H),
+            IMG.GAMEOVER.share, IMG.GAMEOVER.shareFocus, () => this.Share());
     }
     private MainMenu(): void {
         for (; this.control.LayerSize() > 1;)this.control.PopLayer();
@@ -96,10 +95,14 @@ class GameOverLayer extends AbstractLayer {
         this.control.PopLayer();
         this.restartCallback();
     }
+    private Share(): void {
+        share.Show();
+    }
     background: HTMLImageElement;
     gameResult: GameResult;
     learn: AnimatedButton<RectBound>;
     restart: AnimatedButton<RectBound>;
+    share: AnimatedButton<RectBound>;
     mainMenu: AnimatedButton<RectBound>;
     restartCallback: () => void;
 }
