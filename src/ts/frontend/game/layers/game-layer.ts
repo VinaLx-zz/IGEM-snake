@@ -11,15 +11,6 @@
 /// <reference path="./game-layer/game-layer-interface.ts" />
 
 namespace game {
-    export function PushGameOverLayer(
-        layer: GameLayer, control: LayerControl, win: Boolean) {
-        layer.Pause();
-        control.PushLayer(new GameOverLayer({
-            win: win,
-            time: layer.GameTime(),
-            foodEaten: layer.State().FoodEaten()
-        }, () => layer.Restart(), control));
-    }
     export function NewGameByLevel(
         l: Level, control: LayerControl): GameLayer {
         const config = GameConfigByLevel(l);
@@ -27,14 +18,13 @@ namespace game {
             l, config.BOARD_WIDTH, config.BOARD_HEIGHT);
         return new GameLayerImpl(
             config, foodgen, control,
-            PushGameOverLayer, PushGameOverLayer,
             () => {
                 const game = NewGameByLevel(l, control);
                 control.PushLayer(game);
                 game.Start();
             });
     }
-    export function GameConfigByLevel(l: Level): GameConfig {
+    function GameConfigByLevel(l: Level): GameConfig {
         switch (l) {
             case Level.Easy: return new EasyConfig();
             case Level.Normal: return new NormalConfig();
@@ -46,7 +36,6 @@ namespace game {
 class GameLayerImpl extends AbstractLayer implements GameLayer {
     constructor(
         config: GameConfig, foodgen: FoodGenerator, control: LayerControl,
-        win: GameFinishCallback, lose: GameFinishCallback,
         restart: () => void,
         onQuit: () => void = Func.Noop) {
         super(control, {
@@ -60,11 +49,12 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         this.generator = foodgen;
         this.go = new TimeIntervalControl(
             t => this.TakeTurn(t), 1000 / param.FRAME_PER_SEC);
-        this.win = win;
-        this.lose = lose;
         this.restartCallback = restart;
         this.pauseLayer = new PauseLayer(
-            () => this.Restart(), onQuit, this, control);
+            () => this.Restart(), () => {
+                this.Pause();
+                onQuit();
+            }, this, control);
     }
     Painter(): Painter {
         return this.PaintBackground()
@@ -87,34 +77,6 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
                     IMG.GAME.rockerDot));
         });
     }
-    Start(): void { this.go.Start(); }
-    Pause(): void { this.go.Stop(); }
-    State(): SnakeGameState { return this.game; }
-
-    PushPauseLayer(): void {
-        this.Pause();
-        this.control.PushLayer(this.pauseLayer);
-    }
-    GameTime(): number {
-        return this.time;
-    }
-    Restart(): void {
-        this.control.PopLayer();
-        this.restartCallback();
-    }
-
-    private TakeTurn(time: number): void {
-        this.game.NextState();
-        this.time += 1 / param.FRAME_PER_SEC;
-        if (this.game.Win()) {
-            this.win(this, this.control, true);
-            return;
-        } else if (this.game.Lose()) {
-            this.lose(this, this.control, false);
-            return;
-        }
-        this.generator.Generate(time, this.game)(this.game);
-    }
 
     private PaintAcceleration(): Painter {
         return Paint.Delay(() =>
@@ -130,6 +92,43 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
         const newY = y + 2 * r * (1 - this.game.AccelerationBar().progress / 100);
         return Paint.Circle("red", ox, oy, r)
             .ClipRect(x, newY, 2 * r, y + 2 * r - newY);
+    }
+
+    Start(): void { this.go.Start(); }
+    Pause(): void { this.go.Stop(); }
+    State(): SnakeGameState { return this.game; }
+
+    PushPauseLayer(): void {
+        this.Pause();
+        this.control.PushLayer(this.pauseLayer);
+    }
+    GameOver(win: Boolean): void {
+        this.Pause();
+        this.control.PushLayer(new GameOverLayer({
+            win: win,
+            time: this.GameTime(),
+            foodEaten: this.State().FoodEaten()
+        }, () => this.Restart(), this.control))
+    }
+    GameTime(): number {
+        return this.time;
+    }
+    Restart(): void {
+        this.control.PopLayer();
+        this.restartCallback();
+    }
+
+    private TakeTurn(time: number): void {
+        this.game.NextState();
+        this.time += 1 / param.FRAME_PER_SEC;
+        if (this.game.Win()) {
+            this.GameOver(true);
+            return;
+        } else if (this.game.Lose()) {
+            this.GameOver(false);
+            return;
+        }
+        this.generator.Generate(time, this.game)(this.game);
     }
 
     Buttons(): MouseEventCatcher {
@@ -176,9 +175,6 @@ class GameLayerImpl extends AbstractLayer implements GameLayer {
     rocker: Rocker;
     go: TimeIntervalControl;
     game: SnakeGame;
-
-    win: GameFinishCallback;
-    lose: GameFinishCallback;
 
     pause: AnimatedButton<RectBound>;
     pauseLayer: PauseLayer;
