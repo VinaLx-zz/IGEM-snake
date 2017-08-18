@@ -46,6 +46,8 @@ declare namespace SZ {
         const BUTTON_Y: number;
         const BUTTON_W: number;
         const BUTTON_H: number;
+        const CONTINUE_X: number;
+        const CONTINUE_Y: number;
     }
     namespace BIOLOGY {
         const PREV_X: number;

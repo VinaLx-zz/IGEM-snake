@@ -49,14 +49,7 @@ namespace SZ {
         export const BUTTON_Y: number = 0.344375;
         export const BUTTON_Y2: number = 0.36;
         export const BUTTON_W: number = 0.026875;
-        export const BUTTON_H: number = 0.03;
-    }
-    export namespace STORY {
-        export const PREV_X: number = 0.181818182;
-        export const NEXT_X: number = 0.85;
-        export const BUTTON_Y: number = 0.6;
-        export const BUTTON_W: number = BIOLOGY.BUTTON_W;
-        export const BUTTON_H: number = BIOLOGY.BUTTON_H;
+        export const BUTTON_H: number = 0.025;
     }
     export namespace GAME {
         export const SNAKE_HEAD_R: number = 0.02125;
@@ -200,5 +193,16 @@ namespace SZ {
         export const CONTINUE_H: number = 0.0175;
         export const CONTINUE_X: number = 0.5 - CONTINUE_W / 2;
         export const CONTINUE_Y: number = 0.59375;
+    }
+
+    export namespace STORY {
+        export const PREV_X: number = 0.181818182;
+        export const NEXT_X: number = 0.85;
+        export const BUTTON_Y: number = 0.6;
+        export const BUTTON_W: number = BIOLOGY.BUTTON_W;
+        export const BUTTON_H: number = BIOLOGY.BUTTON_H;
+        export const CONTINUE_X: number = 0.5 - TUTORIAL.CONTINUE_W / 2;
+        export const CONTINUE_Y: number =
+            RELATIVE_HEIGHT - TUTORIAL.CONTINUE_H - 0.03;
     }
 }
