@@ -5,13 +5,36 @@
   <title>BioLab Rescue</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:url" content="http://vinalx.party">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BioLab Rescue">
+  <meta property="og:description" content="Learning synthetic biology while playing a cute snake game" />
+  <meta property="og:image" content="images/start/background.png" />
+  <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
   <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
   <canvas id="canvas"></canvas>
+  <div class="modal fade" id="share-modal">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="share-btn-area" data-href="http://vinalx.party" data-layout="button_count">
+            <a class="fa fa-facebook-square" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fvinalx.party">
+          </a>
+          </div>
+          <div class="share-btn-area">
+            <a href="https://twitter.com/intent/tweet?text=Learn%20synthetic%20biology%20while%20playing%20a%20snake%20game%21&hashtags=IGEM2017&url=http%3A%2F%2Fvinalx.party" class="share-social-btn fa fa-twitter-square" target="blank"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="double-ended-queue/js/deque.js"></script>
   <script src="jquery/dist/jquery.min.js"></script>
+  <script src="bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="script/size.js"></script>
   <script src="script/script.js"></script>
 </body>

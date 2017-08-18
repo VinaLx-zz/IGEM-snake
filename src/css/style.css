@@ -7,6 +7,71 @@ canvas {
     margin: 0 auto;
 }
 
+.fa:hover {
+    text-decoration: none;
+}
+.fa:focus {
+    text-decoration: none;
+}
+
+.modal {
+    text-align: center;
+}
+
+.modal-dialog {
+    max-width: 100%;
+    width: auto !important;
+    display: inline-block;
+    margin: auto;
+}
+
+#share-modal .modal-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1.5vmax;
+}
+
+.share-btn-area {
+    flex: 1 1;
+    padding: 0;
+    text-align: center;
+}
+.share-social-btn {
+    display: inline;
+}
+.share-btn-area > .fa {
+    text-align: center;
+}
+
+@media (min-width: 501px) and (min-height: 501px) {
+    .modal-dialog {
+        top: 20vh;
+    }
+    .share-btn-area {
+        width: 20vmin;
+        height: 20vmin;
+    }
+    .share-btn-area > .fa {
+        font-size: 17vmin;
+        line-height: 20vmin;
+    }
+}
+
+@media (max-width: 500px), (max-height: 500px) {
+    .modal-dialog {
+        top: 20vh;
+    }
+    .share-btn-area {
+        width: 30vmin;
+        height: 30vmin;
+    }
+    .share-btn-area > .fa {
+        font-size: 25vmin;
+        line-height: 30vmin;
+    }
+}
+
 @font-face {
     font-family:'MSYaHei';
     src: url('/fonts/Microsoft YaHei UI.eot');
