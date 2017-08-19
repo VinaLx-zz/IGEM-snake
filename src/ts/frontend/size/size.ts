@@ -107,6 +107,7 @@ namespace SZ {
         export const BUTTON_W: number = 0.193125;
         export const BUTTON_H: number = 0.09375;
         export const BUTTON_X: number = 0.5 - BUTTON_W / 2;
+        export const RESTART_X: number = BUTTON_X - 0.005;
         export const RESTART_Y: number = (RELATIVE_HEIGHT - BUTTON_H) / 2;
         export const RESUME_Y: number = RESTART_Y - 0.1;
         export const MAINMENU_Y: number = RESTART_Y + 0.1;
@@ -119,6 +120,7 @@ namespace SZ {
         export const BUTTON_W: number = PAUSE.BUTTON_W;
         export const BUTTON_H: number = PAUSE.BUTTON_H;
         export const BUTTON_X: number = 0.5 - BUTTON_W / 2;
+        export const RESTART_X: number = BUTTON_X - 0.005;
         export const RESTART_Y: number = 0.28;
         export const MAINMENU_Y: number = 0.37;
         export const SHARE_Y: number = 0.46;
