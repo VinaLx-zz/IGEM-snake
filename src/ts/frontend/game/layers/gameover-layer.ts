@@ -70,7 +70,7 @@ class GameOverLayer extends AbstractLayer {
     private MakeRestartButton() {
         return new AnimatedButton(
             new RectBound(
-                SZ.GAMEOVER.RESTART_X, SZ.GAMEOVER.RESTART_Y,
+                SZ.GAMEOVER.BUTTON_X, SZ.GAMEOVER.RESTART_Y,
                 SZ.GAMEOVER.BUTTON_W, SZ.GAMEOVER.BUTTON_H),
             IMG.BTN.restart, IMG.BTN.restartFocus, () => this.Restart());
     }

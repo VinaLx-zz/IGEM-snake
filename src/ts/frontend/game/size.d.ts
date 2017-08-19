@@ -115,7 +115,6 @@ declare namespace SZ {
         const BUTTON_H: number;
         const BUTTON_X: number;
         const RESUME_Y: number;
-        const RESTART_X: number;
         const RESTART_Y: number;
         const MAINMENU_Y: number;
     }
@@ -127,7 +126,6 @@ declare namespace SZ {
         const BUTTON_W: number;
         const BUTTON_H: number;
         const BUTTON_X: number;
-        const RESTART_X: number;
         const RESTART_Y: number;
         const MAINMENU_Y: number;
         const SHARE_Y: number;

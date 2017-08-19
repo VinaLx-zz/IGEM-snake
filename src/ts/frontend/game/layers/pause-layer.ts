@@ -28,7 +28,7 @@ class PauseLayer extends AbstractLayer {
             IMG.PAUSE.resume, IMG.PAUSE.resumeFocus, () => this.Resume());
         this.restart = new AnimatedButton(
             new RectBound(
-                SZ.PAUSE.RESTART_X, SZ.PAUSE.RESTART_Y,
+                SZ.PAUSE.BUTTON_X, SZ.PAUSE.RESTART_Y,
                 SZ.PAUSE.BUTTON_W, SZ.PAUSE.BUTTON_H),
             IMG.BTN.restart, IMG.BTN.restartFocus, () => this.Restart());
         this.mainMenu = new AnimatedButton(
