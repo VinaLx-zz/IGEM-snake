@@ -27,7 +27,7 @@ namespace Func {
     export function Assign<A>(a: A, props: Partial<A>): void {
         for (const prop in props) {
             const v = props[prop];
-            if (v !== undefined) a[prop] = v;
+            if (v !== undefined) a[prop] = <A[keyof A]>v;
         }
     }
 }
